@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-launch-darkly'
+  name: 'ember-launch-darkly',
+
+  isDevelopingAddon() {
+    return true;
+  }
 };
