@@ -15,16 +15,23 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "test-node": "./node_modules/mocha/bin/mocha --require babel-register nodetests/**/*-test.js"
   },
   "dependencies": {
     "ember-cli-babel": "^6.3.0",
     "ldclient-js": "1.1.12"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-tester": "^4.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-funnel": "^2.0.0",
     "broccoli-merge-trees": "^2.0.0",
+    "chai": "^4.1.1",
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.14.0",
     "ember-cli-dependency-checker": "^1.3.0",
@@ -41,7 +48,8 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
     "ember-source": "~2.14.0",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "mocha": "^3.5.0"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
