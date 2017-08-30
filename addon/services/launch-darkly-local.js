@@ -13,14 +13,14 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
-    let { featureFlags } = this._config();
-    featureFlags = featureFlags || {}
+    let { localFeatureFlags } = this._config();
+    localFeatureFlags = localFeatureFlags || {}
 
-    if (typeof(featureFlags) !== 'object' || Object.keys(featureFlags).length === 0) {
-      warn('ENV.launchDarkly.featureFlags not specified for local use. Defaulting all feature flags to "false"');
+    if (typeof(localFeatureFlags) !== 'object' || Object.keys(localFeatureFlags).length === 0) {
+      warn('ENV.launchDarkly.localFeatureFlags not specified for local use. Defaulting all feature flags to "false"');
       this.set('_allFlags', EmberObject.create({}));
     } else {
-      this.set('_allFlags', EmberObject.create(featureFlags));
+      this.set('_allFlags', EmberObject.create(localFeatureFlags));
 
       Object.keys(this.allFlags()).forEach(key => {
         Ember.defineProperty(this, key, computed(() => {

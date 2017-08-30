@@ -15,7 +15,7 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 $ ember install ember-launch-darkly
 ```
 
-## Confiuguration
+## Configuration
 
 ember-launch-darkly can be configured from `config/environment.js` as follows:
 
@@ -26,7 +26,7 @@ module.exports = function(environment) {
       // options
     }
   };
-  
+
   return ENV
 };
 ```
@@ -45,7 +45,7 @@ This option will also make the launch darkly service available in the browser co
 
 _Default_: `false`
 
-### `featureFlags`
+### `localFeatureFlags`
 
 A list of initial values for your feature flags. This property is only used when `local: true` to populate the list of feature flags for environments such as local development where it's not desired to store the flags in Launch Darkly.
 
@@ -53,7 +53,7 @@ _Default_: `null`
 
 ### `secureMode`
 
-Enable secure mode to ensure that feature flag settings for a user are kept private. See the Launch Darkly docs for [more infomration on secure mode](https://docs.launchdarkly.com/docs/js-sdk-reference#section-secure-mode).
+Enable secure mode to ensure that feature flag settings for a user are kept private. See the Launch Darkly docs for [more information on secure mode](https://docs.launchdarkly.com/docs/js-sdk-reference#section-secure-mode).
 
 ## Usage
 
@@ -61,7 +61,7 @@ Enable secure mode to ensure that feature flag settings for a user are kept priv
 
 Before being used, Launch Darkly must be initialized. This should happen early so choose an appropriate place to make the call such as an application initializer or the application route.
 
-The `initialize()` function returns a promise that resolves when the Launch Darkly client is reasy so Ember will wait until this happens before proceeding.
+The `initialize()` function returns a promise that resolves when the Launch Darkly client is ready so Ember will wait until this happens before proceeding.
 
 ```js
 // /app/application/route.js
@@ -71,13 +71,13 @@ import service from 'ember-service/inject';
 
 export default Route.extend({
   launchDarkly: service(),
-  
+
   model() {
     let user = {
       key: 'aa0ceb',
       anonymous: true
     };
-    
+
     return this.get('launchDarkly').initialize(config.launchDarkly.clientId, user);
   }
 });
@@ -85,7 +85,7 @@ export default Route.extend({
 
 ### Identify
 
-If you initialized Launch Darkly with an anonymous user and want to re-initilize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialization` has been called.
+If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialization` has been called.
 
 ```js
 // /app/session/route.js
@@ -96,18 +96,18 @@ import service from 'ember-service/inject';
 export default Route.extend({
   session: service(),
   launchDarkly: service(),
-  
+
   model() {
     return this.get('session').getSession();
   },
-  
+
   afterModel(session) {
     let user = {
       key: session.get('user.id'),
       firstName: session.get('user.firstName'),
       email: session.get('user.email')
     };
-    
+
     return this.get('launchDarkly').identify(user);
   }
 });
@@ -145,7 +145,7 @@ If your feature flag is a multivariate based flag, you might use it in an `{{wit
 
 ember-launch-darkly provides a special `variation` import that can be used in Javascript files such as Components. Before using this, [ensure you enable the Babel plugin](#variation-babel-transformer).
 
-If your feature flag is a boolean based flag, you might use it in a a function like so:
+If your feature flag is a boolean based flag, you might use it in a function like so:
 
 ```js
 // /app/components/login-page/component.js
@@ -160,7 +160,7 @@ export default Component.extend({
     if (variation('new-pricing-plan')) {
       return 99.00;
     }
-    
+
     return 199.00;
   })
 });
@@ -186,7 +186,7 @@ export default Component.extend({
       case 'plan-c':
         return 79.00
     }
-    
+
     return 199.00;
   })
 });
@@ -204,12 +204,12 @@ import { computedVariation } from 'ember-launch-darkly';
 
 export default Component.extend({
   newPricePlanEnabled: computedVariation('new-pricing-plan')
-  
+
   price: computed('newPricePlanEnabled', function() {
     if (this.get('newPricePlanEnabled')) {
       return 99.00;
     }
-    
+
     return 199.00;
   })
 });
@@ -226,20 +226,20 @@ import service from 'ember-service/inject';
 
 export default Component.extend({
   launchDarkly: service(),
-  
+
   price: computed('launchDarkly.newPricePlan', function() {
     if (this.get('launchDarkly.newPricePlan')) {
       return 99.00;
     }
-    
+
     return 199.00;
   }),
-  
+
   discount: computed(function() {
     if (this.get('launchDarkly').variation('apply-discount')) {
       return 0.5;
     }
-    
+
     return null;
   })
 });
@@ -247,7 +247,7 @@ export default Component.extend({
 
 ## Local feature flags
 
-When `local: true` is set in the Launch Darkly configuration, ember-launch-darkly will retrieve the feature flags and their values from `config/environment.js` instead of the Launch Darkly service. This is useful for development purposes so you don't need to set up a new environment in Launch Dakrly, your app doesn't need to make a request for the flags, and you can easily change the value of the flags from the browser console.
+When `local: true` is set in the Launch Darkly configuration, ember-launch-darkly will retrieve the feature flags and their values from `config/environment.js` instead of the Launch Darkly service. This is useful for development purposes so you don't need to set up a new environment in Launch Darkly, your app doesn't need to make a request for the flags, and you can easily change the value of the flags from the browser console.
 
 The local feature flags are defined in `config/environment.js` like so:
 
@@ -255,10 +255,9 @@ The local feature flags are defined in `config/environment.js` like so:
 let ENV = {
   launchDarkly: {
     local: true,
-    featureFlags: {
+    localFeatureFlags: {
       'apply-discount': true.
       'new-pricing-plan': 'plan-a'
-      
     }
   }
 }
@@ -314,7 +313,7 @@ let stubService = Service.extend({
     if (key === 'new-pricing-page') {
       return 'plan-a';
     }
-    
+
     return false;
   }
 });
@@ -335,7 +334,7 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
 
 ### `variation` Babel Transformer
 
-The `variation` import that is used in Javascript files is a conveniece helper that is transformed by Babel at build time in to code that simply injects the Launch Darkly service. To enable this plugin add the following to your `ember-cli-build.js`
+The `variation` import that is used in Javascript files is a convenience helper that is transformed by Babel at build time in to code that simply injects the Launch Darkly service. To enable this plugin add the following to your `ember-cli-build.js`
 
 ```js
 // /ember-cli-build.js
