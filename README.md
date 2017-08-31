@@ -1,12 +1,5 @@
 # ember-launch-darkly
 
-**NOTE: This repo is very much taking a "README Driven Development" approach. This addon will exist soon, but currently we are simply understanding how we want it to work.**
-
-Feel free to PR this README with any suggestions to how you think we can improve the implementation.
-
-<hr>
-
-
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
 
 ## Installation
@@ -51,13 +44,29 @@ A list of initial values for your feature flags. This property is only used when
 
 _Default_: `null`
 
-### `secureMode`
+## Content Security Policy
 
-Enable secure mode to ensure that feature flag settings for a user are kept private. See the Launch Darkly docs for [more information on secure mode](https://docs.launchdarkly.com/docs/js-sdk-reference#section-secure-mode).
+If you have CSP enabled in your ember application, you will need to add Launch Darkly to the `connect-src` like so:
+
+```
+// config/environment.js
+
+module.exports = function(environment) {
+  let ENV = {
+    //snip
+    
+    contentSecurityPolicy: {
+      'connect-src': ['https://*.launchdarkly.com']
+    }
+    
+    //snip
+  };
+};
+```
 
 ## Usage
 
-### Initialization
+### Initialize
 
 Before being used, Launch Darkly must be initialized. This should happen early so choose an appropriate place to make the call such as an application initializer or the application route.
 
@@ -87,7 +96,7 @@ export default Route.extend({
 
 ### Identify
 
-If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialization` has been called.
+If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialize` has been called.
 
 ```js
 // /app/session/route.js
@@ -117,7 +126,7 @@ export default Route.extend({
 
 ### Templates
 
-ember-launch-darkly provides a `variation` template helper to check you feature flags.
+ember-launch-darkly provides a `variation` template helper to check your feature flags.
 
 If your feature flag is a boolean based flag, you might use it in an `{{if}}` like so:
 
@@ -187,29 +196,6 @@ export default Component.extend({
         return 89.00
       case 'plan-c':
         return 79.00
-    }
-
-    return 199.00;
-  })
-});
-```
-
-ember-launch-darkly also provides a `variation` computed macro.
-
-```js
-// /app/components/login-page/component.js
-
-import Component from 'ember-component';
-import computed from 'ember-computed';
-
-import { computedVariation } from 'ember-launch-darkly';
-
-export default Component.extend({
-  newPricePlanEnabled: computedVariation('new-pricing-plan')
-
-  price: computed('newPricePlanEnabled', function() {
-    if (this.get('newPricePlanEnabled')) {
-      return 99.00;
     }
 
     return 199.00;
@@ -337,3 +323,10 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
 ### Default variation state
 
 By default a call to `variation` will return `false` if, for some reason, it can't get the true value of the feature flag. Therefore, it's important that variations are always used in the positive, ie, if the flag is enabled, perform new logic and if it's disabled, revert to the existing logic.
+
+The underlying Launch Darkly client provides the capability to specify what that default value is but we believe it's much easier to reason about feature flags if the default is always the same and you create your flags in such a way that enabling a flag is enabling the new state of the application. Therefore, this addon sets the default to `false` by design.
+
+## TODO
+
+- Implement support for `secure` mode
+- Implement event source polyfill
