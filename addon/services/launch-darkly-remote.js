@@ -25,7 +25,7 @@ export default Service.extend({
     assert('ENV.launchDarkly.clientSideId must be specified in config/environment.js', clientSideId);
 
     if (!clientSideId) {
-      warn('ENV.launchDarkly.clientSideId not specified. Defaulting all feature flags to "false"');
+      warn('ENV.launchDarkly.clientSideId not specified. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-id-not-specified' });
 
       this.set('_client', NullClient);
 
@@ -35,7 +35,7 @@ export default Service.extend({
     assert('user.key must be specified in initilize payload', user.key);
 
     if (!user.key) {
-      warn('user.key not specified in initialize payload. Defaulting all feature flags to "false"');
+      warn('user.key not specified in initialize payload. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.user-key-not-specified' });
 
       this.set('_client', NullClient);
 
@@ -43,7 +43,7 @@ export default Service.extend({
     }
 
     if (!window.LDClient) {
-      warn('Launch Darkly JS client not found. Defaulting all feature flags to "false"');
+      warn('Launch Darkly JS client not found. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-not-found' });
 
       this.set('_client', NullClient);
 

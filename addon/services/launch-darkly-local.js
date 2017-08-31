@@ -17,7 +17,7 @@ export default Service.extend({
     localFeatureFlags = localFeatureFlags || {}
 
     if (typeof(localFeatureFlags) !== 'object' || Object.keys(localFeatureFlags).length === 0) {
-      warn('ENV.launchDarkly.localFeatureFlags not specified for local use. Defaulting all feature flags to "false"');
+      warn('ENV.launchDarkly.localFeatureFlags not specified for local use. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.local-feature-flags-not-specified' });
       this.set('_allFlags', EmberObject.create({}));
     } else {
       this.set('_allFlags', EmberObject.create(localFeatureFlags));
@@ -68,7 +68,7 @@ export default Service.extend({
     let config = appConfig.launchDarkly || {};
 
     if (appConfig.environment === 'test' && config.localFeatureFlags) {
-      warn('Ember is running in `test` mode. Defaulting all feature flags to "false"');
+      warn('Ember is running in `test` mode. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.feature-flags-false-in-test' });
 
       Object.keys(config.localFeatureFlags).forEach(key => {
         config.localFeatureFlags[key] = false;
