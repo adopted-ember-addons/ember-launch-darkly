@@ -43,7 +43,7 @@ Specify that you'd like to pull feature flags from your local config instead of 
 
 This option will also make the launch darkly service available in the browser console so that feature flags can be enabled/disabled manually.
 
-_Default_: `false`
+_Default_: `false` in production, `true` in all other environments
 
 ### `localFeatureFlags`
 
@@ -63,6 +63,8 @@ Before being used, Launch Darkly must be initialized. This should happen early s
 
 The `initialize()` function returns a promise that resolves when the Launch Darkly client is ready so Ember will wait until this happens before proceeding.
 
+The user `key` is the only required attribute, see the [Launch Darkly documentation](https://docs.launchdarkly.com/docs/js-sdk-reference#section-users) for the other attributes you can provide.
+
 ```js
 // /app/application/route.js
 
@@ -78,7 +80,7 @@ export default Route.extend({
       anonymous: true
     };
 
-    return this.get('launchDarkly').initialize(config.launchDarkly.clientId, user);
+    return this.get('launchDarkly').initialize(user);
   }
 });
 ```
