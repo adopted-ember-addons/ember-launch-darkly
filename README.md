@@ -145,7 +145,7 @@ If your feature flag is a multivariate based flag, you might use it in an `{{wit
 
 ### Javascript
 
-ember-launch-darkly provides a special `variation` import that can be used in Javascript files such as Components. Before using this, [ensure you enable the Babel plugin](#variation-babel-transformer).
+ember-launch-darkly provides a special `variation` import that can be used in Javascript files such as Components.
 
 If your feature flag is a boolean based flag, you might use it in a function like so:
 
@@ -325,7 +325,7 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
   beforeEach() {
     // register the stub service
     this.register('service:launch-darkly', stubService);
-    
+
     // inject here if you want to be able to inspect/manipulate the service in tests
     this.inject.service('launch-darkly', { as: 'launchDarklyService' });
   }
@@ -333,18 +333,6 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
 ```
 
 ## Caveats
-
-### `variation` Babel Transformer
-
-The `variation` import that is used in Javascript files is a convenience helper that is transformed by Babel at build time in to code that simply injects the Launch Darkly service. To enable this plugin add the following to your `ember-cli-build.js`
-
-```js
-// /ember-cli-build.js
-
-babel: {
-  plugins: ['transform-launch-darkly-variation']
-}
-```
 
 ### Default variation state
 
