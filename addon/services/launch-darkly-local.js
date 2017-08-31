@@ -65,8 +65,17 @@ export default Service.extend({
 
   _config() {
     let appConfig = getOwner(this).resolveRegistration('config:environment');
+    let config = appConfig.launchDarkly || {};
 
-    return appConfig.launchDarkly || {};
+    if (appConfig.environment === 'test' && config.localFeatureFlags) {
+      warn('Ember is running in `test` mode. Defaulting all feature flags to "false"');
+
+      Object.keys(config.localFeatureFlags).forEach(key => {
+        config.localFeatureFlags[key] = false;
+      });
+    }
+
+    return config;
   },
 
   _setFlag(key, value) {
