@@ -33,6 +33,6 @@ module.exports = {
       files: ['ldclient.js'],
     });
 
-    return new MergeTrees([vendorTree, ldTree]);
+    return vendorTree ? new MergeTrees([vendorTree, ldTree]) : ldTree;
   }
 };
