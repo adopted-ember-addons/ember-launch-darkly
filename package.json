@@ -1,17 +1,17 @@
 {
   "name": "ember-launch-darkly",
   "version": "0.1.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "A modern Ember addon to wrap the Launch Darkly service",
   "keywords": [
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "The Kayako Engineering Team",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/kayako/ember-launch-darkly",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
