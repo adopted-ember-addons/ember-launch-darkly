@@ -328,5 +328,5 @@ The underlying Launch Darkly client provides the capability to specify what that
 
 ## TODO
 
-- Implement support for `secure` mode
-- Implement event source polyfill
+- Implement support for `secure` mode ([#9](https://github.com/kayako/ember-launch-darkly/issues/9))
+- Implement event source polyfill ([#8](https://github.com/kayako/ember-launch-darkly/issues/8))
