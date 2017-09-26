@@ -24,8 +24,7 @@ module.exports = function(environment) {
     },
 
     launchDarkly: {
-      clientSideId: '5992ccdbd4903e0a9f4ff6d4',
-      local: false,
+      clientSideId: 'xxx',
       localFeatureFlags: {
         'apply-discount': true
       }

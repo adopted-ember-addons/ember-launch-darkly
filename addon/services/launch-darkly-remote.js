@@ -6,17 +6,16 @@ import { warn } from 'ember-debug';
 import run from 'ember-runloop';
 import computed from 'ember-computed';
 import Ember from 'ember';
-import EmberObject from 'ember-object';
 
 import NullClient from 'ember-launch-darkly/lib/null-client';
 
 export default Service.extend({
   _client: null,
-  _allFlags: null,
+  _seenFlags: null,
 
   init() {
     this._super(...arguments);
-    this.set('_allFlags', EmberObject.create({}));
+    this._seenFlags = new window.Set();
   },
 
   initialize(user = {}/*, options = {}*/) {
@@ -50,16 +49,13 @@ export default Service.extend({
       return RSVP.resolve();
     }
 
-    return RSVP.resolve()
-      .then(() => this._initialize(clientSideId, user))
-      .then(() => this._updateLocalFlags())
-      .then(() => this._registerComputedProperties());
+    return this._initialize(clientSideId, user);
   },
 
   identify(user) {
     return RSVP.resolve()
       .then(() => this._identify(user))
-      .then(() => this._updateLocalFlags());
+      .then(() => this._notifyFlagUpdates());
   },
 
   allFlags() {
@@ -93,24 +89,26 @@ export default Service.extend({
     })
   },
 
-  _updateLocalFlags() {
-    this.get('_allFlags').setProperties(this.allFlags());
-    return RSVP.resolve();
-  },
-
-  _registerComputedProperties() {
-    Object.keys(this.get('_allFlags')).forEach(key => {
-      Ember.defineProperty(this, key, computed(`_allFlags.${key}`, () => {
-        return this.variation(key);
-      }));
-    });
-
-    return RSVP.resolve();
-  },
-
   _identify(user) {
     return new RSVP.Promise(resolve => {
       this.get('_client').identify(user, null, resolve);
     })
+  },
+
+  _notifyFlagUpdates() {
+    this._seenFlags.forEach(key => this.notifyPropertyChange(key));
+    return RSVP.resolve();
+  },
+
+  _registerComputedProperty(key) {
+    Ember.defineProperty(this, key, computed(() => {
+      return this.variation(key);
+    }));
+  },
+
+  unknownProperty(key) {
+    this._seenFlags.add(key);
+    this._registerComputedProperty(key);
+    return this.variation(key);
   }
 });
