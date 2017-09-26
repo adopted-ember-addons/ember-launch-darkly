@@ -9,6 +9,9 @@ import Ember from 'ember';
 
 import NullClient from 'ember-launch-darkly/lib/null-client';
 
+const NON_EXISTANT_FLAG_VALUE = 'LD_FLAG_NON_EXISTANT';
+const DEFAULT_FLAG_VALUE = false;
+
 export default Service.extend({
   _client: null,
   _seenFlags: null,
@@ -63,7 +66,15 @@ export default Service.extend({
   },
 
   variation(key) {
-    return this.get('_client').variation(key, false);
+    let value = this.get('_client').variation(key, NON_EXISTANT_FLAG_VALUE);
+
+    if (value === NON_EXISTANT_FLAG_VALUE) {
+      warn(`Feature flag with key '${key}' has not been defined. Returning default value of '${DEFAULT_FLAG_VALUE}'`, false, { id: 'ember-launch-darkly.feature-flag-not-defined' });
+
+      return DEFAULT_FLAG_VALUE;
+    }
+
+    return value;
   },
 
   _config() {
