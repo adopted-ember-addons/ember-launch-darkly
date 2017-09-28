@@ -1,9 +1,11 @@
 import Service from 'ember-service';
 import service from 'ember-service/inject';
 import computed from 'ember-computed';
+import { warn } from 'ember-debug';
+import Ember from 'ember';
+import RSVP from 'rsvp';
 
 const NON_EXISTANT_FLAG_VALUE = 'LD_FLAG_NON_EXISTANT';
-const DEFAULT_FLAG_VALUE = false;
 
 export default Service.extend({
   _seenFlags: null,
@@ -12,7 +14,7 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
-    this._seenFlags = new window.Set();
+    this._seenFlags = [];
   },
 
   initialize(user = {}/*, options = {}*/) {
@@ -20,7 +22,8 @@ export default Service.extend({
   },
 
   identify(user) {
-    return this.get('_client').identify(user);
+    return this.get('_client').identify(user)
+      .then(() => this._notifyFlagUpdates());
   },
 
   allFlags() {
@@ -52,8 +55,15 @@ export default Service.extend({
     })
   },
 
+  _notifyFlagUpdates() {
+    this._seenFlags.forEach(key => this.notifyPropertyChange(key));
+    return RSVP.resolve();
+  },
+
   unknownProperty(key) {
-    this._seenFlags.add(key);
+    if (this._seenFlags.indexOf(key) === -1) {
+      this._seenFlags.push(key);
+    }
     this._registerComputedProperty(key);
     this._registerSubscription(key);
     return this.variation(key);
