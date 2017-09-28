@@ -66,9 +66,10 @@ export default Service.extend({
   },
 
   variation(key) {
-    let value = this.get('_client').variation(key, NON_EXISTANT_FLAG_VALUE);
+    let nonExistantFlagValue = `${NON_EXISTANT_FLAG_VALUE}: ${key}`;
+    let value = this.get('_client').variation(key, nonExistantFlagValue);
 
-    if (value === NON_EXISTANT_FLAG_VALUE) {
+    if (value === nonExistantFlagValue) {
       warn(`Feature flag with key '${key}' has not been defined. Returning default value of '${DEFAULT_FLAG_VALUE}'`, false, { id: 'ember-launch-darkly.feature-flag-not-defined' });
 
       return DEFAULT_FLAG_VALUE;
