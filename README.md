@@ -215,8 +215,8 @@ import service from 'ember-service/inject';
 export default Component.extend({
   launchDarkly: service(),
 
-  price: computed('launchDarkly.newPricePlan', function() {
-    if (this.get('launchDarkly.newPricePlan')) {
+  price: computed('launchDarkly.new-price-plan', function() {
+    if (this.get('launchDarkly.new-price-plan')) {
       return 99.00;
     }
 
@@ -244,7 +244,7 @@ let ENV = {
   launchDarkly: {
     local: true,
     localFeatureFlags: {
-      'apply-discount': true.
+      'apply-discount': true,
       'new-pricing-plan': 'plan-a'
     }
   }
@@ -254,10 +254,9 @@ let ENV = {
 When `local: true`, the Launch Darkly feature service is available in the browser console via `window.ld`. The service provides the following helper methods to manipulate feature flags:
 
 ```js
-> ld.variation('apply-discount') // return the current value of the feature flag
+> ld.variation('new-pricing-plan', 'plan-a') // return the current value of the feature flag providing a default if it doesn't exist
 
-> ld.variation('apply-discount', true) // set the return value of the feature flag
-> ld.variation('new-pricing-plan', 'plan-a') // set the return value of the feature flag
+> ld.setVariation('new-pricing-plan', 'plan-x') // set the variation value
 
 > ld.enable('apply-discount') // helper to set the return value to `true`
 > ld.disable('apply-discount') // helper to set the return value to `false`
@@ -271,60 +270,81 @@ When `local: true`, the Launch Darkly feature service is available in the browse
 
 ### Acceptance Tests
 
+Stub the Launch Darkly client in acceptance tests using the provided test client which will default all feature flag values to false, instead of using what's defined in the `localFeatureFlags` config. This allows your tests to start off in a known default state.
+
+```js
+import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+
+moduleForAcceptance('Acceptance | Homepage', {
+  beforeEach() {
+    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
+  }
+});
+
+test( "links go to the new homepage", function () {
+  visit('/');
+  click('a.pricing');
+  andThen(function(){
+    equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
+  });
+});
+```
+
 ember-launch-darkly provides a test helper, `withVariation`, to make it easy to turn feature flags on and off in acceptance tests. Simply import the test helper in your test, or `tests/test-helper.js` file.
 
 ```js
 import 'ember-launch-darkly/test-support/helpers/with-variation';
+import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+
+moduleForAcceptance('Acceptance | Homepage', {
+  beforeEach() {
+    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
+  }
+});
 
 test( "links go to the new homepage", function () {
-  withVariation('apply-discount', true);
   withVariation('new-pricing-plan', 'plan-a');
 
   visit('/');
   click('a.pricing');
   andThen(function(){
-    equal(currentRoute(), 'new.pricing', 'Should be on the new pricing page');
+    equal(currentRoute(), 'new-pricing', 'Should be on the new pricing page');
   });
 });
 ```
 
 ### Integration Tests
 
-Simply stub the Launch Darkly service in integration tests to control the feature flags
+Use the test client to stub the Launch Darkly client in integration tests to control the feature flags.
 
 ```js
-import getOwner from 'ember-owner/get';
-import Service from 'ember-service';
-
-let stubService = Service.extend({
-  variation(key) {
-    if (key === 'new-pricing-page') {
-      return 'plan-a';
-    }
-
-    return false;
-  }
-});
+import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
 
 moduleForComponent('my-component', 'Integration | Component | my component', {
   integration: true,
   beforeEach() {
     // register the stub service
-    this.register('service:launch-darkly', stubService);
+    this.register('service:launch-darkly-client', StubClient);
 
     // inject here if you want to be able to inspect/manipulate the service in tests
-    this.inject.service('launch-darkly', { as: 'launchDarklyService' });
+    this.inject.service('launch-darkly-client', { as: 'launchDarklyClient' });
   }
 });
+
+test('new pricing', function(assert) {
+  this.render(hbs`
+    {{#if (variation "new-pricing-page")}}
+      <h1 class="price">£ 99</h1>
+    {{else}}
+      <h1 class="price">£ 199</h1>
+    {{/if}}
+  `);
+
+  this.get('launchDarklyClient').enable('new-pricing-page');
+
+  assert.equal(this.$('.price').text().trim(), '£ 99', 'New pricing displayed');
+});
 ```
-
-## Caveats
-
-### Default variation state
-
-By default a call to `variation` will return `false` if, for some reason, it can't get the true value of the feature flag. Therefore, it's important that variations are always used in the positive, ie, if the flag is enabled, perform new logic and if it's disabled, revert to the existing logic.
-
-The underlying Launch Darkly client provides the capability to specify what that default value is but we believe it's much easier to reason about feature flags if the default is always the same and you create your flags in such a way that enabling a flag is enabling the new state of the application. Therefore, this addon sets the default to `false` by design.
 
 ## TODO
 
