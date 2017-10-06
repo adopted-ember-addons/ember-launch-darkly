@@ -15,8 +15,8 @@ export default Service.extend(Evented, {
     this._super(...arguments);
   },
 
-  initialize(user = {}/*, options = {}*/) {
-    let { clientSideId } = this._config();
+  initialize(user = {}) {
+    let { clientSideId, streaming = false } = this._config();
 
     assert('ENV.launchDarkly.clientSideId must be specified in config/environment.js', clientSideId);
 
@@ -46,7 +46,7 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    return this._initialize(clientSideId, user);
+    return this._initialize(clientSideId, user, streaming);
   },
 
   identify(user) {
@@ -67,13 +67,21 @@ export default Service.extend(Evented, {
     return appConfig.launchDarkly || {};
   },
 
-  _initialize(id, user/*, options*/) {
+  _initialize(id, user, streamingOptions) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = window.LDClient.initialize(id, user/*, options*/);
+      let client = window.LDClient.initialize(id, user);
 
       client.on('ready', () => {
         this.set('_client', client);
         run(null, resolve);
+      });
+
+      client.on('change', settings => {
+        Object.keys(settings).forEach(key => {
+          if (this._shouldTriggerEvent(key, streamingOptions)) {
+            this.trigger(key);
+          }
+        });
       });
 
       run.later(this, () => {
@@ -88,5 +96,21 @@ export default Service.extend(Evented, {
     return new RSVP.Promise(resolve => {
       this.get('_client').identify(user, null, resolve);
     })
+  },
+
+  _shouldTriggerEvent(key, streamingOptions) {
+    if (streamingOptions === true) {
+      return true;
+    }
+
+    if (typeof streamingOptions === 'object') {
+      if (streamingOptions.allExcept && Array.isArray(streamingOptions.allExcept)) {
+        return streamingOptions.allExcept.indexOf(key) === -1;
+      }
+
+      return streamingOptions[key];
+    }
+
+    return false;
   }
 });

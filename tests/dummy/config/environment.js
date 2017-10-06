@@ -25,6 +25,14 @@ module.exports = function(environment) {
 
     launchDarkly: {
       clientSideId: 'xxx',
+      streaming: true,
+      //streaming: {
+        //allExcept: ['apply-discount']
+      //},
+      //streaming: {
+        //'apply-discount': true,
+        //'some-other-flag': true
+      //},
       localFeatureFlags: {
         'apply-discount': true
       }
