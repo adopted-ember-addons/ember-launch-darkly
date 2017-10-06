@@ -7,12 +7,10 @@ export default Helper.extend({
   compute([key]) {
     let service = this.get('launchDarkly');
 
-    if (this._key) {
-      service.removeObserver(this._key, this, 'recompute');
+    if (!this._key) {
+      this._key = key;
+      service.addObserver(key, this, 'recompute');
     }
-
-    this._key = key;
-    service.addObserver(key, this, 'recompute');
 
     return service.get(key);
   },

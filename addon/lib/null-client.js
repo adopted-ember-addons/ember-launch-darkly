@@ -6,7 +6,11 @@ export default {
   allFlags() {
     return {};
   },
-  variation() {
+  variation(_, defaultValue) {
+    if (defaultValue !== undefined) {
+      return defaultValue
+    }
+
     return false;
   }
 }

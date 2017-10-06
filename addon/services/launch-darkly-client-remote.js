@@ -4,21 +4,15 @@ import RSVP from 'rsvp';
 import { assert } from 'ember-metal/utils';
 import { warn } from 'ember-debug';
 import run from 'ember-runloop';
-import computed from 'ember-computed';
-import Ember from 'ember';
+import Evented from 'ember-evented';
 
 import NullClient from 'ember-launch-darkly/lib/null-client';
 
-const NON_EXISTANT_FLAG_VALUE = 'LD_FLAG_NON_EXISTANT';
-const DEFAULT_FLAG_VALUE = false;
-
-export default Service.extend({
+export default Service.extend(Evented, {
   _client: null,
-  _seenFlags: null,
 
   init() {
     this._super(...arguments);
-    this._seenFlags = new window.Set();
   },
 
   initialize(user = {}/*, options = {}*/) {
@@ -56,26 +50,15 @@ export default Service.extend({
   },
 
   identify(user) {
-    return RSVP.resolve()
-      .then(() => this._identify(user))
-      .then(() => this._notifyFlagUpdates());
+    return this._identify(user);
   },
 
   allFlags() {
     return this.get('_client').allFlags();
   },
 
-  variation(key) {
-    let nonExistantFlagValue = `${NON_EXISTANT_FLAG_VALUE}: ${key}`;
-    let value = this.get('_client').variation(key, nonExistantFlagValue);
-
-    if (value === nonExistantFlagValue) {
-      warn(`Feature flag with key '${key}' has not been defined. Returning default value of '${DEFAULT_FLAG_VALUE}'`, false, { id: 'ember-launch-darkly.feature-flag-not-defined' });
-
-      return DEFAULT_FLAG_VALUE;
-    }
-
-    return value;
+  variation(key, defaultValue) {
+    return this.get('_client').variation(key, defaultValue);
   },
 
   _config() {
@@ -105,22 +88,5 @@ export default Service.extend({
     return new RSVP.Promise(resolve => {
       this.get('_client').identify(user, null, resolve);
     })
-  },
-
-  _notifyFlagUpdates() {
-    this._seenFlags.forEach(key => this.notifyPropertyChange(key));
-    return RSVP.resolve();
-  },
-
-  _registerComputedProperty(key) {
-    Ember.defineProperty(this, key, computed(() => {
-      return this.variation(key);
-    }));
-  },
-
-  unknownProperty(key) {
-    this._seenFlags.add(key);
-    this._registerComputedProperty(key);
-    return this.variation(key);
   }
 });
