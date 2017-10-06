@@ -44,6 +44,12 @@ A list of initial values for your feature flags. This property is only used when
 
 _Default_: `null`
 
+### `streaming`
+
+Streaming options for the feature flags for which you'd like to subscribe to realtime updates. See the [Streaming Feature Flags section](#streaming-feature-flags) for more detailed info on what the possible options are for streaming flags.
+
+_Default_: `false`
+
 ## Content Security Policy
 
 If you have CSP enabled in your ember application, you will need to add Launch Darkly to the `connect-src` like so:
@@ -266,6 +272,50 @@ When `local: true`, the Launch Darkly feature service is available in the browse
 > ld.user() // return the user that the client has been initialized with
 ```
 
+## Streaming Feature Flags
+
+Launch Darkly supports the ability to subsribe to changes to feature flags so that apps can react in realtime to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
+
+To disable streaming completely, use the following configuration:
+
+```js
+launchDarkly: {
+  streaming: false
+}
+```
+
+_Note, this is the default behaviour if the `streaming` option is not specified._
+
+To stream all flags, use the following configuration:
+
+```
+launchDarkly: {
+  streaming: true
+}
+```
+
+To get more specific, you can select to stream all flags except those specified:
+
+```
+launchDarkly: {
+  streaming: {
+    allExcept: ['apply-discount', 'new-login']
+  }
+}
+```
+
+And, finally, you can specify only which flags you would like to stream:
+
+```
+launchDarkly: {
+  streaming: {
+    'apply-discount': true
+  }
+}
+```
+
+As Launch Darkly's realtime updates to flags uses the [Event Source API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), certain browsers will require a polyfill to be included. ember-launch-darkly uses [EmberCLI targets](http://rwjblue.com/2017/04/21/ember-cli-targets/) to automatically decide whether or not to include the polyfill. Ensure your project contains a valid `config/targets.js` file if you require this functionality.
+
 ## Test Helpers
 
 ### Acceptance Tests
@@ -349,6 +399,5 @@ test('new pricing', function(assert) {
 ## TODO
 
 - Implement support for `secure` mode ([#9](https://github.com/kayako/ember-launch-darkly/issues/9))
-- Implement event source polyfill ([#8](https://github.com/kayako/ember-launch-darkly/issues/8))
 
 <p align="center"><sub>Made with :heart: by The Kayako Engineering Team</sub></p>
