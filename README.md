@@ -327,7 +327,7 @@ import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-c
 
 moduleForAcceptance('Acceptance | Homepage', {
   beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
+    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
   }
 });
 
@@ -348,7 +348,7 @@ import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-c
 
 moduleForAcceptance('Acceptance | Homepage', {
   beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
+    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
   }
 });
 
