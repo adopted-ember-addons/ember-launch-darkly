@@ -5,7 +5,9 @@ const SERVICE_VARIABLE_NAME = 'launchDarkly';
 const SERVICE_INJECTION_FUNCTION_NAME = 'launchDarklyService';
 
 const COMPUTED_MODULE_NAME = 'ember-computed';
+const NEW_COMPUTED_MODULE_NAME = '@ember/object';
 const COMPUTED_DEFAULT_MEMBER_NAME = 'default';
+const COMPUTED_MEMBER_NAME = 'computed';
 
 const EMBER_MODULE_NAME = 'ember';
 const EMBER_DEFAULT_MEMBER_NAME = 'default';
@@ -89,7 +91,7 @@ function _insertServiceDeclaration(path, t) {
 
 function _findParent(path, t) {
   let parentComputed = path.findParent(p => {
-    let isComputed = t.isCallExpression(p) && t.isIdentifier(p.get('callee')) && p.get('callee').referencesImport(COMPUTED_MODULE_NAME, COMPUTED_DEFAULT_MEMBER_NAME);
+    let isComputed = t.isCallExpression(p) && t.isIdentifier(p.get('callee')) && _referencesComputedImport(p.get('callee'));
     let isEmberDotComputed = t.isCallExpression(p) &&
       t.isMemberExpression(p.get('callee')) &&
       p.get('callee.object').referencesImport(EMBER_MODULE_NAME, EMBER_DEFAULT_MEMBER_NAME) &&
@@ -107,6 +109,10 @@ function _findParent(path, t) {
   if (parentObjectMethod) {
     return { parent: parentObjectMethod, type: 'function' };
   }
+}
+
+function _referencesComputedImport(path) {
+  return path.referencesImport(COMPUTED_MODULE_NAME, COMPUTED_DEFAULT_MEMBER_NAME) || path.referencesImport(NEW_COMPUTED_MODULE_NAME, COMPUTED_MEMBER_NAME);
 }
 
 function _buildServiceDeclaration(t) {

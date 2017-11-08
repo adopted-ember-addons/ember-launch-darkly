@@ -209,6 +209,47 @@ pluginTester({
 
 pluginTester({
   plugin,
+  title: 'New module imports',
+  snapshot: false,
+  filename: __filename,
+  tests: [
+    {
+      title: 'Import computed from @ember/object',
+      code: `
+      import { computed } from '@ember/object';
+      import { variation } from 'ember-launch-darkly';
+
+      export default Component.extend({
+        foo: computed(function() {
+          if(variation('bar')) {
+            return null;
+          }
+        })
+      });
+      `,
+      output: `
+      import { default as launchDarklyService } from 'ember-service/inject';
+      import { computed } from '@ember/object';
+
+
+      export default Component.extend({
+        launchDarkly: launchDarklyService(),
+
+        foo: computed('launchDarkly.bar', function () {
+          const launchDarkly = this.get('launchDarkly');
+
+          if (launchDarkly.get('bar')) {
+            return null;
+          }
+        })
+      });
+      `
+    }
+  ]
+});
+
+pluginTester({
+  plugin,
   title: 'Code that should not be transformed',
   snapshot: false,
   tests: [
