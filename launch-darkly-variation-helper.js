@@ -91,7 +91,9 @@ function _insertServiceDeclaration(path, t) {
 
 function _findParent(path, t) {
   let parentComputed = path.findParent(p => {
-    let isComputed = t.isCallExpression(p) && t.isIdentifier(p.get('callee')) && _referencesComputedImport(p.get('callee'));
+    let isComputed = t.isCallExpression(p) &&
+      t.isIdentifier(p.get('callee')) &&
+      (_referencesComputedImport(p.get('callee')) || _referencesComputedDeclaration(p.get('callee')));
     let isEmberDotComputed = t.isCallExpression(p) &&
       t.isMemberExpression(p.get('callee')) &&
       p.get('callee.object').referencesImport(EMBER_MODULE_NAME, EMBER_DEFAULT_MEMBER_NAME) &&
@@ -113,6 +115,20 @@ function _findParent(path, t) {
 
 function _referencesComputedImport(path) {
   return path.referencesImport(COMPUTED_MODULE_NAME, COMPUTED_DEFAULT_MEMBER_NAME) || path.referencesImport(NEW_COMPUTED_MODULE_NAME, COMPUTED_MEMBER_NAME);
+}
+
+function _referencesComputedDeclaration(path) {
+  var result = Object.keys(path.scope.bindings).map(function(key) {
+    if (key === COMPUTED_MEMBER_NAME && key === path.node.name) {
+      var binding = path.scope.bindings[key];
+
+      if (binding.referencePaths.indexOf(path) > -1) {
+        return true;
+      }
+    }
+  }).filter(Boolean);
+
+  return result.length > 0;
 }
 
 function _buildServiceDeclaration(t) {

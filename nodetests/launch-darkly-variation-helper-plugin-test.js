@@ -244,6 +244,102 @@ pluginTester({
         })
       });
       `
+    },
+    {
+      title: 'Import computed from ember-computed',
+      code: `
+      import computed from 'ember-computed';
+      import { variation } from 'ember-launch-darkly';
+
+      export default Component.extend({
+        foo: computed(function() {
+          if(variation('bar')) {
+            return null;
+          }
+        })
+      });
+      `,
+      output: `
+      import { default as launchDarklyService } from 'ember-service/inject';
+      import computed from 'ember-computed';
+
+
+      export default Component.extend({
+        launchDarkly: launchDarklyService(),
+
+        foo: computed('launchDarkly.bar', function () {
+          const launchDarkly = this.get('launchDarkly');
+
+          if (launchDarkly.get('bar')) {
+            return null;
+          }
+        })
+      });
+      `
+    },
+    {
+      title: 'Define computed with const { computed } = Ember;',
+      code: `
+      const { computed } = Ember;
+      import { variation } from 'ember-launch-darkly';
+
+      export default Component.extend({
+        foo: computed(function() {
+          if(variation('bar')) {
+            return null;
+          }
+        })
+      });
+      `,
+      output: `
+      import { default as launchDarklyService } from 'ember-service/inject';
+      const { computed } = Ember;
+
+
+      export default Component.extend({
+        launchDarkly: launchDarklyService(),
+
+        foo: computed('launchDarkly.bar', function () {
+          const launchDarkly = this.get('launchDarkly');
+
+          if (launchDarkly.get('bar')) {
+            return null;
+          }
+        })
+      });
+      `
+    },
+    {
+      title: 'Define computed with var computed = Ember.computed;',
+      code: `
+      var computed = Ember.computed;
+      import { variation } from 'ember-launch-darkly';
+
+      export default Component.extend({
+        foo: computed(function() {
+          if(variation('bar')) {
+            return null;
+          }
+        })
+      });
+      `,
+      output: `
+      import { default as launchDarklyService } from 'ember-service/inject';
+      var computed = Ember.computed;
+
+
+      export default Component.extend({
+        launchDarkly: launchDarklyService(),
+
+        foo: computed('launchDarkly.bar', function () {
+          const launchDarkly = this.get('launchDarkly');
+
+          if (launchDarkly.get('bar')) {
+            return null;
+          }
+        })
+      });
+      `
     }
   ]
 });
