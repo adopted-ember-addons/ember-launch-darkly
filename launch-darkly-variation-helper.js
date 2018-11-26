@@ -50,26 +50,19 @@ module.exports = function launchDarklyVariationHelperPlugin({ types: t }) {
 
           let { parent, type } = _findParent(parentCallExpression, t);
 
-          switch (type) {
-            case 'computed-property': {
-              let dependentKey = `${SERVICE_PROPERTY_NAME}.${key}`;
+          let fn = parent;
+          if (type === 'computed-property') {
+            let dependentKey = `${SERVICE_PROPERTY_NAME}.${key}`;
 
-              if (_shouldInjectDependentKey(key, parent, t)) {
-                parent.node.arguments.unshift(t.stringLiteral(dependentKey));
-              }
-
-              let fn = parent.get('arguments').find(a => t.isFunctionExpression(a));
-
-              if (fn && !_containsServiceDeclaration(fn, t)) {
-                _insertServiceDeclaration(fn, t);
-              }
-
-              return;
+            if (_shouldInjectDependentKey(key, parent, t)) {
+              parent.node.arguments.unshift(t.stringLiteral(dependentKey));
             }
-            case 'function': {
-              _insertServiceDeclaration(parent, t);
-              return;
-            }
+
+            fn = parent.get('arguments').find(a => t.isFunctionExpression(a));
+          }
+
+          if (fn && !_containsServiceDeclaration(fn, t)) {
+            _insertServiceDeclaration(fn, t);
           }
         }
       },
