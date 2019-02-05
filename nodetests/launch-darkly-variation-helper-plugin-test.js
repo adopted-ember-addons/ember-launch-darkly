@@ -57,7 +57,7 @@ pluginTester({
     {
       title: 'Export inline object as default',
       code: `
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
       import { variation } from 'ember-launch-darkly';
 
       export default Component.extend({
@@ -69,17 +69,14 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
 
 
       export default Component.extend({
-        launchDarkly: launchDarklyService(),
+        ldService: Ember.inject.service('launchDarkly'),
 
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
+        foo: computed('ldService.bar', function () {
+          if (this.get('ldService.bar')) {
             return null;
           }
         })
@@ -89,7 +86,7 @@ pluginTester({
     {
       title: 'Export variable declaration as default',
       code: `
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
       import { variation } from 'ember-launch-darkly';
 
       const Thing = Component.extend({
@@ -103,17 +100,14 @@ pluginTester({
       export default Thing;
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
 
 
       const Thing = Component.extend({
-        launchDarkly: launchDarklyService(),
+        ldService: Ember.inject.service('launchDarkly'),
 
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
+        foo: computed('ldService.bar', function () {
+          if (this.get('ldService.bar')) {
             return null;
           }
         })
@@ -125,7 +119,7 @@ pluginTester({
     {
       title: 'Export variable declaration as member',
       code: `
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
       import { variation } from 'ember-launch-darkly';
 
       const Thing = Component.extend({
@@ -139,23 +133,51 @@ pluginTester({
       export { Thing };
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
 
 
       const Thing = Component.extend({
-        launchDarkly: launchDarklyService(),
+        ldService: Ember.inject.service('launchDarkly'),
 
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
+        foo: computed('ldService.bar', function () {
+          if (this.get('ldService.bar')) {
             return null;
           }
         })
       });
 
       export { Thing };
+      `
+    },
+    {
+      title: 'Include mixins in object',
+      code: `
+      import { computed } from '@ember/object';
+      import { variation } from 'ember-launch-darkly';
+      import SomeMixin from 'somewhere';
+
+      export default Component.extend(SomeMixin, {
+        foo: computed(function() {
+          if(variation('bar')) {
+            return null;
+          }
+        })
+      });
+      `,
+      output: `
+      import { computed } from '@ember/object';
+
+      import SomeMixin from 'somewhere';
+
+      export default Component.extend(SomeMixin, {
+        ldService: Ember.inject.service('launchDarkly'),
+
+        foo: computed('ldService.bar', function () {
+          if (this.get('ldService.bar')) {
+            return null;
+          }
+        })
+      });
       `
     }
   ]
@@ -175,7 +197,7 @@ pluginTester({
     {
       title: 'Invoke using alias',
       code: `
-      import computed from 'ember-computed';
+      import { computed } from '@ember/object';
       import { variation as foo } from 'ember-launch-darkly';
 
       export default Component.extend({
@@ -187,154 +209,14 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      import computed from 'ember-computed';
-
-
-      export default Component.extend({
-        launchDarkly: launchDarklyService(),
-
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
-            return null;
-          }
-        })
-      });
-      `
-    }
-  ]
-});
-
-pluginTester({
-  plugin,
-  title: 'New module imports',
-  snapshot: false,
-  filename: __filename,
-  tests: [
-    {
-      title: 'Import computed from @ember/object',
-      code: `
-      import { computed } from '@ember/object';
-      import { variation } from 'ember-launch-darkly';
-
-      export default Component.extend({
-        foo: computed(function() {
-          if(variation('bar')) {
-            return null;
-          }
-        })
-      });
-      `,
-      output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
       import { computed } from '@ember/object';
 
 
       export default Component.extend({
-        launchDarkly: launchDarklyService(),
+        ldService: Ember.inject.service('launchDarkly'),
 
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
-            return null;
-          }
-        })
-      });
-      `
-    },
-    {
-      title: 'Import computed from ember-computed',
-      code: `
-      import computed from 'ember-computed';
-      import { variation } from 'ember-launch-darkly';
-
-      export default Component.extend({
-        foo: computed(function() {
-          if(variation('bar')) {
-            return null;
-          }
-        })
-      });
-      `,
-      output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      import computed from 'ember-computed';
-
-
-      export default Component.extend({
-        launchDarkly: launchDarklyService(),
-
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
-            return null;
-          }
-        })
-      });
-      `
-    },
-    {
-      title: 'Define computed with const { computed } = Ember;',
-      code: `
-      const { computed } = Ember;
-      import { variation } from 'ember-launch-darkly';
-
-      export default Component.extend({
-        foo: computed(function() {
-          if(variation('bar')) {
-            return null;
-          }
-        })
-      });
-      `,
-      output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      const { computed } = Ember;
-
-
-      export default Component.extend({
-        launchDarkly: launchDarklyService(),
-
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
-            return null;
-          }
-        })
-      });
-      `
-    },
-    {
-      title: 'Define computed with var computed = Ember.computed;',
-      code: `
-      var computed = Ember.computed;
-      import { variation } from 'ember-launch-darkly';
-
-      export default Component.extend({
-        foo: computed(function() {
-          if(variation('bar')) {
-            return null;
-          }
-        })
-      });
-      `,
-      output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
-      var computed = Ember.computed;
-
-
-      export default Component.extend({
-        launchDarkly: launchDarklyService(),
-
-        foo: computed('launchDarkly.bar', function () {
-          const launchDarkly = this.get('launchDarkly');
-
-          if (launchDarkly.get('bar')) {
+        foo: computed('ldService.bar', function () {
+          if (this.get('ldService.bar')) {
             return null;
           }
         })
