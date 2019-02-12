@@ -15,18 +15,22 @@ export default Service.extend(Evented, {
     this._super(...arguments);
   },
 
-  initialize(user = {}) {
+  initialize(user = {}, options = {}) {
     let { clientSideId, streaming = false } = this._config();
 
-    assert('ENV.launchDarkly.clientSideId must be specified in config/environment.js', clientSideId);
+    if (!clientSideId) {
+      clientSideId = options.clientSideId; // let this be deferred, maybe an API provided it
+      delete options.clientSideId;
+    }
 
     if (!clientSideId) {
-      warn('ENV.launchDarkly.clientSideId not specified. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-id-not-specified' });
+      warn('ENV.launchDarkly.clientSideId not specified or provided via user hash. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-id-not-specified' });
 
       this.set('_client', NullClient);
 
       return RSVP.resolve();
     }
+
 
     assert('user.key must be specified in initilize payload', user.key);
 
@@ -46,7 +50,7 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    return this._initialize(clientSideId, user, streaming);
+    return this._initialize(clientSideId, user, streaming, options);
   },
 
   identify(user) {
@@ -67,9 +71,9 @@ export default Service.extend(Evented, {
     return appConfig.launchDarkly || {};
   },
 
-  _initialize(id, user, streamingOptions) {
+  _initialize(id, user, streamingOptions, options = {}) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = window.LDClient.initialize(id, user);
+      let client = window.LDClient.initialize(id, user, options);
 
       client.on('ready', () => {
         this.set('_client', client);
