@@ -11,8 +11,10 @@ export function initialize(appInstance) {
   config = assign({}, defaults, config);
 
   if (config.local) {
-    let client = appInstance.lookup('service:launch-darkly-client');
-    window.ld = client;
+    Object.defineProperty(window, 'ld', {
+      writable: true,
+      value: appInstance.lookup('service:launch-darkly-client')
+    });
   }
 }
 
