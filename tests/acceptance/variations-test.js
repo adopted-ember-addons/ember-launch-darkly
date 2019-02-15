@@ -1,4 +1,4 @@
-import { visit, currentURL } from '@ember/test-helpers';
+import { visit, click } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 
@@ -8,25 +8,25 @@ module('Acceptance | variations', function(hooks) {
   setupApplicationTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test('Feature flag is disabled', async function(assert) {
-    assert.expect(2);
+  test('Defining and using feature flags', async function(assert) {
+    assert.expect(10);
 
-    this.withVariation('apply-discount', false);
+    await visit('/acceptance-tests');
 
-    await visit('/login');
+    assert.dom('.flag-value').hasText('false', 'Feature flag is disabled');
+    assert.dom('.template-if-statement').hasText('FOO', 'Test variation helper in template "if" statement');
+    assert.dom('.template-with-statement').hasText('FOO -', 'Test variation helper in template "with" statement');
+    assert.dom('.template-let-statement').hasText('FOO', 'Test variation helper in template "let" statement');
+    assert.dom('.single-variation-computed').hasText('FOO', 'Test single variation in computed property in controller');
+    assert.dom('.multiple-variation-computed').hasText('FOO', 'Test multiiple variations in computed property in controller');
 
-    assert.equal(currentURL(), '/login', 'Navigate to the correct page');
-    assert.dom('.cheese').hasText('PRICE: £ 199', 'Feature flag is disabled');
-  });
+    await click('.toggle');
 
-  test('Feature flag is enabled', async function(assert) {
-    assert.expect(2);
-
-    this.withVariation('apply-discount', true);
-
-    await visit('/login');
-
-    assert.equal(currentURL(), '/login', 'Navigate to the correct page');
-    assert.dom('.cheese').hasText('PRICE: £ 99', 'Feature flag is enabled');
+    assert.dom('.flag-value').hasText('true', 'Feature flag is enabled');
+    assert.dom('.template-if-statement').hasText('BAR', 'Test variation helper in template "if" statement');
+    assert.dom('.template-with-statement').hasText('BAR - true', 'Test variation helper in template "with" statement');
+    assert.dom('.template-let-statement').hasText('BAR', 'Test variation helper in template "let" statement');
+    //assert.dom('.single-variation-computed').hasText('BAR', 'Test single computed property in controller');
+    //assert.dom('.multiple-variation-computed').hasText('BAR', 'Test multiple variations in  computed property in controller');
   });
 });

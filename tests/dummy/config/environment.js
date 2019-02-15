@@ -33,7 +33,8 @@ module.exports = function(environment) {
         //'some-other-flag': true
       //},
       localFeatureFlags: {
-        'apply-discount': true
+        'apply-discount': true,
+        foobar: true
       }
     }
   };
