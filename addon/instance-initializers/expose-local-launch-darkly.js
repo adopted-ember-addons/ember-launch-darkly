@@ -1,4 +1,4 @@
-import { assign } from 'ember-platform';
+import { assign } from '@ember/polyfills';
 
 export function initialize(appInstance) {
   let appConfig = appInstance.resolveRegistration('config:environment') || {};

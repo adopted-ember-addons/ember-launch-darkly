@@ -1,6 +1,7 @@
+import { assign } from '@ember/polyfills';
+
 import RemoteClient from 'ember-launch-darkly/services/launch-darkly-client-remote';
 import LocalClient from 'ember-launch-darkly/services/launch-darkly-client-local';
-import { assign } from 'ember-platform';
 
 export function initialize(application) {
   let appConfig = application.resolveRegistration('config:environment') || {};

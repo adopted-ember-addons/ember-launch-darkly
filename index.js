@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 
 const path = require('path');
@@ -15,7 +14,7 @@ const EVENT_SOURCE_NON_SUPPORTED_BROWSERS = [
 ];
 
 module.exports = {
-  name: 'ember-launch-darkly',
+  name: require('./package').name,
 
   isDevelopingAddon() {
     return true;

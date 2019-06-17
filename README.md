@@ -83,8 +83,8 @@ The user `key` is the only required attribute, see the [Launch Darkly documentat
 ```js
 // /app/application/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
   launchDarkly: service(),
@@ -107,8 +107,8 @@ If you initialized Launch Darkly with an anonymous user and want to re-initializ
 ```js
 // /app/session/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
   session: service(),
@@ -167,8 +167,8 @@ If your feature flag is a boolean based flag, you might use it in a function lik
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 import { variation } from 'ember-launch-darkly';
 
@@ -188,8 +188,8 @@ If your feature flag is a multivariate based flag, you might use it in a functio
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 import { variation } from 'ember-launch-darkly';
 
@@ -214,9 +214,9 @@ Finally, you can always just inject the Launch Darkly service and use it as you 
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import service from 'ember-service/inject';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   launchDarkly: service(),
@@ -274,7 +274,7 @@ When `local: true`, the Launch Darkly feature service is available in the browse
 
 ## Streaming Feature Flags
 
-Launch Darkly supports the ability to subsribe to changes to feature flags so that apps can react in realtime to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
+Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in realtime to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
 
 To disable streaming completely, use the following configuration:
 
@@ -400,4 +400,4 @@ test('new pricing', function(assert) {
 
 - Implement support for `secure` mode ([#9](https://github.com/kayako/ember-launch-darkly/issues/9))
 
-<p align="center"><sub>Made with :heart: by The Kayako Engineering Team</sub></p>
+<p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>

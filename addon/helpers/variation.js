@@ -1,5 +1,5 @@
-import Helper from 'ember-helper';
-import service from 'ember-service/inject';
+import Helper from '@ember/component/helper';
+import { inject as service } from '@ember/service';
 
 export default Helper.extend({
   launchDarkly: service(),
