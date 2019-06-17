@@ -389,79 +389,76 @@ As Launch Darkly's realtime updates to flags uses the [Event Source API](https:/
 
 ### Acceptance Tests
 
-Stub the Launch Darkly client in acceptance tests using the provided test client which will default all feature flag values to false, instead of using what's defined in the `localFeatureFlags` config. This allows your tests to start off in a known default state.
+Add the `setupLaunchDarkly` hook to the top of your test file. This will ensure that Launch Darkly uses a test stub client which defaults your feature flags to
+`false` instead of using what is defined in the `localFeatureFlags` config.  This allows your tests to start off in a known default state.
 
 ```js
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { module, test } from 'qunit';
+import { visit, currentURL, click } from '@ember/test-helpers';
+import { setupApplicationTest } from 'ember-qunit';
 
-moduleForAcceptance('Acceptance | Homepage', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
-  }
-});
+import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 
-test( "links go to the new homepage", function () {
-  visit('/');
-  click('a.pricing');
-  andThen(function(){
-    equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
+module('Acceptance | Homepage', function(hooks) {
+  setupApplicationTest(hooks);
+  setupLaunchDarkly(hooks);
+
+  test('links go to the new homepage', async function(assert) {
+    await visit('/');
+    await click('a.pricing');
+
+    assert.equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
   });
 });
 ```
 
-ember-launch-darkly provides a test helper, `withVariation`, to make it easy to turn feature flags on and off in acceptance tests. Simply import the test helper in your test, or `tests/test-helper.js` file.
+ember-launch-darkly provides a test helper, `withVariation`, to make it easy to turn feature flags on and off in acceptance tests.
 
 ```js
-import 'ember-launch-darkly/test-support/helpers/with-variation';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+module('Acceptance | Homepage', function(hooks) {
+  setupApplicationTest(hooks);
+  setupLaunchDarkly(hooks);
 
-moduleForAcceptance('Acceptance | Homepage', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
-  }
-});
+  test('links go to the new homepage', async function(assert) {
+    this.withVariation('new-pricing-plan', 'plan-a');
 
-test( "links go to the new homepage", function () {
-  withVariation('new-pricing-plan', 'plan-a');
+    await visit('/');
+    await click('a.pricing');
 
-  visit('/');
-  click('a.pricing');
-  andThen(function(){
-    equal(currentRoute(), 'new-pricing', 'Should be on the new pricing page');
+    assert.equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
   });
 });
 ```
 
 ### Integration Tests
 
-Use the test client to stub the Launch Darkly client in integration tests to control the feature flags.
+Use the test client and `withVariation` helper in component tests to control feature flags as well.
 
 ```js
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('my-component', 'Integration | Component | my component', {
-  integration: true,
-  beforeEach() {
-    // register the stub service
-    this.register('service:launch-darkly-client', StubClient);
+import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 
-    // inject here if you want to be able to inspect/manipulate the service in tests
-    this.inject.service('launch-darkly-client', { as: 'launchDarklyClient' });
-  }
-});
+module('Integration | Component | foo', function(hooks) {
+  setupRenderingTest(hooks);
+  setupLaunchDarkly(hooks);
 
-test('new pricing', function(assert) {
-  this.render(hbs`
-    {{#if (variation "new-pricing-page")}}
-      <h1 class="price">£ 99</h1>
-    {{else}}
-      <h1 class="price">£ 199</h1>
-    {{/if}}
-  `);
+  test('new pricing', async function(assert) {
+    await render(hbs`
+      {{#if (variation "new-pricing-page")}}
+        <h1 class="price">£ 99</h1>
+      {{else}}
+        <h1 class="price">£ 199</h1>
+      {{/if}}
+    `);
 
-  this.get('launchDarklyClient').enable('new-pricing-page');
+    this.withVariation('new-pricing-page');
 
-  assert.equal(this.$('.price').text().trim(), '£ 99', 'New pricing displayed');
+    assert.equal(this.element.querySelector('.price').textContent.trim(), '£ 99', 'New pricing displayed');
+  });
 });
 ```
 
