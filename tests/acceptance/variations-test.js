@@ -1,33 +1,31 @@
-import { test } from 'qunit';
 import { visit, currentURL } from '@ember/test-helpers';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { module, test } from 'qunit';
 
-moduleForAcceptance('Acceptance | variations', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
-  }
-});
+import setupLlaunchDarkly from 'ember-launch-darkly/addon-test-support/setup-launch-darkly';
 
-test('Feature flag is disabled', async function(assert) {
-  assert.expect(2);
+module('Acceptance | variations', function(hooks) {
+  setupLlaunchDarkly(hooks);
 
-  withVariation('apply-discount', false);
+  test('Feature flag is disabled', async function(assert) {
+    assert.expect(2);
 
-  await visit('/login');
+    this.withVariation('apply-discount', false);
 
-  assert.equal(currentURL(), '/login');
-  assert.equal(find('.cheese').text().trim(), 'PRICE: £ 199', 'Feature flag is disabled');
-});
+    await visit('/login');
 
-test('Feature flag is enabled', async function(assert) {
-  assert.expect(2);
+    assert.equal(currentURL(), '/login');
+    assert.equal(find('.cheese').text().trim(), 'PRICE: £ 199', 'Feature flag is disabled');
+  });
 
-  withVariation('apply-discount', true);
+  test('Feature flag is enabled', async function(assert) {
+    assert.expect(2);
 
-  await visit('/login');
+    this.withVariation('apply-discount', true);
 
-  assert.equal(currentURL(), '/login');
+    await visit('/login');
 
-  assert.equal(find('.cheese').text().trim(), 'PRICE: £ 99', 'Feature flag is disabled');
+    assert.equal(currentURL(), '/login');
+
+    assert.equal(find('.cheese').text().trim(), 'PRICE: £ 99', 'Feature flag is disabled');
+  });
 });
