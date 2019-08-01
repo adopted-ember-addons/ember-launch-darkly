@@ -60,11 +60,11 @@ If you have CSP enabled in your ember application, you will need to add Launch D
 module.exports = function(environment) {
   let ENV = {
     //snip
-    
+
     contentSecurityPolicy: {
       'connect-src': ['https://*.launchdarkly.com']
     }
-    
+
     //snip
   };
 };
@@ -83,8 +83,8 @@ The user `key` is the only required attribute, see the [Launch Darkly documentat
 ```js
 // /app/application/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
   launchDarkly: service(),
@@ -95,7 +95,7 @@ export default Route.extend({
       anonymous: true
     };
 
-    return this.get('launchDarkly').initialize(user);
+    return this.launchDarkly.initialize(user);
   }
 });
 ```
@@ -107,15 +107,15 @@ If you initialized Launch Darkly with an anonymous user and want to re-initializ
 ```js
 // /app/session/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
   session: service(),
   launchDarkly: service(),
 
   model() {
-    return this.get('session').getSession();
+    return this.session.getSession();
   },
 
   afterModel(session) {
@@ -125,7 +125,7 @@ export default Route.extend({
       email: session.get('user.email')
     };
 
-    return this.get('launchDarkly').identify(user);
+    return this.launchDarkly.identify(user);
   }
 });
 ```
@@ -165,16 +165,16 @@ If your feature flag is a boolean based flag, you might use it in a function lik
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import service from 'ember-service/inject';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   launchDarkly: service(),
 
   actions: {
     getPrice() {
-      if (this.get('launchDarkly').variation('new-price-plan')) {
+      if (this.launchDarkly.variation('new-price-plan')) {
         return 99.00;
       }
 
@@ -189,16 +189,16 @@ If your feature flag is a multivariate based flag, you might use it in a functio
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import service from 'ember-service/inject';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   launchDarkly: service(),
 
   actions: {
     getPrice() {
-      switch (this.get('launchDarkly').variation('new-pricing-plan')) {
+      switch (this.launchDarkly.variation('new-pricing-plan')) {
         case 'plan-a':
           return 99.00;
         case 'plan-b':
@@ -218,15 +218,15 @@ And if you want to check a flag in a computed property, and have it recompute wh
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import service from 'ember-service/inject';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   launchDarkly: service(),
 
   price: computed('launchDarkly.new-price-plan', function() {
-    if (this.get('launchDarkly.new-price-plan')) {
+    if (this.launchDarkly['new-price-plan']) {
       return 99.00;
     }
 
@@ -270,8 +270,8 @@ Then import the helper from `ember-launch-darkly` and use it as follows:
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 import { variation } from 'ember-launch-darkly';
 
@@ -291,16 +291,15 @@ For reference, the babel transform should transform the above code in to the fol
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-
-import service from 'ember-service/inject';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   launchDarkly: service(),
-  
+
   price: computed('launchDarkly.new-pricing-plan', function() {
-    if (this.get('launchDarkly.new-pricing-plan')) {
+    if (this.launchDarkly['new-pricing-plan']) {
       return 99.00;
     }
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const MODULE_NAME = 'ember-launch-darkly';
 const MEMBER_NAME = 'variation';
 const SERVICE_PROPERTY_NAME = 'launchDarkly';

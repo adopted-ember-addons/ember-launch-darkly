@@ -1,5 +1,3 @@
-import { assign } from 'ember-platform';
-
 function defineLdProperty(appInstance) {
   let define = value => Object.defineProperty(window, 'ld', { value, enumerable: true, writable: true });
 
@@ -26,7 +24,7 @@ export function initialize(appInstance) {
   };
 
   let config = appConfig.launchDarkly || {};
-  config = assign({}, defaults, config);
+  config = { ...defaults, ...config };
 
   if (config.local) {
     defineLdProperty(appInstance);

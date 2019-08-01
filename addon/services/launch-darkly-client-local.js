@@ -1,8 +1,8 @@
-import Service from 'ember-service';
-import getOwner from 'ember-owner/get';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
+import Evented from '@ember/object/evented';
+
 import RSVP from 'rsvp';
-import Evented from 'ember-evented';
-import { assign } from 'ember-platform';
 
 export default Service.extend(Evented, {
   _allFlags: null,
@@ -27,7 +27,7 @@ export default Service.extend(Evented, {
   },
 
   allFlags() {
-    return assign({}, this._allFlags);
+    return { ...this._allFlags };
   },
 
   variation(key, defaultValue = false) {
@@ -59,6 +59,6 @@ export default Service.extend(Evented, {
     let appConfig = getOwner(this).resolveRegistration('config:environment');
     let config = appConfig.launchDarkly || {};
 
-    return assign({}, config);
+    return { ...config };
   }
 });

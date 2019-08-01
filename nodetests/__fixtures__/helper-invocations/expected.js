@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { default as launchDarklyService } from 'ember-service/inject';
 import Component from 'ember-component';
 import computed from 'ember-computed';

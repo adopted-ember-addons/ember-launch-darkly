@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import pluginTester from 'babel-plugin-tester';
 import plugin from '../launch-darkly-variation-helper';
 
