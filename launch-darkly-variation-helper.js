@@ -42,7 +42,7 @@ module.exports = function launchDarklyVariationHelperPlugin({ types: t }) {
         }
       },
 
-      Identifier(path, state) {
+      Identifier(path) {
         if (path.referencesImport(MODULE_NAME, MEMBER_NAME)) {
           let parentCallExpression = path.findParent(p => t.isCallExpression(p));
           let key = parentCallExpression.get('arguments.0').node.value;
@@ -220,7 +220,7 @@ function _shouldInjectDependentKey(key, path, t) {
 }
 
 function _containsDependentKey(key, value) {
-  const regex = new RegExp(`${SERVICE_PROPERTY_NAME}\.\{(.*)\}`);
+  const regex = new RegExp(`${SERVICE_PROPERTY_NAME}.{(.*)}`);
   let matches = value.match(regex);
 
   return (matches && matches[1] && matches[1].split(',').map(s => s.trim()).includes(key)) ||
