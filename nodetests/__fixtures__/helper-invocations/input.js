@@ -1,5 +1,5 @@
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 import foo from 'foo';
 import { variation } from 'ember-launch-darkly';

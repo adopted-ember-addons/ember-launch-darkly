@@ -1,4 +1,4 @@
-import { assign } from 'ember-platform';
+import { assign } from '@ember/polyfills';
 
 function defineLdProperty(appInstance) {
   let define = value => Object.defineProperty(window, 'ld', { value, enumerable: true, writable: true });

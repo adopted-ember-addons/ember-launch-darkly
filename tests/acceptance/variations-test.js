@@ -1,33 +1,37 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { currentURL, find, visit } from '@ember/test-helpers';
 
-moduleForAcceptance('Acceptance | variations', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
-  }
-});
+module('Acceptance | variations', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('Feature flag is disabled', function(assert) {
-  assert.expect(2);
+  hooks.beforeEach(function() {
+    this.owner.register('service:launch-darkly-client', StubClient);
+    this.service = this.owner.lookup('service:launch-darkly-client');
+  });
 
-  withVariation('apply-discount', false);
+  test('Feature flag is disabled', async function(assert) {
+    assert.expect(2);
 
-  visit('/login');
+    this.service.setVariation('apply-discount', false);
 
-  andThen(() => assert.equal(currentURL(), '/login'));
+    await visit('/login');
 
-  andThen(() => assert.equal(find('.cheese').text().trim(), 'PRICE: £ 199', 'Feature flag is disabled'));
-});
+    assert.equal(currentURL(), '/login');
 
-test('Feature flag is enabled', function(assert) {
-  assert.expect(2);
+    assert.equal(find('.cheese').textContent.trim(), 'PRICE: £ 199', 'Feature flag is disabled');
+  });
 
-  withVariation('apply-discount', true);
+  test('Feature flag is enabled', async function(assert) {
+    assert.expect(2);
 
-  visit('/login');
+    this.service.setVariation('apply-discount', true);
 
-  andThen(() => assert.equal(currentURL(), '/login'));
+    await visit('/login');
 
-  andThen(() => assert.equal(find('.cheese').text().trim(), 'PRICE: £ 99', 'Feature flag is disabled'));
+    assert.equal(currentURL(), '/login');
+
+    assert.equal(find('.cheese').textContent.trim(), 'PRICE: £ 99', 'Feature flag is disabled');
+  });
 });

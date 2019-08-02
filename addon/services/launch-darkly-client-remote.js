@@ -1,10 +1,9 @@
-import Service from 'ember-service';
-import getOwner from 'ember-owner/get';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
 import RSVP from 'rsvp';
-import { assert } from 'ember-metal/utils';
-import { warn } from 'ember-debug';
-import run from 'ember-runloop';
-import Evented from 'ember-evented';
+import { assert, warn } from '@ember/debug';
+import { run } from '@ember/runloop';
+import Evented from '@ember/object/evented';
 
 import NullClient from 'ember-launch-darkly/lib/null-client';
 

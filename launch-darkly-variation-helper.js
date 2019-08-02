@@ -176,8 +176,8 @@ function _insertServiceImport(path, t) {
 }
 
 function _buildServiceImport(t) {
-  var specifier = t.importSpecifier(t.identifier(SERVICE_INJECTION_FUNCTION_NAME), t.identifier('default'));
-  return t.importDeclaration([specifier], t.stringLiteral('ember-service/inject'));
+  var specifier = t.importSpecifier(t.identifier(SERVICE_INJECTION_FUNCTION_NAME), t.identifier('inject'));
+  return t.importDeclaration([specifier], t.stringLiteral('@ember/service'));
 }
 
 function _insertServiceInjection(path, t) {

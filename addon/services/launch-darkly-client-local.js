@@ -1,8 +1,8 @@
-import Service from 'ember-service';
-import getOwner from 'ember-owner/get';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
 import RSVP from 'rsvp';
-import Evented from 'ember-evented';
-import { assign } from 'ember-platform';
+import Evented from '@ember/object/evented';
+import { assign } from '@ember/polyfills';
 
 export default Service.extend(Evented, {
   _allFlags: null,

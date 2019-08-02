@@ -69,7 +69,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import computed from 'ember-computed';
 
 
@@ -103,7 +103,7 @@ pluginTester({
       export default Thing;
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import computed from 'ember-computed';
 
 
@@ -139,7 +139,7 @@ pluginTester({
       export { Thing };
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import computed from 'ember-computed';
 
 
@@ -187,7 +187,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import computed from 'ember-computed';
 
 
@@ -228,7 +228,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import { computed } from '@ember/object';
 
 
@@ -260,7 +260,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       import computed from 'ember-computed';
 
 
@@ -292,7 +292,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       const { computed } = Ember;
 
 
@@ -324,7 +324,7 @@ pluginTester({
       });
       `,
       output: `
-      import { default as launchDarklyService } from 'ember-service/inject';
+      import { inject as launchDarklyService } from '@ember/service';
       var computed = Ember.computed;
 
 

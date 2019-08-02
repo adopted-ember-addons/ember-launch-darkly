@@ -1,37 +1,60 @@
-/* eslint-env node */
-module.exports = {
-  useYarn: true,
+'use strict';
 
-  scenarios: [
-    {
-      name: 'ember-default',
-      bower: {
-        dependencies: { }
-      }
-    },
-    {
-      name: 'ember-release',
-      bower: {
-        dependencies: {
-          ember: 'release'
+const getChannelURL = require('ember-source-channel-url');
+
+module.exports = function() {
+  return Promise.all([
+    getChannelURL('release'),
+    getChannelURL('beta'),
+    getChannelURL('canary')
+  ]).then((urls) => {
+    return {
+      useYarn: true,
+      scenarios: [
+        {
+          name: 'ember-release',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[0]
+            }
+          }
+        },
+        {
+          name: 'ember-beta',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[1]
+            }
+          }
+        },
+        {
+          name: 'ember-canary',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[2]
+            }
+          }
+        },
+        {
+          name: 'ember-default',
+          npm: {
+            devDependencies: {}
+          }
+        },
+        {
+          name: 'ember-default-with-jquery',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': true
+            })
+          },
+          npm: {
+            devDependencies: {
+              '@ember/jquery': '^0.5.1'
+            }
+          }
         }
-      }
-    },
-    {
-      name: 'ember-beta',
-      bower: {
-        dependencies: {
-          ember: 'beta'
-        }
-      }
-    },
-    {
-      name: 'ember-canary',
-      bower: {
-        dependencies: {
-          ember: 'canary'
-        }
-      }
-    }
-  ]
+      ]
+    };
+  });
 };

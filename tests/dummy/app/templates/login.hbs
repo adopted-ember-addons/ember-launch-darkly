@@ -1,4 +1,3 @@
-{{#link-to "user"}}Go to USER{{/link-to}}
 
 <br>
 <br>
@@ -41,15 +40,8 @@ PRICE: £ {{anotherPrice}}
 
 {{!--BEGIN-SNIPPET as-with-template-helper--}}
 {{#with (variation "apply-discount") as |v|}}
-PRICE: £ 99 - {{v}}
+  PRICE: £ 99 - {{v}}
 {{else}}
   PRICE: £ 199
 {{/with}}
 {{!--END-SNIPPET--}}
-
-<br>
-<br>
-
-{{code-snippet name="as-js-variation-helper.js"}}
-
-PRICE: £ {{foo}}

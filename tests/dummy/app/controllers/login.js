@@ -1,8 +1,6 @@
-import Controller from 'ember-controller';
-import service from 'ember-service/inject';
-import computed from 'ember-computed';
-
-import { variation } from 'ember-launch-darkly';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
   launchDarkly: service(),
@@ -37,15 +35,5 @@ export default Controller.extend({
 
     return '199';
   }),
-  // END-SNIPPET
-
-  // BEGIN-SNIPPET as-js-variation-helper
-  foo: computed(function () {
-    if (variation('apply-discount')) {
-      return '99';
-    }
-
-    return '199';
-  })
   // END-SNIPPET
 });

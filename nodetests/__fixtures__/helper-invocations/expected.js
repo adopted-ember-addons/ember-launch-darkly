@@ -1,6 +1,6 @@
-import { default as launchDarklyService } from 'ember-service/inject';
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import { inject as launchDarklyService } from '@ember/service';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 import foo from 'foo';
 
