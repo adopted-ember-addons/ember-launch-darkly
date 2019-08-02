@@ -17,12 +17,25 @@ module.exports = {
   rules: {
   },
   overrides: [
+    {
+      files: [
+        'nodetests/**/*.js'
+      ],
+      parserOptions: {
+        sourceType: 'module'
+      },
+      env: {
+        browser: false,
+        node: true
+      }
+    },
     // node files
     {
       files: [
         '.template-lintrc.js',
         'ember-cli-build.js',
         'index.js',
+        'launch-darkly-variation-helper.js',
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',

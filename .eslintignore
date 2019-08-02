@@ -11,6 +11,7 @@
 
 # misc
 /coverage/
+/nodetests/__fixtures__/
 
 # ember-try
 /.node_modules.ember-try/
