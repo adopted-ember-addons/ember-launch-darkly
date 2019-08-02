@@ -467,6 +467,6 @@ test('new pricing', function(assert) {
 
 ## TODO
 
-- Implement support for `secure` mode ([#9](https://github.com/kayako/ember-launch-darkly/issues/9))
+- Implement support for `secure` mode ([#9](https://github.com/ember-launch-darkly/ember-launch-darkly/issues/9))
 
-<p align="center"><sub>Made with :heart: by The Kayako Engineering Team</sub></p>
+<p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>

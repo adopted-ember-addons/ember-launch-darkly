@@ -5,9 +5,9 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "https://github.com/kayako/ember-launch-darkly",
+  "repository": "https://github.com/ember-launch-darkly/ember-launch-darkly",
   "license": "MIT",
-  "author": "The Kayako Engineering Team",
+  "author": "The Ember Launch Darkly Team",
   "directories": {
     "doc": "doc",
     "test": "tests"
