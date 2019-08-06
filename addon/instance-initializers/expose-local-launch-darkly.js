@@ -1,5 +1,23 @@
 import { assign } from 'ember-platform';
 
+function defineLdProperty(appInstance) {
+  let define = value => Object.defineProperty(window, 'ld', { value, enumerable: true, writable: true });
+
+  Object.defineProperty(window, 'ld', {
+    configurable: true,
+    enumerable: true,
+    get() {
+      let service = appInstance.lookup('service:launch-darkly-client');
+      define(service);
+      return service;
+    },
+
+    set(value) {
+      define(value);
+    }
+  });
+}
+
 export function initialize(appInstance) {
   let appConfig = appInstance.resolveRegistration('config:environment') || {};
 
@@ -11,8 +29,7 @@ export function initialize(appInstance) {
   config = assign({}, defaults, config);
 
   if (config.local) {
-    let client = appInstance.lookup('service:launch-darkly-client');
-    window.ld = client;
+    defineLdProperty(appInstance);
   }
 }
 
