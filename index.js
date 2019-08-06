@@ -21,18 +21,8 @@ module.exports = {
     return true;
   },
 
-  included(app) {
+  included() {
     this._super.included.apply(this, arguments);
-
-    if (!this._registeredWithBabel) {
-      app.options = app.options || {};
-      app.options.babel = app.options.babel || {};
-      app.options.babel.plugins = app.options.babel.plugins || [];
-
-      app.options.babel.plugins.unshift(require('./launch-darkly-variation-helper.js'));
-
-      this._registeredWithBabel = true;
-    }
 
     this.import('vendor/ldclient.js');
 

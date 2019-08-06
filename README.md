@@ -160,9 +160,112 @@ If your feature flag is a multivariate based flag, you might use it in an `{{wit
 
 ### Javascript
 
-ember-launch-darkly provides a special `variation` import that can be used in Javascript files such as Components.
-
 If your feature flag is a boolean based flag, you might use it in a function like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from 'ember-component';
+import computed from 'ember-computed';
+import service from 'ember-service/inject';
+
+export default Component.extend({
+  launchDarkly: service(),
+
+  actions: {
+    getPrice() {
+      if (this.get('launchDarkly').variation('new-price-plan')) {
+        return 99.00;
+      }
+
+      return 199.00;
+    },
+  }
+});
+```
+
+If your feature flag is a multivariate based flag, you might use it in a function like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from 'ember-component';
+import computed from 'ember-computed';
+import service from 'ember-service/inject';
+
+export default Component.extend({
+  launchDarkly: service(),
+
+  actions: {
+    getPrice() {
+      switch (this.get('launchDarkly').variation('new-pricing-plan')) {
+        case 'plan-a':
+          return 99.00;
+        case 'plan-b':
+          return 89.00
+        case 'plan-c':
+          return 79.00
+      }
+
+      return 199.00;
+    }
+  }
+});
+```
+
+And if you want to check a flag in a computed property, and have it recompute when the flag changes, you'll want to make sure you add the flag as a dependent key to the CP, as follows:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from 'ember-component';
+import computed from 'ember-computed';
+import service from 'ember-service/inject';
+
+export default Component.extend({
+  launchDarkly: service(),
+
+  price: computed('launchDarkly.new-price-plan', function() {
+    if (this.get('launchDarkly.new-price-plan')) {
+      return 99.00;
+    }
+
+    return 199.00;
+  })
+});
+```
+
+### [EXPERIMENTAL] `variation` Javascript helper
+
+ember-launch-darkly provides a special, experimental, `variation` import that can be used in Javascript files such as Components, to make the invocation and checking of feature flags a little nicer in the JS code.
+
+This helper is backed by a Babel transform that essentially replaces the helper with the code above in the [Javascript](#javascript) section. The main benefits this helper provides is:
+
+- Automatically adds feature flags as dependent keys to computed properties so they are recalculated when flags change
+- Removes boiler plate launch darkly code (injection of service, referencing service in functions, etc)
+- Provide a syntax that is parallel to the `variation` helper used in templates
+
+The babel transform that replaces this helper in the JS code is experimental and may have bugs from time to time. Use it with caution.
+
+If you would like to try it out, simply enable it in your `ember-cli-build.js` as follows:
+
+```js
+// ember-cli-build.js
+
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
+module.exports = function(defaults) {
+  let app = new EmberApp(defaults, {
+    babel: {
+      plugins: [ require.resolve('ember-launch-darkly/launch-darkly-variation-helper') ]
+    }
+  });
+
+  return app.toTree();
+};
+```
+
+Then import the helper from `ember-launch-darkly` and use it as follows:
 
 ```js
 // /app/components/login-page/component.js
@@ -183,7 +286,7 @@ export default Component.extend({
 });
 ```
 
-If your feature flag is a multivariate based flag, you might use it in a function like so:
+For reference, the babel transform should transform the above code in to the following:
 
 ```js
 // /app/components/login-page/component.js
@@ -191,50 +294,17 @@ If your feature flag is a multivariate based flag, you might use it in a functio
 import Component from 'ember-component';
 import computed from 'ember-computed';
 
-import { variation } from 'ember-launch-darkly';
-
-export default Component.extend({
-  price: computed(function() {
-    switch (variation('new-pricing-plan')) {
-      case 'plan-a':
-        return 99.00;
-      case 'plan-b':
-        return 89.00
-      case 'plan-c':
-        return 79.00
-    }
-
-    return 199.00;
-  })
-});
-```
-
-Finally, you can always just inject the Launch Darkly service and use it as you would any other service:
-
-```js
-// /app/components/login-page/component.js
-
-import Component from 'ember-component';
-import computed from 'ember-computed';
 import service from 'ember-service/inject';
 
 export default Component.extend({
   launchDarkly: service(),
-
-  price: computed('launchDarkly.new-price-plan', function() {
-    if (this.get('launchDarkly.new-price-plan')) {
+  
+  price: computed('launchDarkly.new-pricing-plan', function() {
+    if (this.get('launchDarkly.new-pricing-plan')) {
       return 99.00;
     }
 
     return 199.00;
-  }),
-
-  discount: computed(function() {
-    if (this.get('launchDarkly').variation('apply-discount')) {
-      return 0.5;
-    }
-
-    return null;
   })
 });
 ```
@@ -274,7 +344,7 @@ When `local: true`, the Launch Darkly feature service is available in the browse
 
 ## Streaming Feature Flags
 
-Launch Darkly supports the ability to subsribe to changes to feature flags so that apps can react in realtime to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
+Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
 
 To disable streaming completely, use the following configuration:
 
