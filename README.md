@@ -54,7 +54,7 @@ _Default_: `false`
 
 If you have CSP enabled in your ember application, you will need to add Launch Darkly to the `connect-src` like so:
 
-```
+```js
 // config/environment.js
 
 module.exports = function(environment) {
@@ -245,7 +245,7 @@ This helper is backed by a Babel transform that essentially replaces the helper 
 - Removes boiler plate launch darkly code (injection of service, referencing service in functions, etc)
 - Provide a syntax that is parallel to the `variation` helper used in templates
 
-The babel transform that replaces this helper in the JS code is experimental and may have bugs from time to time. Use it with caution.
+The babel transform that replaces this `variation` helper in the JS code is experimental. Your mileage may vary.
 
 If you would like to try it out, simply enable it in your `ember-cli-build.js` as follows:
 
@@ -296,10 +296,10 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  launchDarkly: service(),
+  ldService: service(),
 
-  price: computed('launchDarkly.new-pricing-plan', function() {
-    if (this.launchDarkly['new-pricing-plan']) {
+  price: computed('ldService.new-pricing-plan', function() {
+    if (this.ldService['new-pricing-plan']) {
       return 99.00;
     }
 
@@ -357,7 +357,7 @@ _Note, this is the default behaviour if the `streaming` option is not specified.
 
 To stream all flags, use the following configuration:
 
-```
+```js
 launchDarkly: {
   streaming: true
 }
@@ -365,7 +365,7 @@ launchDarkly: {
 
 To get more specific, you can select to stream all flags except those specified:
 
-```
+```js
 launchDarkly: {
   streaming: {
     allExcept: ['apply-discount', 'new-login']
@@ -375,7 +375,7 @@ launchDarkly: {
 
 And, finally, you can specify only which flags you would like to stream:
 
-```
+```js
 launchDarkly: {
   streaming: {
     'apply-discount': true

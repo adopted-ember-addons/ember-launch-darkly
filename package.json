@@ -19,7 +19,7 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
-    "test-node": "./node_modules/mocha/bin/mocha --require babel-register nodetests/**/*-test.js"
+    "test-node": "./node_modules/mocha/bin/mocha nodetests/**/*-test.js"
   },
   "dependencies": {
     "ember-cli-babel": "^7.7.3",
@@ -28,11 +28,7 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-tester": "^6.4.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-register": "^6.26.0",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^2.0.2",
     "broccoli-merge-trees": "^3.0.2",

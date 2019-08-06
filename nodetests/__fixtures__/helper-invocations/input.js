@@ -1,16 +1,16 @@
-/* eslint-disable */
+import Component from '@ember/component';
+import {computed } from '@ember/object';
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-
-import foo from 'foo';
 import { variation } from 'ember-launch-darkly';
-import bar from 'bar';
 
-import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 export default Component.extend({
-  price: computed('price', function () {
+  launchDarkly: service(),
+
+  price: Ember.computed('price', function () {
     if (variation('apply-discount')) {
       return this.get('price') * 0.5;
     }
@@ -18,7 +18,7 @@ export default Component.extend({
     return this.get('price');
   }),
 
-  foo: computed(function () {
+  foo: Ember.computed(function () {
     if (variation('apply-discount')) {
       return this.get('price') * 0.5;
     }
@@ -26,7 +26,7 @@ export default Component.extend({
     return this.get('price');
   }),
 
-  bar: computed('launchDarkly.apply-discount', function () {
+  bar: Ember.computed('launchDarkly.apply-discount', function () {
     if (variation('apply-discount')) {
       return this.get('price') * 0.5;
     }
@@ -34,85 +34,13 @@ export default Component.extend({
     return this.get('price');
   }),
 
-  baz: computed('launchDarkly.new-login', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  boo: computed('launchDarkly.{new-login,apply-discount}', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  bop: computed('launchDarkly.{new-login,new-logout}', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  yetAnotherPrice: Ember.computed('price', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  ben: Ember.computed(function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  bon: Ember.computed('launchDarkly.apply-discount', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  ban: Ember.computed('launchDarkly.new-login', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  bin: Ember.computed('launchDarkly.{new-login,apply-discount}', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  bun: Ember.computed('launchDarkly.{new-login,new-logout}', function () {
-    if (variation('apply-discount')) {
-      return this.get('price') * 0.5;
-    }
-
-    return this.get('price');
-  }),
-
-  goo: computed(function() {
+  baz: Ember.computed(function() {
     if(variation('bar') || variation('baz')) {
       return null;
     }
   }),
 
-  gar: computed(function() {
+  bop: Ember.computed(function() {
     return EmberObject.create({
       bar() {
         if(variation('bar')) {
@@ -143,6 +71,6 @@ export default Component.extend({
       return this.get('price') * 0.5;
     }
 
-    return this.get('price');
+    return yield this.get('price');
   })
 });
