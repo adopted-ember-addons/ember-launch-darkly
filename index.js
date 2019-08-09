@@ -1,5 +1,6 @@
-/* eslint-env node */
 'use strict';
+
+/* eslint-disable node/no-unpublished-require */
 
 const path = require('path');
 const Funnel = require('broccoli-funnel');
@@ -15,7 +16,7 @@ const EVENT_SOURCE_NON_SUPPORTED_BROWSERS = [
 ];
 
 module.exports = {
-  name: 'ember-launch-darkly',
+  name: require('./package').name,
 
   isDevelopingAddon() {
     return true;

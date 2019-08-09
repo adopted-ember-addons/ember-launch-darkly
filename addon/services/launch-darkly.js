@@ -1,8 +1,6 @@
-import Service from 'ember-service';
-import service from 'ember-service/inject';
-import computed from 'ember-computed';
-import { warn } from 'ember-debug';
-import Ember from 'ember';
+import Service, { inject as service } from '@ember/service';
+import { computed, defineProperty } from '@ember/object';
+import { warn } from '@ember/debug';
 import RSVP from 'rsvp';
 
 const NON_EXISTANT_FLAG_VALUE = 'LD_FLAG_NON_EXISTANT';
@@ -44,7 +42,7 @@ export default Service.extend({
   },
 
   _registerComputedProperty(key) {
-    Ember.defineProperty(this, key, computed(() => {
+    defineProperty(this, key, computed(() => {
       return this.variation(key);
     }));
   },

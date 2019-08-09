@@ -41,7 +41,7 @@ PRICE: £ {{anotherPrice}}
 
 {{!--BEGIN-SNIPPET as-with-template-helper--}}
 {{#with (variation "apply-discount") as |v|}}
-PRICE: £ 99 - {{v}}
+  PRICE: £ 99 - {{v}}
 {{else}}
   PRICE: £ 199
 {{/with}}
