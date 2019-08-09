@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, settled} from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly';
@@ -20,12 +20,12 @@ module('Integration | Helper | foo', function(hooks) {
       {{/if}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'BOO', 'Feature flag is disabled');
+    assert.dom('h1').hasText('BOO', 'Feature flag is disabled');
 
     this.withVariation('foo-bar');
 
     await settled();
 
-    assert.equal(this.element.textContent.trim(), 'YAY', 'Feature flag is disabled');
+    assert.dom('h1').hasText('YAY', 'Feature flag is enabled');
   });
 });
