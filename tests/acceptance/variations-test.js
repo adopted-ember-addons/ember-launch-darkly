@@ -9,7 +9,7 @@ module('Acceptance | variations', function(hooks) {
   setupLaunchDarkly(hooks);
 
   test('Defining and using feature flags', async function(assert) {
-    assert.expect(10);
+    assert.expect(12);
 
     await visit('/acceptance-tests');
 
@@ -26,7 +26,7 @@ module('Acceptance | variations', function(hooks) {
     assert.dom('.template-if-statement').hasText('BAR', 'Test variation helper in template "if" statement');
     assert.dom('.template-with-statement').hasText('BAR - true', 'Test variation helper in template "with" statement');
     assert.dom('.template-let-statement').hasText('BAR', 'Test variation helper in template "let" statement');
-    //assert.dom('.single-variation-computed').hasText('BAR', 'Test single computed property in controller');
-    //assert.dom('.multiple-variation-computed').hasText('BAR', 'Test multiple variations in  computed property in controller');
+    assert.dom('.single-variation-computed').hasText('BAR', 'Test single computed property in controller');
+    assert.dom('.multiple-variation-computed').hasText('BAR', 'Test multiple variations in  computed property in controller');
   });
 });
