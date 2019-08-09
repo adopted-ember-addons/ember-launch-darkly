@@ -12,6 +12,7 @@ module.exports = {
       ci: [
         // --no-sandbox is needed when running Chrome inside a container
         process.env.CI ? '--no-sandbox' : null,
+        process.platform === 'darwin' ? '--crash-dumps-dir=/tmp' : null, // Fix for https://superuser.com/questions/1292863/chrome-crashpad-crashes-on-xattr
         '--headless',
         '--disable-gpu',
         '--disable-dev-shm-usage',
