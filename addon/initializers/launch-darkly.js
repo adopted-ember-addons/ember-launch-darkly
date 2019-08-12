@@ -14,6 +14,10 @@ export function initialize(application) {
   let Factory = config.local ? LocalClient : RemoteClient;
 
   application.register('service:launch-darkly-client', Factory);
+
+  ['route', 'controller', 'component', 'router:main'].forEach(type => {
+    application.inject(type, 'launchDarkly', 'service:launch-darkly');
+  });
 }
 
 export default {

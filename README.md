@@ -72,6 +72,36 @@ module.exports = function(environment) {
 
 ## Usage
 
+### Launch Darkly Service
+
+ember-launch-darkly automatically injects the launch darkly service, as `launchDarkly` in to the following Ember objects:
+
+- all `route`s
+- all `controller`s
+- all `component`s
+- `router:main`
+
+This means that it can be accessed without an explicit injection, like so:
+
+```js
+// /app/application/route.js
+
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    let user = {
+      key: 'aa0ceb',
+      anonymous: true
+    };
+
+    return this.launchDarkly.initialize(user);
+  }
+});
+```
+
+Due to Ember not allowing auto injection of a service in to another service, we are currently unable to auto inject `launchDarkly` in to other services. This means that if you would like to check for Launch Darkly flags in your service, you will need to explicitly inject the `launchDarkly` service yourself.
+
 ### Initialize
 
 Before being used, Launch Darkly must be initialized. This should happen early so choose an appropriate place to make the call such as an application initializer or the application route.
@@ -296,10 +326,8 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  ldService: service(),
-
-  price: computed('ldService.new-pricing-plan', function() {
-    if (this.ldService['new-pricing-plan']) {
+  price: computed('launchDarkly.new-pricing-plan', function() {
+    if (this.launchDarkly['new-pricing-plan']) {
       return 99.00;
     }
 
