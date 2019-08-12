@@ -16,9 +16,11 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
+    "lint": "concurrently 'npm:lint:*'",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "test:ci": "yarn run lint && yarn run test-node && yarn test",
     "test-node": "./node_modules/mocha/bin/mocha nodetests/**/*-test.js"
   },
   "dependencies": {
@@ -35,6 +37,7 @@
     "broccoli-merge-trees": "^3.0.2",
     "browserslist": "^4.6.6",
     "chai": "^4.2.0",
+    "concurrently": "^4.1.1",
     "ember-cli": "~3.11.0",
     "ember-cli-babili": "^0.2.0",
     "ember-cli-dependency-checker": "^3.1.0",
