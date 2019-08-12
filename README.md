@@ -114,11 +114,8 @@ The user `key` is the only required attribute, see the [Launch Darkly documentat
 // /app/application/route.js
 
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
 
 export default Route.extend({
-  launchDarkly: service(),
-
   model() {
     let user = {
       key: 'aa0ceb',
@@ -132,17 +129,15 @@ export default Route.extend({
 
 ### Identify
 
-If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialize` has been called.
+If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use `identify`. This can only be called after `initialize` has been called.
 
 ```js
 // /app/session/route.js
 
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
 
 export default Route.extend({
   session: service(),
-  launchDarkly: service(),
 
   model() {
     return this.session.getSession();
@@ -162,7 +157,7 @@ export default Route.extend({
 
 ### Templates
 
-ember-launch-darkly provides a `variation` template helper to check your feature flags.
+ember-launch-darkly provides a `variation` helper to check your feature flags in your handlebars templates.
 
 If your feature flag is a boolean based flag, you might use it in an `{{if}}` like so:
 
@@ -197,11 +192,8 @@ If your feature flag is a boolean based flag, you might use it in a function lik
 
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  launchDarkly: service(),
-
   actions: {
     getPrice() {
       if (this.launchDarkly.variation('new-price-plan')) {
@@ -221,11 +213,8 @@ If your feature flag is a multivariate based flag, you might use it in a functio
 
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  launchDarkly: service(),
-
   actions: {
     getPrice() {
       switch (this.launchDarkly.variation('new-pricing-plan')) {
@@ -250,11 +239,8 @@ And if you want to check a flag in a computed property, and have it recompute wh
 
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  launchDarkly: service(),
-
   price: computed('launchDarkly.new-price-plan', function() {
     if (this.launchDarkly['new-price-plan']) {
       return 99.00;
@@ -267,7 +253,7 @@ export default Component.extend({
 
 ### [EXPERIMENTAL] `variation` Javascript helper
 
-ember-launch-darkly provides a special, experimental, `variation` import that can be used in Javascript files such as Components, to make the invocation and checking of feature flags a little nicer in the JS code.
+ember-launch-darkly provides a special, _experimental_, `variation` import that can be used in Javascript files such as Components, to make the invocation and checking of feature flags a little nicer in the JS code.
 
 This helper is backed by a Babel transform that essentially replaces the helper with the code above in the [Javascript](#javascript) section. The main benefits this helper provides is:
 
@@ -275,7 +261,7 @@ This helper is backed by a Babel transform that essentially replaces the helper 
 - Removes boiler plate launch darkly code (injection of service, referencing service in functions, etc)
 - Provide a syntax that is parallel to the `variation` helper used in templates
 
-The babel transform that replaces this `variation` helper in the JS code is experimental. Your mileage may vary.
+The babel transform that replaces this `variation` helper in the JS code is experimental. YMMV.
 
 If you would like to try it out, simply enable it in your `ember-cli-build.js` as follows:
 
@@ -287,7 +273,7 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     babel: {
-      plugins: [ require.resolve('ember-launch-darkly/launch-darkly-variation-helper') ]
+      plugins: [ require.resolve('ember-launch-darkly/babel-plugin') ]
     }
   });
 
@@ -301,9 +287,28 @@ Then import the helper from `ember-launch-darkly` and use it as follows:
 // /app/components/login-page/component.js
 
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 
 import { variation } from 'ember-launch-darkly';
+
+export default Component.extend({
+  price() {
+    if (variation('new-pricing-plan')) {
+      return 99.00;
+    }
+
+    return 199.00;
+  }
+});
+```
+
+If you would like the feature flag to recompute a computed property when it
+changes, you will need to also use the `computedWithVariation` import, like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import { variation, computedWithVariation as computed } from 'ember-launch-darkly';
 
 export default Component.extend({
   price: computed(function() {
@@ -316,14 +321,15 @@ export default Component.extend({
 });
 ```
 
-For reference, the babel transform should transform the above code in to the following:
+The `computedWithvariation` import is literally a direct re-export of the `@ember/object` computed. We need to re-export it so that we can signal to the babel transform where to auto insert the feature flag dependent keys. Because `computedWithVariation` is a re-export you can alias it as `computed` (like above) and use it anywhere you would use a normal `computed`.
+
+For reference, the babel transform should transform the above code in to, _roughly_, the following:
 
 ```js
 // /app/components/login-page/component.js
 
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
   price: computed('launchDarkly.new-pricing-plan', function() {
@@ -335,6 +341,59 @@ export default Component.extend({
   })
 });
 ```
+
+It's important to note that the `variation` helper will only work when used
+inside objects that have an `owner`. This is because the helper is transformed
+in to a call to `this.launchDarkly` which is an injected service. Therefore, the
+`variation` helper will not work in a computed returned from, say, a function.
+Like so:
+
+```js
+export default function myCoolFn() {
+  if (variation('foo')) {
+    return 'I love cheese';
+  }
+
+  return 'I love bacon';
+}
+```
+
+For the reason above, if you would like to use the variation helper in one of your own objects that
+extends `EmberObject`, you will need to create the `EmberObject` instance with
+an owner injection, like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import EmberObject from '@ember/object';
+import { getOwner } from '@ember/application';
+
+const MyFoo = EmberObject.extend({
+  price() {
+    return variation('my-price');
+  }
+});
+
+export default Component.extend({
+  createFoo() {
+    let owner = getOwner(this);
+
+    return MyFoo.create(owner.ownerInjection(), {
+      someProp: 'bar'
+    });
+  }
+});
+
+```
+
+As this babel transform is experimental, it does not currently support the
+following:
+
+- Native classes
+- Decorators
+
+We will endeavour to add support for these things in the future.
 
 ## Local feature flags
 
@@ -460,7 +519,7 @@ module('Acceptance | Homepage', function(hooks) {
 
 ### Integration Tests
 
-Use the test client and `withVariation` helper in component tests to control feature flags as well.
+Use the `setupLaunchDarkly` hook and `withVariation` helper in component tests to control feature flags as well.
 
 ```js
 import { module, test } from 'qunit';
