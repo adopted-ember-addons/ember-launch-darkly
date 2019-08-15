@@ -6617,10 +6617,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-ldclient-js@1.7.4:
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-1.7.4.tgz#5e6def39ea1133e8a3dd8f93dab442a2db9f103f"
-  integrity sha512-qfhxp2cnO8X8pXfspm7KYztPutBbIe9V+byjL4jnPqhiRj7+49Ejbjcy6fF2OsglHbZXi28TO7laBKiCE/0ZuQ==
+ldclient-js@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-2.0.0.tgz#80865a1cb36a1153940d8a075e2b70d4b126ebe6"
+  integrity sha512-gHsDDg/a8M7rOhVPlE4VHysr6QEnPpj2AXxVqZTsaduKS6ZufqPO4Yi6Pkb6qViUeFSss6u8rzKO6KDG1cv24w==
   dependencies:
     Base64 "1.0.1"
     escape-string-regexp "1.0.5"
