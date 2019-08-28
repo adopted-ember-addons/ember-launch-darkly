@@ -22,6 +22,11 @@ env:
 
 branches:
   only:
+    # This is where pull requests from "bors r+" are built.
+    - staging
+    # This is where pull requests from "bors try" are built.
+    - trying
+    # Build pull requests.
     - master
     # npm version tags
     - /^v\d+\.\d+\.\d+/
