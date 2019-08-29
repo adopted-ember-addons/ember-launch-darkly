@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
-    "babel-plugin-tester": "^6.4.0",
+    "babel-plugin-tester": "^7.0.1",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^2.0.2",
     "broccoli-merge-trees": "^3.0.2",
@@ -60,7 +60,7 @@
     "ember-source": "~3.12.0",
     "ember-source-channel-url": "^2.0.1",
     "ember-try": "^1.0.0",
-    "eslint-plugin-ember": "^6.2.0",
+    "eslint-plugin-ember": "^7.0.0",
     "eslint-plugin-node": "^9.0.1",
     "loader.js": "^4.7.0",
     "mocha": "^6.2.0",
