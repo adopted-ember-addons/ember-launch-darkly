@@ -42,8 +42,9 @@ export default Service.extend({
   },
 
   _registerComputedProperty(key) {
-    defineProperty(this, key, computed(() => {
-      return this.variation(key);
+    let self = this;
+    defineProperty(this, key, computed(function() {
+      return self.variation(key);
     }));
   },
 
