@@ -30,7 +30,7 @@
     "ldclient-js": "1.7.4"
   },
   "devDependencies": {
-    "@ember/optional-features": "^0.7.0",
+    "@ember/optional-features": "^1.1.0",
     "babel-plugin-tester": "^7.0.1",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^2.0.2",
