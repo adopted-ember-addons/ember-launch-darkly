@@ -25,7 +25,7 @@ module.exports = {
   included() {
     this._super.included.apply(this, arguments);
 
-    this.import('vendor/ldclient.js');
+    this.import('vendor/ldclient.min.js');
 
     if (this._shouldIncludePolyfill()) {
       this.import('vendor/eventsource.js');
@@ -45,8 +45,8 @@ module.exports = {
   },
 
   _launchDarklyTree() {
-    return new Funnel(path.dirname(require.resolve('ldclient-js/dist/ldclient.js')), {
-      files: ['ldclient.js'],
+    return new Funnel(path.dirname(require.resolve('ldclient-js/dist/ldclient.min.js')), {
+      files: ['ldclient.min.js'],
     });
   },
 

@@ -850,11 +850,6 @@
   resolved "https://registry.yarnpkg.com/@types/symlink-or-copy/-/symlink-or-copy-1.2.0.tgz#4151a81b4052c80bc2becbae09f3a9ec010a9c7a"
   integrity sha512-Lja2xYuuf2B3knEsga8ShbOdsfNOtzT73GyJmZyY7eGl2+ajOqrs8yM5ze0fsSoYwvA6bw7/Qr7OZ7PEEmYwWg==
 
-Base64@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/Base64/-/Base64-1.0.1.tgz#def45cc50c961bcc9bf2321d0f52bcbfec1f1bb1"
-  integrity sha1-3vRcxQyWG8yb8jIdD1K8v+wfG7E=
-
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -2084,6 +2079,11 @@ base64-js@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.2.tgz#024f0f72afa25b75f9c0ee73cd4f55ec1bed9784"
   integrity sha1-Ak8Pcq+iW3X5wO5zzU9V7Bvtl4Q=
+
+base64-js@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.0.tgz#cab1e6118f051095e58b5281aea8c1cd22bfc0e3"
+  integrity sha512-ccav/yGvoa80BQDljCxsmmQ3Xvx60/UpBIij5QN21W3wBi/hhIC9OoO+KLpu9IJTS9j4DRVJ3aDDF9cMSoa2lw==
 
 base64id@1.0.0:
   version "1.0.0"
@@ -4705,7 +4705,7 @@ extsprintf@1.3.0, extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
   integrity sha1-lpGEQOMEGnpBT4xS48V06zw+HgU=
 
-fast-deep-equal@^2.0.1:
+fast-deep-equal@2.0.1, fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
@@ -6342,13 +6342,22 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-ldclient-js@1.7.4:
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-1.7.4.tgz#5e6def39ea1133e8a3dd8f93dab442a2db9f103f"
-  integrity sha512-qfhxp2cnO8X8pXfspm7KYztPutBbIe9V+byjL4jnPqhiRj7+49Ejbjcy6fF2OsglHbZXi28TO7laBKiCE/0ZuQ==
+ldclient-js-common@^2.10.2:
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/ldclient-js-common/-/ldclient-js-common-2.10.2.tgz#be6284b2b4ad932403c26cc0c8f2fe516abd074a"
+  integrity sha512-V6o41jHrBZXl4x9CKl1SvyFUWOg9dlip68jVuzkXrsVjbxcaDqM+L3znPqkDmEmbjIX9eGPtJ4m++5HEjHZYpw==
   dependencies:
-    Base64 "1.0.1"
+    base64-js "1.3.0"
+    fast-deep-equal "2.0.1"
+    uuid "3.3.2"
+
+ldclient-js@^2.10.2:
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-2.10.2.tgz#7e9a72748aad4ed7be33893105cf3546a14f0d9f"
+  integrity sha512-6SpSbp91jBw+ZRKUPg2E1euegFLpwhD+wvnJhZ9NyXQH6F9jMeTEkB8mB1DlMQOUyU7NF1FNIrmF9y20rKfPXA==
+  dependencies:
     escape-string-regexp "1.0.5"
+    ldclient-js-common "^2.10.2"
 
 leek@0.0.24:
   version "0.0.24"
@@ -9774,7 +9783,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^3.0.0, uuid@^3.3.2:
+uuid@3.3.2, uuid@^3.0.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
