@@ -21,6 +21,7 @@ export default Helper.extend({
 
     if (!this._key) {
       this._key = key;
+      // eslint-disable-next-line ember/no-observers
       service.addObserver(key, this, 'recompute');
     }
 
@@ -37,4 +38,3 @@ export default Helper.extend({
     return this._super();
   }
 });
-
