@@ -25,8 +25,6 @@ module.exports = {
   included() {
     this._super.included.apply(this, arguments);
 
-    this.import('vendor/ldclient.js');
-
     if (this._shouldIncludePolyfill()) {
       this.import('vendor/eventsource.js');
     }
@@ -35,19 +33,11 @@ module.exports = {
   treeForVendor(vendorTree) {
     let trees = vendorTree ? [vendorTree] : [];
 
-    trees.push(this._launchDarklyTree());
-
     if (this._shouldIncludePolyfill()) {
       trees.push(this._eventSourceTree());
     }
 
     return new MergeTrees(trees);
-  },
-
-  _launchDarklyTree() {
-    return new Funnel(path.dirname(require.resolve('ldclient-js/dist/ldclient.js')), {
-      files: ['ldclient.js'],
-    });
   },
 
   _eventSourceTree() {

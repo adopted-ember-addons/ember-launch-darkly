@@ -3,6 +3,7 @@ import { getOwner } from '@ember/application';
 import { assert, warn } from '@ember/debug';
 import { run } from '@ember/runloop';
 import Evented from '@ember/object/evented';
+import * as LDClient from 'launchdarkly-js-client-sdk';
 
 import RSVP from 'rsvp';
 
@@ -38,7 +39,7 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    if (!window.LDClient) {
+    if (!LDClient) {
       warn('Launch Darkly JS client not found. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-not-found' });
 
       this.set('_client', NullClient);
@@ -69,7 +70,7 @@ export default Service.extend(Evented, {
 
   _initialize(id, user, streamingOptions) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = window.LDClient.initialize(id, user);
+      let client = LDClient.initialize(id, user);
 
       client.on('ready', () => {
         this.set('_client', client);
