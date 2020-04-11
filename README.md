@@ -111,6 +111,8 @@ The `initialize()` function returns a promise that resolves when the Launch Dark
 
 The user `key` is the only required attribute, see the [Launch Darkly documentation](https://docs.launchdarkly.com/docs/js-sdk-reference#section-users) for the other attributes you can provide.
 
+The `initialize()` function accepts a second parameter which is **optional**. It allows to configure the Launch Darkly client, see the [Launch Darkly documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client) to learn more about available options and default values.
+
 ```js
 // /app/application/route.js
 
@@ -118,12 +120,18 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model() {
-    let user = {
+    const user = {
       key: 'aa0ceb',
       anonymous: true
     };
 
-    return this.launchDarkly.initialize(user);
+    // Optional
+    const config = {
+      allAttributesPrivate: true,
+      sendEvents: false
+    };
+
+    return this.launchDarkly.initialize(user, config);
   }
 });
 ```

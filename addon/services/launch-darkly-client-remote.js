@@ -15,7 +15,7 @@ export default Service.extend(Evented, {
     this._super(...arguments);
   },
 
-  initialize(user = {}) {
+  initialize(user = {}, configOptions) {
     let { clientSideId, streaming = false } = this._config();
 
     assert('ENV.launchDarkly.clientSideId must be specified in config/environment.js', clientSideId);
@@ -46,7 +46,7 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    return this._initialize(clientSideId, user, streaming);
+    return this._initialize(clientSideId, user, streaming, configOptions);
   },
 
   identify(user) {
@@ -67,9 +67,9 @@ export default Service.extend(Evented, {
     return appConfig.launchDarkly || {};
   },
 
-  _initialize(id, user, streamingOptions) {
+  _initialize(id, user, streamingOptions, configOptions) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = window.LDClient.initialize(id, user);
+      let client = window.LDClient.initialize(id, user, configOptions);
 
       client.on('ready', () => {
         this.set('_client', client);
