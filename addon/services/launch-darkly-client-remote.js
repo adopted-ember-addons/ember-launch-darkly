@@ -3,7 +3,7 @@ import { getOwner } from '@ember/application';
 import { assert, warn } from '@ember/debug';
 import { run } from '@ember/runloop';
 import Evented from '@ember/object/evented';
-import * as LDClient from 'launchdarkly-js-client-sdk';
+import { initialize } from 'launchdarkly-js-client-sdk';
 
 import RSVP from 'rsvp';
 
