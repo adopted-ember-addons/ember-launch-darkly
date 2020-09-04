@@ -39,14 +39,6 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    if (!LDClient) {
-      warn('Launch Darkly JS client not found. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-not-found' });
-
-      this.set('_client', NullClient);
-
-      return RSVP.resolve();
-    }
-
     return this._initialize(clientSideId, user, streaming);
   },
 
@@ -70,7 +62,7 @@ export default Service.extend(Evented, {
 
   _initialize(id, user, streamingOptions) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = LDClient.initialize(id, user);
+      let client = initialize(id, user);
 
       client.on('ready', () => {
         this.set('_client', client);
