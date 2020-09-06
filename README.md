@@ -111,6 +111,8 @@ The `initialize()` function returns a promise that resolves when the Launch Dark
 
 The user `key` is the only required attribute, see the [Launch Darkly documentation](https://docs.launchdarkly.com/docs/js-sdk-reference#section-users) for the other attributes you can provide.
 
+The `initialize()` function accepts a second parameter, an object, which is **optional**. It allows to you configure the Launch Darkly client, see the [Launch Darkly documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client) to learn more about available options and default values.
+
 ```js
 // /app/application/route.js
 
@@ -123,7 +125,12 @@ export default Route.extend({
       anonymous: true
     };
 
-    return this.launchDarkly.initialize(user);
+    let options = {
+      sendEvents: false, // default is true, see https://docs.launchdarkly.com/sdk/client-side/javascript#analytics-events
+      hash: "SERVER_GENERATED_HASH", // see https://docs.launchdarkly.com/sdk/client-side/javascript#secure-mode
+    };
+
+    return this.launchDarkly.initialize(user, options);
   }
 });
 ```
