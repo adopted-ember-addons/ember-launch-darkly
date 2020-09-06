@@ -32,7 +32,6 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-
     assert('user.key must be specified in initilize payload', user.key);
 
     if (!user.key) {
