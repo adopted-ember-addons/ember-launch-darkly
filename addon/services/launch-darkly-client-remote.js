@@ -43,14 +43,6 @@ export default Service.extend(Evented, {
       return RSVP.resolve();
     }
 
-    if (!window.LDClient) {
-      warn('Launch Darkly JS client not found. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.client-not-found' });
-
-      this.set('_client', NullClient);
-
-      return RSVP.resolve();
-    }
-
     return this._initialize(clientSideId, user, streaming, options);
   },
 
