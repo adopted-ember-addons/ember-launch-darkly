@@ -1,14 +1,27 @@
-import Helper from 'ember-helper';
-import service from 'ember-service/inject';
+import Helper from '@ember/component/helper';
+import { inject as service } from '@ember/service';
+import { join } from '@ember/runloop';
+import { buildWaiter } from 'ember-test-waiters';
+
+let recomputeWaiter = buildWaiter('recompute-waiter');
 
 export default Helper.extend({
   launchDarkly: service(),
+
+  recompute() {
+    let token = recomputeWaiter.beginAsync();
+
+    this._super();
+
+    join(() => recomputeWaiter.endAsync(token));
+  },
 
   compute([key]) {
     let service = this.get('launchDarkly');
 
     if (!this._key) {
       this._key = key;
+      // eslint-disable-next-line ember/no-observers
       service.addObserver(key, this, 'recompute');
     }
 
@@ -25,4 +38,3 @@ export default Helper.extend({
     return this._super();
   }
 });
-

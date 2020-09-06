@@ -3,45 +3,65 @@
 <br>
 <br>
 
-{{code-snippet name="as-cp-dependent-key.js"}}
+{{#let (get-code-snippet "as-cp-dependent-key.js") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
 <span class="cheese">PRICE: £ {{price}}</span>
 
 <br>
 <br>
 
-{{code-snippet name="as-cp-alias.js"}}
+{{#let (get-code-snippet "as-cp-alias.js") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
 PRICE: £ {{yetAnotherPrice}}
 
 <br>
 <br>
 
-{{code-snippet name="as-variation-call.js"}}
+{{#let (get-code-snippet "as-variation-call.js") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
 PRICE: £ {{anotherPrice}}
 
 <br>
 <br>
 
-{{code-snippet name="as-if-template-helper.hbs"}}
+{{#let (get-code-snippet "as-if-template-helper.hbs") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
-{{!--BEGIN-SNIPPET as-if-template-helper--}}
+{{!-- BEGIN-SNIPPET as-if-template-helper --}}
 {{#if (variation "apply-discount")}}
   PRICE: £ 99
 {{else}}
   PRICE: £ 199
 {{/if}}
-{{!--END-SNIPPET--}}
+{{!-- END-SNIPPET --}}
 
 <br>
 <br>
 
-{{code-snippet name="as-with-template-helper.hbs"}}
+{{#let (get-code-snippet "as-with-template-helper.hbs") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
 {{!--BEGIN-SNIPPET as-with-template-helper--}}
 {{#with (variation "apply-discount") as |v|}}
-PRICE: £ 99 - {{v}}
+  PRICE: £ 99 - {{v}}
 {{else}}
   PRICE: £ 199
 {{/with}}
@@ -50,6 +70,10 @@ PRICE: £ 99 - {{v}}
 <br>
 <br>
 
-{{code-snippet name="as-js-variation-helper.js"}}
+{{#let (get-code-snippet "as-js-variation-helper.js") as |snippet|}}
+  <CodeBlock @language={{snippet.language}}>
+    {{snippet.source}}
+  </CodeBlock>
+{{/let}}
 
 PRICE: £ {{foo}}

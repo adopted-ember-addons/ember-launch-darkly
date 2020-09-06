@@ -1,4 +1,5 @@
 # ember-launch-darkly
+[![Build Status](https://travis-ci.org/ember-launch-darkly/ember-launch-darkly.svg?branch=master)](https://travis-ci.org/ember-launch-darkly/ember-launch-darkly)
 
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
 
@@ -54,23 +55,53 @@ _Default_: `false`
 
 If you have CSP enabled in your ember application, you will need to add Launch Darkly to the `connect-src` like so:
 
-```
+```js
 // config/environment.js
 
 module.exports = function(environment) {
   let ENV = {
     //snip
-    
+
     contentSecurityPolicy: {
       'connect-src': ['https://*.launchdarkly.com']
     }
-    
+
     //snip
   };
 };
 ```
 
 ## Usage
+
+### Launch Darkly Service
+
+ember-launch-darkly automatically injects the launch darkly service, as `launchDarkly` in to the following Ember objects:
+
+- all `route`s
+- all `controller`s
+- all `component`s
+- `router:main`
+
+This means that it can be accessed without an explicit injection, like so:
+
+```js
+// /app/application/route.js
+
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    let user = {
+      key: 'aa0ceb',
+      anonymous: true
+    };
+
+    return this.launchDarkly.initialize(user);
+  }
+});
+```
+
+Due to Ember not allowing auto injection of a service in to another service, we are currently unable to auto inject `launchDarkly` in to other services. This means that if you would like to check for Launch Darkly flags in your service, you will need to explicitly inject the `launchDarkly` service yourself.
 
 ### Initialize
 
@@ -83,39 +114,34 @@ The user `key` is the only required attribute, see the [Launch Darkly documentat
 ```js
 // /app/application/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
 
 export default Route.extend({
-  launchDarkly: service(),
-
   model() {
     let user = {
       key: 'aa0ceb',
       anonymous: true
     };
 
-    return this.get('launchDarkly').initialize(user);
+    return this.launchDarkly.initialize(user);
   }
 });
 ```
 
 ### Identify
 
-If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use the `identify`. This can only be called after `initialize` has been called.
+If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use `identify`. This can only be called after `initialize` has been called.
 
 ```js
 // /app/session/route.js
 
-import Route from 'ember-route';
-import service from 'ember-service/inject';
+import Route from '@ember/routing/route';
 
 export default Route.extend({
   session: service(),
-  launchDarkly: service(),
 
   model() {
-    return this.get('session').getSession();
+    return this.session.getSession();
   },
 
   afterModel(session) {
@@ -125,14 +151,14 @@ export default Route.extend({
       email: session.get('user.email')
     };
 
-    return this.get('launchDarkly').identify(user);
+    return this.launchDarkly.identify(user);
   }
 });
 ```
 
 ### Templates
 
-ember-launch-darkly provides a `variation` template helper to check your feature flags.
+ember-launch-darkly provides a `variation` helper to check your feature flags in your handlebars templates.
 
 If your feature flag is a boolean based flag, you might use it in an `{{if}}` like so:
 
@@ -160,17 +186,130 @@ If your feature flag is a multivariate based flag, you might use it in an `{{wit
 
 ### Javascript
 
-ember-launch-darkly provides a special `variation` import that can be used in Javascript files such as Components.
-
 If your feature flag is a boolean based flag, you might use it in a function like so:
 
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+
+export default Component.extend({
+  actions: {
+    getPrice() {
+      if (this.launchDarkly.variation('new-price-plan')) {
+        return 99.00;
+      }
+
+      return 199.00;
+    },
+  }
+});
+```
+
+If your feature flag is a multivariate based flag, you might use it in a function like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+
+export default Component.extend({
+  actions: {
+    getPrice() {
+      switch (this.launchDarkly.variation('new-pricing-plan')) {
+        case 'plan-a':
+          return 99.00;
+        case 'plan-b':
+          return 89.00
+        case 'plan-c':
+          return 79.00
+      }
+
+      return 199.00;
+    }
+  }
+});
+```
+
+And if you want to check a flag in a computed property, and have it recompute when the flag changes, you'll want to make sure you add the flag as a dependent key to the CP, as follows:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+
+export default Component.extend({
+  price: computed('launchDarkly.new-price-plan', function() {
+    if (this.launchDarkly['new-price-plan']) {
+      return 99.00;
+    }
+
+    return 199.00;
+  })
+});
+```
+
+### [EXPERIMENTAL] `variation` Javascript helper
+
+ember-launch-darkly provides a special, _experimental_, `variation` import that can be used in Javascript files such as Components, to make the invocation and checking of feature flags a little nicer in the JS code.
+
+This helper is backed by a Babel transform that essentially replaces the helper with the code above in the [Javascript](#javascript) section. The main benefits this helper provides is:
+
+- Automatically adds feature flags as dependent keys to computed properties so they are recalculated when flags change
+- Removes boiler plate launch darkly code (injection of service, referencing service in functions, etc)
+- Provide a syntax that is parallel to the `variation` helper used in templates
+
+The babel transform that replaces this `variation` helper in the JS code is experimental. YMMV.
+
+If you would like to try it out, simply enable it in your `ember-cli-build.js` as follows:
+
+```js
+// ember-cli-build.js
+
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
+module.exports = function(defaults) {
+  let app = new EmberApp(defaults, {
+    babel: {
+      plugins: [ require.resolve('ember-launch-darkly/babel-plugin') ]
+    }
+  });
+
+  return app.toTree();
+};
+```
+
+Then import the helper from `ember-launch-darkly` and use it as follows:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
 
 import { variation } from 'ember-launch-darkly';
+
+export default Component.extend({
+  price() {
+    if (variation('new-pricing-plan')) {
+      return 99.00;
+    }
+
+    return 199.00;
+  }
+});
+```
+
+If you would like the feature flag to recompute a computed property when it
+changes, you will need to also use the `computedWithVariation` import, like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import { variation, computedWithVariation as computed } from 'ember-launch-darkly';
 
 export default Component.extend({
   price: computed(function() {
@@ -183,61 +322,79 @@ export default Component.extend({
 });
 ```
 
-If your feature flag is a multivariate based flag, you might use it in a function like so:
+The `computedWithvariation` import is literally a direct re-export of the `@ember/object` computed. We need to re-export it so that we can signal to the babel transform where to auto insert the feature flag dependent keys. Because `computedWithVariation` is a re-export you can alias it as `computed` (like above) and use it anywhere you would use a normal `computed`.
+
+For reference, the babel transform should transform the above code in to, _roughly_, the following:
 
 ```js
 // /app/components/login-page/component.js
 
-import Component from 'ember-component';
-import computed from 'ember-computed';
-
-import { variation } from 'ember-launch-darkly';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 export default Component.extend({
-  price: computed(function() {
-    switch (variation('new-pricing-plan')) {
-      case 'plan-a':
-        return 99.00;
-      case 'plan-b':
-        return 89.00
-      case 'plan-c':
-        return 79.00
-    }
-
-    return 199.00;
-  })
-});
-```
-
-Finally, you can always just inject the Launch Darkly service and use it as you would any other service:
-
-```js
-// /app/components/login-page/component.js
-
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import service from 'ember-service/inject';
-
-export default Component.extend({
-  launchDarkly: service(),
-
-  price: computed('launchDarkly.new-price-plan', function() {
-    if (this.get('launchDarkly.new-price-plan')) {
+  price: computed('launchDarkly.new-pricing-plan', function() {
+    if (this.launchDarkly['new-pricing-plan']) {
       return 99.00;
     }
 
     return 199.00;
-  }),
-
-  discount: computed(function() {
-    if (this.get('launchDarkly').variation('apply-discount')) {
-      return 0.5;
-    }
-
-    return null;
   })
 });
 ```
+
+It's important to note that the `variation` helper will only work when used
+inside objects that have an `owner`. This is because the helper is transformed
+in to a call to `this.launchDarkly` which is an injected service. Therefore, the
+`variation` helper will not work in a computed returned from, say, a function.
+Like so:
+
+```js
+export default function myCoolFn() {
+  if (variation('foo')) {
+    return 'I love cheese';
+  }
+
+  return 'I love bacon';
+}
+```
+
+For the reason above, if you would like to use the variation helper in one of your own objects that
+extends `EmberObject`, you will need to create the `EmberObject` instance with
+an owner injection, like so:
+
+```js
+// /app/components/login-page/component.js
+
+import Component from '@ember/component';
+import EmberObject from '@ember/object';
+import { getOwner } from '@ember/application';
+
+const MyFoo = EmberObject.extend({
+  price() {
+    return variation('my-price');
+  }
+});
+
+export default Component.extend({
+  createFoo() {
+    let owner = getOwner(this);
+
+    return MyFoo.create(owner.ownerInjection(), {
+      someProp: 'bar'
+    });
+  }
+});
+
+```
+
+As this babel transform is experimental, it does not currently support the
+following:
+
+- Native classes
+- Decorators
+
+We will endeavour to add support for these things in the future.
 
 ## Local feature flags
 
@@ -274,7 +431,7 @@ When `local: true`, the Launch Darkly feature service is available in the browse
 
 ## Streaming Feature Flags
 
-Launch Darkly supports the ability to subsribe to changes to feature flags so that apps can react in realtime to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
+Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streaming` configuration option](#streaming) allows you to specify, in a couple of ways, which flags you'd like to stream.
 
 To disable streaming completely, use the following configuration:
 
@@ -288,7 +445,7 @@ _Note, this is the default behaviour if the `streaming` option is not specified.
 
 To stream all flags, use the following configuration:
 
-```
+```js
 launchDarkly: {
   streaming: true
 }
@@ -296,7 +453,7 @@ launchDarkly: {
 
 To get more specific, you can select to stream all flags except those specified:
 
-```
+```js
 launchDarkly: {
   streaming: {
     allExcept: ['apply-discount', 'new-login']
@@ -306,7 +463,7 @@ launchDarkly: {
 
 And, finally, you can specify only which flags you would like to stream:
 
-```
+```js
 launchDarkly: {
   streaming: {
     'apply-discount': true
@@ -320,84 +477,81 @@ As Launch Darkly's realtime updates to flags uses the [Event Source API](https:/
 
 ### Acceptance Tests
 
-Stub the Launch Darkly client in acceptance tests using the provided test client which will default all feature flag values to false, instead of using what's defined in the `localFeatureFlags` config. This allows your tests to start off in a known default state.
+Add the `setupLaunchDarkly` hook to the top of your test file. This will ensure that Launch Darkly uses a test stub client which defaults your feature flags to
+`false` instead of using what is defined in the `localFeatureFlags` config.  This allows your tests to start off in a known default state.
 
 ```js
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { module, test } from 'qunit';
+import { visit, currentURL, click } from '@ember/test-helpers';
+import { setupApplicationTest } from 'ember-qunit';
 
-moduleForAcceptance('Acceptance | Homepage', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
-  }
-});
+import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 
-test( "links go to the new homepage", function () {
-  visit('/');
-  click('a.pricing');
-  andThen(function(){
-    equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
+module('Acceptance | Homepage', function(hooks) {
+  setupApplicationTest(hooks);
+  setupLaunchDarkly(hooks);
+
+  test('links go to the new homepage', async function(assert) {
+    await visit('/');
+    await click('a.pricing');
+
+    assert.equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
   });
 });
 ```
 
-ember-launch-darkly provides a test helper, `withVariation`, to make it easy to turn feature flags on and off in acceptance tests. Simply import the test helper in your test, or `tests/test-helper.js` file.
+ember-launch-darkly provides a test helper, `withVariation`, to make it easy to turn feature flags on and off in acceptance tests.
 
 ```js
-import 'ember-launch-darkly/test-support/helpers/with-variation';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+module('Acceptance | Homepage', function(hooks) {
+  setupApplicationTest(hooks);
+  setupLaunchDarkly(hooks);
 
-moduleForAcceptance('Acceptance | Homepage', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient);
-  }
-});
+  test('links go to the new homepage', async function(assert) {
+    this.withVariation('new-pricing-plan', 'plan-a');
 
-test( "links go to the new homepage", function () {
-  withVariation('new-pricing-plan', 'plan-a');
+    await visit('/');
+    await click('a.pricing');
 
-  visit('/');
-  click('a.pricing');
-  andThen(function(){
-    equal(currentRoute(), 'new-pricing', 'Should be on the new pricing page');
+    assert.equal(currentRoute(), 'pricing', 'Should be on the old pricing page');
   });
 });
 ```
 
 ### Integration Tests
 
-Use the test client to stub the Launch Darkly client in integration tests to control the feature flags.
+Use the `setupLaunchDarkly` hook and `withVariation` helper in component tests to control feature flags as well.
 
 ```js
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('my-component', 'Integration | Component | my component', {
-  integration: true,
-  beforeEach() {
-    // register the stub service
-    this.register('service:launch-darkly-client', StubClient);
+import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 
-    // inject here if you want to be able to inspect/manipulate the service in tests
-    this.inject.service('launch-darkly-client', { as: 'launchDarklyClient' });
-  }
-});
+module('Integration | Component | foo', function(hooks) {
+  setupRenderingTest(hooks);
+  setupLaunchDarkly(hooks);
 
-test('new pricing', function(assert) {
-  this.render(hbs`
-    {{#if (variation "new-pricing-page")}}
-      <h1 class="price">£ 99</h1>
-    {{else}}
-      <h1 class="price">£ 199</h1>
-    {{/if}}
-  `);
+  test('new pricing', async function(assert) {
+    await render(hbs`
+      {{#if (variation "new-pricing-page")}}
+        <h1 class="price">£ 99</h1>
+      {{else}}
+        <h1 class="price">£ 199</h1>
+      {{/if}}
+    `);
 
-  this.get('launchDarklyClient').enable('new-pricing-page');
+    this.withVariation('new-pricing-page');
 
-  assert.equal(this.$('.price').text().trim(), '£ 99', 'New pricing displayed');
+    assert.equal(this.element.querySelector('.price').textContent.trim(), '£ 99', 'New pricing displayed');
+  });
 });
 ```
 
 ## TODO
 
-- Implement support for `secure` mode ([#9](https://github.com/kayako/ember-launch-darkly/issues/9))
+- Implement support for `secure` mode ([#9](https://github.com/ember-launch-darkly/ember-launch-darkly/issues/9))
 
-<p align="center"><sub>Made with :heart: by The Kayako Engineering Team</sub></p>
+<p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>

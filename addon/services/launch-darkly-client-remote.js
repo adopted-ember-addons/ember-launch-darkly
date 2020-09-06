@@ -1,10 +1,11 @@
-import Service from 'ember-service';
-import getOwner from 'ember-owner/get';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
+import { assert, warn } from '@ember/debug';
+import { run } from '@ember/runloop';
+import Evented from '@ember/object/evented';
+import { initialize } from 'launchdarkly-js-client-sdk';
+
 import RSVP from 'rsvp';
-import { assert } from 'ember-metal/utils';
-import { warn } from 'ember-debug';
-import run from 'ember-runloop';
-import Evented from 'ember-evented';
 
 import NullClient from 'ember-launch-darkly/lib/null-client';
 
@@ -73,7 +74,8 @@ export default Service.extend(Evented, {
 
   _initialize(id, user, streamingOptions, options = {}) {
     return new RSVP.Promise((resolve, reject) => {
-      let client = window.LDClient.initialize(id, user, options);
+
+      let client = initialize(id, user, options);
 
       client.on('ready', () => {
         this.set('_client', client);

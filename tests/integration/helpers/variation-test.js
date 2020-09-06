@@ -1,33 +1,31 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
-import { waitUntil } from 'ember-native-dom-helpers';
 
-moduleForComponent('variation', 'helper:variation', {
-  integration: true,
+import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly';
 
-  beforeEach() {
-    this.register('service:launch-darkly-client', StubClient);
-    this.inject.service('launch-darkly-client', { as: 'client' });
-  }
-});
+module('Integration | Helper | foo', function(hooks) {
+  setupRenderingTest(hooks);
+  setupLaunchDarkly(hooks);
 
-test('it returns a variation', async function(assert) {
-  assert.expect(2);
+  test('it returns a variation', async function(assert) {
+    assert.expect(2);
 
-  this.render(hbs`
-    {{#if (variation "foo-bar")}}
-      <h1 class="cheese">YAY</h1>
-    {{else}}
-      <h1 class="cheese">BOO</h1>
-    {{/if}}
-  `);
+    await render(hbs`
+      {{#if (variation "foo-bar")}}
+        <h1>YAY</h1>
+      {{else}}
+        <h1>BOO</h1>
+      {{/if}}
+    `);
 
-  assert.equal(this.$('.cheese').text().trim(), 'BOO', 'Feature flag is disabled');
+    assert.dom('h1').hasText('BOO', 'Feature flag is disabled');
 
-  this.get('client').enable('foo-bar');
+    this.withVariation('foo-bar');
 
-  await waitUntil(() => this.$('.cheese').text().trim() === 'YAY');
+    await settled();
 
-  assert.ok(true, 'Feature flag is enabled');
+    assert.dom('h1').hasText('YAY', 'Feature flag is enabled');
+  });
 });

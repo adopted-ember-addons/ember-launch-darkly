@@ -1,33 +1,32 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import { visit, click } from '@ember/test-helpers';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 
-moduleForAcceptance('Acceptance | variations', {
-  beforeEach() {
-    this.application.__container__.registry.register('service:launch-darkly-client', StubClient)
-  }
-});
+import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly';
 
-test('Feature flag is disabled', function(assert) {
-  assert.expect(2);
+module('Acceptance | variations', function(hooks) {
+  setupApplicationTest(hooks);
+  setupLaunchDarkly(hooks);
 
-  withVariation('apply-discount', false);
+  test('Defining and using feature flags', async function(assert) {
+    assert.expect(12);
 
-  visit('/login');
+    await visit('/acceptance-tests');
 
-  andThen(() => assert.equal(currentURL(), '/login'));
+    assert.dom('.flag-value').hasText('false', 'Feature flag is disabled');
+    assert.dom('.template-if-statement').hasText('FOO', 'Test variation helper in template "if" statement');
+    assert.dom('.template-with-statement').hasText('FOO -', 'Test variation helper in template "with" statement');
+    assert.dom('.template-let-statement').hasText('FOO', 'Test variation helper in template "let" statement');
+    assert.dom('.single-variation-computed').hasText('FOO', 'Test single variation in computed property in controller');
+    assert.dom('.multiple-variation-computed').hasText('FOO', 'Test multiiple variations in computed property in controller');
 
-  andThen(() => assert.equal(find('.cheese').text().trim(), 'PRICE: £ 199', 'Feature flag is disabled'));
-});
+    await click('.toggle');
 
-test('Feature flag is enabled', function(assert) {
-  assert.expect(2);
-
-  withVariation('apply-discount', true);
-
-  visit('/login');
-
-  andThen(() => assert.equal(currentURL(), '/login'));
-
-  andThen(() => assert.equal(find('.cheese').text().trim(), 'PRICE: £ 99', 'Feature flag is disabled'));
+    assert.dom('.flag-value').hasText('true', 'Feature flag is enabled');
+    assert.dom('.template-if-statement').hasText('BAR', 'Test variation helper in template "if" statement');
+    assert.dom('.template-with-statement').hasText('BAR - true', 'Test variation helper in template "with" statement');
+    assert.dom('.template-let-statement').hasText('BAR', 'Test variation helper in template "let" statement');
+    assert.dom('.single-variation-computed').hasText('BAR', 'Test single computed property in controller');
+    assert.dom('.multiple-variation-computed').hasText('BAR', 'Test multiple variations in  computed property in controller');
+  });
 });

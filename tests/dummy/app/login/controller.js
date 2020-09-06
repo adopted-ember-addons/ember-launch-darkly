@@ -1,6 +1,6 @@
-import Controller from 'ember-controller';
-import service from 'ember-service/inject';
-import computed from 'ember-computed';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { computedWithVariation as computed } from 'ember-launch-darkly';
 
 import { variation } from 'ember-launch-darkly';
 
