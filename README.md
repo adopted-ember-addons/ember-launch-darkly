@@ -109,9 +109,9 @@ Before being used, Launch Darkly must be initialized. This should happen early s
 
 The `initialize()` function returns a promise that resolves when the Launch Darkly client is ready so Ember will wait until this happens before proceeding.
 
-The user `key` is the only required attribute, see the [Launch Darkly documentation](https://docs.launchdarkly.com/docs/js-sdk-reference#section-users) for the other attributes you can provide.
+The user `key` is the only required attribute. 
 
-The `initialize()` function accepts a second parameter, an object, which is **optional**. It allows to you configure the Launch Darkly client, see the [Launch Darkly documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client) to learn more about available options and default values.
+See the [Launch Darkly User documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#users) for the other attributes you can provide.
 
 ```js
 // /app/application/route.js
@@ -121,16 +121,30 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model() {
     let user = {
-      key: 'aa0ceb',
+      key: 'aa0ceb'
+    };
+
+    return this.launchDarkly.initialize(user);
+  }
+});
+```
+
+If you set the `anonymous` flag to true, then the key is not required.
+
+See the [Launch Darkly Anonymous User documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#users) for more on the `anonymous` flag.
+
+```js
+// /app/application/route.js
+
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    let user = {
       anonymous: true
     };
 
-    let options = {
-      sendEvents: false, // default is true, see https://docs.launchdarkly.com/sdk/client-side/javascript#analytics-events
-      hash: "SERVER_GENERATED_HASH", // see https://docs.launchdarkly.com/sdk/client-side/javascript#secure-mode
-    };
-
-    return this.launchDarkly.initialize(user, options);
+    return this.launchDarkly.initialize(user);
   }
 });
 ```
