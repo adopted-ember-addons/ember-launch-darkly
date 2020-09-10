@@ -34,7 +34,7 @@
     "@ember/optional-features": "^0.7.0",
     "babel-plugin-tester": "^7.0.1",
     "broccoli-asset-rev": "^3.0.0",
-    "broccoli-funnel": "^2.0.2",
+    "broccoli-funnel": "^3.0.3",
     "broccoli-merge-trees": "^3.0.2",
     "browserslist": "^4.6.6",
     "chai": "^4.2.0",
