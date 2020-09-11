@@ -5,7 +5,7 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "https://github.com/ember-launch-darkly/ember-launch-darkly",
+  "repository": "https://github.com/adopted-ember-addons/ember-launch-darkly",
   "license": "MIT",
   "author": "The Ember Launch Darkly Team",
   "directories": {
