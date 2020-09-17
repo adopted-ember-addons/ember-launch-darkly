@@ -35,7 +35,7 @@
     "babel-plugin-tester": "^7.0.1",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^3.0.3",
-    "broccoli-merge-trees": "^3.0.2",
+    "broccoli-merge-trees": "^4.2.0",
     "browserslist": "^4.6.6",
     "chai": "^4.2.0",
     "concurrently": "^4.1.1",
