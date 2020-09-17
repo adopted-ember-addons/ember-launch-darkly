@@ -5929,10 +5929,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-event-source-polyfill@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-0.0.9.tgz#18c6205d170ab09db889ffceaa33f0e493f14a50"
-  integrity sha1-GMYgXRcKsJ24if/OqjPw5JPxSlA=
+event-source-polyfill@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-1.0.18.tgz#186488ddb81b4efce3e22f59c2fa68bd0df27c56"
+  integrity sha512-4ooLMUkUYFNXjYl96twwoMkXrhwmue5aI5ayU4ORswP2b8F6bYGNsdkYqutWV77DKJLI+ZRRLvZZTSuZcUCVTA==
 
 eventemitter3@^4.0.0:
   version "4.0.7"
