@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
-    "babel-plugin-tester": "^7.0.1",
+    "babel-plugin-tester": "^9.2.0",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^3.0.3",
     "broccoli-merge-trees": "^4.2.0",
