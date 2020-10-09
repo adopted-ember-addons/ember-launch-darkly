@@ -1,5 +1,5 @@
 # ember-launch-darkly
-[![Build Status](https://travis-ci.org/ember-launch-darkly/ember-launch-darkly.svg?branch=master)](https://travis-ci.org/ember-launch-darkly/ember-launch-darkly)
+[![Build Status](https://travis-ci.org/adopted-ember-addons/ember-launch-darkly.svg?branch=master)](https://travis-ci.org/adopted-ember-addons/ember-launch-darkly)
 
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
 
