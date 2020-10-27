@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-test-import-export */
+
 import LocalClient from 'ember-launch-darkly/services/launch-darkly-client-local';
 
 export default LocalClient.extend({

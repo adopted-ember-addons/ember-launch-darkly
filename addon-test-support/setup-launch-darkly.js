@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-test-import-export */
+
 import StubClient from './helpers/launch-darkly-client-test';
 
 function setupLaunchDarkly(hooks) {
@@ -8,14 +10,14 @@ function setupLaunchDarkly(hooks) {
       );
     }
 
-    this.owner.register('service:launch-darkly-client', StubClient)
+    this.owner.register('service:launch-darkly-client', StubClient);
 
     this.withVariation = (key, value = true) => {
       let client = this.owner.lookup('service:launch-darkly-client');
       client.setVariation(key, value);
 
       return value;
-    }
+    };
   });
 
   hooks.afterEach(function() {
