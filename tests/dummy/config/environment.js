@@ -20,23 +20,6 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    },
-
-    launchDarkly: {
-      clientSideId: '5b4c6d049dc3df2d8d0d2c92',
-      streaming: true,
-      //streaming: {
-      //allExcept: ['apply-discount']
-      //},
-      //streaming: {
-      //'apply-discount': true,
-      //'some-other-flag': true
-      //},
-      localFeatureFlags: {
-        'apply-discount': true,
-        foobar: true,
-        cheese: true
-      }
     }
   };
 

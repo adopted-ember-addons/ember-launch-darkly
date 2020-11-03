@@ -10,24 +10,19 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  plugins: ['ember'],
-  extends: ['eslint:recommended', 'plugin:ember/recommended'],
+  plugins: [
+    'ember'
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended'
+  ],
   env: {
     browser: true
   },
   rules: {},
   overrides: [
     // node files
-    {
-      files: ['nodetests/**/*.js'],
-      parserOptions: {
-        sourceType: 'module'
-      },
-      env: {
-        browser: false,
-        node: true
-      }
-    },
     {
       files: [
         '.eslintrc.js',
