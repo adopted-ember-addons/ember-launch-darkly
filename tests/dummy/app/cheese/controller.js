@@ -1,11 +1,13 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 
+import { foobar as variation } from 'ember-launch-darkly';
+
 export default class CheeseController extends Controller {
   @service candy;
 
   get cheese() {
-    let val = this.candy.variation('cheese');
+    let val = variation('cheese');
 
     console.log('cheese', val);
 
@@ -13,7 +15,7 @@ export default class CheeseController extends Controller {
   }
 
   get beta() {
-    let val = this.candy.variation('ops-beta-features');
+    let val = variation('ops-beta-features');
 
     console.log('beta', val);
 
@@ -21,7 +23,7 @@ export default class CheeseController extends Controller {
   }
 
   get bacon() {
-    let val = this.candy.variation('cheese');
+    let val = variation('cheese');
     console.log('bacon', val);
 
     if (val) {
