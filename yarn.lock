@@ -1873,7 +1873,7 @@
     "@handlebars/parser" "^1.1.0"
     simple-html-tokenizer "^0.5.10"
 
-"@glimmer/tracking@^1.0.2":
+"@glimmer/tracking@^1.0.0", "@glimmer/tracking@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@glimmer/tracking/-/tracking-1.0.2.tgz#4fe9ca89e3f4a2ae8e37c8bd8e4ea0d886d9abbf"
   integrity sha512-9Vp04TM2IDTShGFdxccfvnmcaj4NwqLrwbOXm4iju5KL/WkeB8mqoCSLtO3kUg+80DqU0pKE8tR460lQP8CutA==
@@ -5910,7 +5910,7 @@ ember-cli-babel@^7.1.2, ember-cli-babel@^7.11.0, ember-cli-babel@^7.12.0, ember-
     rimraf "^3.0.1"
     semver "^5.5.0"
 
-ember-cli-babel@^7.19.0:
+ember-cli-babel@^7.17.2, ember-cli-babel@^7.18.0, ember-cli-babel@^7.19.0:
   version "7.23.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.23.0.tgz#ec580aa2c115d0810e454dd5c2fffce238284b92"
   integrity sha512-ix58DlRDAbGITtdJoRUPcAoQwKLYr/x/kIXjU9u1ATyhmuUjqb+0FDXghOWbkNihGiNOqBBR49+LBgK9AeBcNw==
@@ -6137,7 +6137,7 @@ ember-cli-typescript@^2.0.2:
     stagehand "^1.0.0"
     walk-sync "^1.0.0"
 
-ember-cli-typescript@^3.1.3:
+ember-cli-typescript@^3.0.0, ember-cli-typescript@^3.1.3:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-3.1.4.tgz#21d6ccd670d1f2e34c9cce68c6e32c442f46806b"
   integrity sha512-HJ73kL45OGRmIkPhBNFt31I1SGUvdZND+LCH21+qpq3pPlFpJG8GORyXpP+2ze8PbnITNLzwe5AwUrpyuRswdQ==
@@ -13518,6 +13518,23 @@ tr46@^1.0.1:
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
+
+tracked-built-ins@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tracked-built-ins/-/tracked-built-ins-1.0.2.tgz#3e1e802e85dacba232b1a8d9ffe67b67250c4c9b"
+  integrity sha512-sgxUMq9as38Jj2kMgJDHvfiMALU3EWHdQ7bWsKgY9G19UuOKJsQrvWbkAjGLO6DzyZjlgxqDWAX9F60HdAo/ow==
+  dependencies:
+    ember-cli-babel "^7.18.0"
+    ember-cli-typescript "^3.0.0"
+    tracked-maps-and-sets "^2.0.0"
+
+tracked-maps-and-sets@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tracked-maps-and-sets/-/tracked-maps-and-sets-2.1.0.tgz#762cf89fb22ca16aa4b1a7198c03e844e0ef238d"
+  integrity sha512-N8v0ulJfyTD0Ew4omtO1JZTDql7qh/9ZqM+YIhygVDuvwLQjTa29QBO4eIfdyx/ZnRDNgBl9FBAZIuc/2R9UKQ==
+  dependencies:
+    "@glimmer/tracking" "^1.0.0"
+    ember-cli-babel "^7.17.2"
 
 tree-kill@^1.2.1:
   version "1.2.2"

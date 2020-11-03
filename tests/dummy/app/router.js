@@ -10,4 +10,5 @@ Router.map(function() {
   this.route('login');
   this.route('user');
   this.route('acceptance-tests');
+  this.route('cheese');
 });
