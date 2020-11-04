@@ -2,7 +2,7 @@ import { isNone, typeOf } from '@ember/utils';
 import { warn } from '@ember/debug';
 
 import * as LDClient from 'launchdarkly-js-client-sdk';
-import { TrackedMap } from 'tracked-built-ins';
+import { TrackedMap } from 'tracked-maps-and-sets';
 
 function setCurrentContext(context) {
   window.__LD__ = context;
@@ -15,13 +15,9 @@ function getCurrentContext() {
 class Context {
   _flags = new TrackedMap();
   _client = null;
-  _isLocal = false;
 
-  constructor(client, flags = {}, options = {}) {
-    let { isLocal = false } = options;
-
+  constructor(flags = {}, client) {
     this._client = client;
-    this._isLocal = isLocal;
 
     this.updateFlags(flags);
   }
@@ -59,7 +55,7 @@ class Context {
   }
 
   get isLocal() {
-    return this._isLocal;
+    return isNone(this.client);
   }
 
   get client() {
@@ -86,7 +82,8 @@ async function initialize(clientSideId, user = {}, options = {}) {
   }
 
   if (mode === 'local') {
-    context = new Context(client, localFlags, { isLocal: true });
+    context = new Context(localFlags);
+    setCurrentContext(context);
 
     return;
   }
@@ -106,7 +103,7 @@ async function initialize(clientSideId, user = {}, options = {}) {
 
   let flags = client.allFlags();
 
-  context = new Context(client, flags);
+  context = new Context(flags, client);
 
   client.on('change', updates => {
     let flagsToUpdate = {};
