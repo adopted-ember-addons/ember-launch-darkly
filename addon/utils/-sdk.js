@@ -1,3 +1,4 @@
+import { isNone, typeOf } from '@ember/utils';
 import * as LDClient from 'launchdarkly-js-client-sdk';
 import { TrackedMap } from 'tracked-built-ins';
 
@@ -20,27 +21,26 @@ class Context {
   }
 
   updateFlags(flags) {
-    Object.entries(flags).forEach(([key, value]) => this.flags.set(key, value));
+    Object.entries(flags).forEach(([key, value]) => {
+      this.flags.set(key, value);
+    });
   }
 }
 
-async function initialize(
-  clientSideId,
-  user = {},
-  options = {},
-  ldClient = LDClient
-) {
+async function initialize(clientSideId, user = {}, options = {}) {
   let context = getCurrentContext();
   if (context) {
     return;
   }
 
+  let { streamingFlags, ...rest } = options;
+
   options = {
     sendEventsOnlyForVariation: true,
-    ...options
+    ...rest
   };
 
-  let client = ldClient.initialize(clientSideId, user, options);
+  let client = LDClient.initialize(clientSideId, user, options);
 
   await client.waitForInitialization();
 
@@ -49,23 +49,47 @@ async function initialize(
   context = new Context(client, flags);
 
   client.on('change', updates => {
-    let flags = {};
-    Object.entries(updates).forEach(([key, { current, previous }]) => {
-      if (current !== previous) {
-        flags[key] = current;
+    let flagsToUpdate = {};
+    Object.entries(updates).forEach(([key, { current }]) => {
+      if (shouldUpdateFlag(key, streamingFlags)) {
+        flagsToUpdate[key] = current;
       }
     });
 
-    context.updateFlags(flags);
+    context.updateFlags(flagsToUpdate);
   });
 
   setCurrentContext(context);
 }
 
+function shouldUpdateFlag(key, streamingConfig) {
+  if (streamingConfig === true) {
+    return true;
+  }
+
+  if (typeOf(streamingConfig) === 'object') {
+    if (!isNone(streamingConfig.allExcept)) {
+      if (typeOf(streamingConfig.allExcept) === 'array') {
+        return !streamingConfig.allExcept.includes(key);
+      }
+
+      return false;
+    }
+
+    if (typeOf(streamingConfig[key]) === 'boolean') {
+      return streamingConfig[key];
+    }
+  }
+
+  return false;
+}
+
 function variation(key) {
   let context = getCurrentContext();
   if (!context) {
-    throw new Error('LD not initialized');
+    throw new Error(
+      'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `varitaion`.'
+    );
   }
 
   context.client.variation(key);
@@ -73,4 +97,4 @@ function variation(key) {
   return context.flags.get(key);
 }
 
-export { initialize, variation };
+export { initialize, variation, shouldUpdateFlag };

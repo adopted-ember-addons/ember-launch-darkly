@@ -5,10 +5,10 @@ import config from 'dummy/config/environment';
 
 export default class ApplicationRoute extends Route {
   async beforeModel() {
-    let { clientSideId } = config.launchDarkly;
+    let { clientSideId, ...rest } = config.launchDarkly;
     let user = { key: 'cheese' };
 
-    await initialize(clientSideId, user);
+    await initialize(clientSideId, user, rest);
   }
 
   model() {
