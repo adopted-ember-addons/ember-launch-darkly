@@ -12,6 +12,10 @@ function getCurrentContext() {
   return window.__LD__;
 }
 
+function removeCurrentContext() {
+  delete window.__LD__;
+}
+
 class Context {
   _flags = new TrackedMap();
   _client = null;
@@ -69,7 +73,7 @@ async function initialize(clientSideId, user = {}, options = {}) {
     return;
   }
 
-  let { streamingFlags, localFlags, mode = 'remote', ...rest } = options;
+  let { streamingFlags, localFlags = {}, mode = 'remote', ...rest } = options;
 
   if (!['local', 'remote'].includes(mode)) {
     warn(
@@ -156,4 +160,12 @@ function variation(key) {
   return context.get(key);
 }
 
-export { initialize, variation, shouldUpdateFlag };
+export {
+  Context,
+  shouldUpdateFlag,
+  setCurrentContext,
+  getCurrentContext,
+  removeCurrentContext,
+  initialize,
+  variation
+};
