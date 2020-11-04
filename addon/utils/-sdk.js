@@ -1,4 +1,6 @@
 import { isNone, typeOf } from '@ember/utils';
+import { warn } from '@ember/debug';
+
 import * as LDClient from 'launchdarkly-js-client-sdk';
 import { TrackedMap } from 'tracked-built-ins';
 
@@ -11,41 +13,57 @@ function getCurrentContext() {
 }
 
 class Context {
-  flags = new TrackedMap();
-  client = null;
+  _flags = new TrackedMap();
+  _client = null;
+  _isLocal = false;
 
-  constructor(client, flags = {}) {
-    this.client = client;
+  constructor(client, flags = {}, options = {}) {
+    let { isLocal = false } = options;
+
+    this._client = client;
+    this._isLocal = isLocal;
 
     this.updateFlags(flags);
   }
 
   updateFlags(flags) {
     Object.entries(flags).forEach(([key, value]) => {
-      this.flags.set(key, value);
+      this._flags.set(key, value);
     });
   }
 
   enable(key) {
-    this.flags.set(key, true);
+    this._flags.set(key, true);
   }
 
   disable(key) {
-    this.flags.set(key, false);
+    this._flags.set(key, false);
   }
 
   set(key, value) {
-    this.flags.set(key, value);
+    this._flags.set(key, value);
+  }
+
+  get(key) {
+    return this._flags.get(key);
   }
 
   get allFlags() {
     let allFlags = {};
 
-    for (let [key, value] of this.flags.entries()) {
+    for (let [key, value] of this._flags.entries()) {
       allFlags[key] = value;
     }
 
     return allFlags;
+  }
+
+  get isLocal() {
+    return this._isLocal;
+  }
+
+  get client() {
+    return this._client;
   }
 }
 
@@ -55,7 +73,23 @@ async function initialize(clientSideId, user = {}, options = {}) {
     return;
   }
 
-  let { streamingFlags, localFlags, ...rest } = options;
+  let { streamingFlags, localFlags, mode = 'remote', ...rest } = options;
+
+  if (!['local', 'remote'].includes(mode)) {
+    warn(
+      `"config.mode" must either be set to either "local" or "remote". Defaulting to "remote". (Invalid value: "${mode}")`,
+      false,
+      { id: 'ember-launch-darkly.invalid-config-property.mode' }
+    );
+
+    mode = 'remote';
+  }
+
+  if (mode === 'local') {
+    context = new Context(client, localFlags, { isLocal: true });
+
+    return;
+  }
 
   options = {
     sendEventsOnlyForVariation: true,
@@ -118,9 +152,11 @@ function variation(key) {
     );
   }
 
-  context.client.variation(key);
+  if (!context.isLocal) {
+    context.client.variation(key);
+  }
 
-  return context.flags.get(key);
+  return context.get(key);
 }
 
 export { initialize, variation, shouldUpdateFlag };
