@@ -27,9 +27,9 @@ class Context {
   }
 
   updateFlags(flags) {
-    Object.entries(flags).forEach(([key, value]) => {
+    for (let [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
-    });
+    }
   }
 
   enable(key) {
@@ -111,11 +111,11 @@ async function initialize(clientSideId, user = {}, options = {}) {
 
   client.on('change', updates => {
     let flagsToUpdate = {};
-    Object.entries(updates).forEach(([key, { current }]) => {
+    for (let [key, { current }] of Object.entries(updates)) {
       if (shouldUpdateFlag(key, streamingFlags)) {
         flagsToUpdate[key] = current;
       }
-    });
+    }
 
     context.updateFlags(flagsToUpdate);
   });
