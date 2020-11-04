@@ -33,12 +33,16 @@ async function initialize(clientSideId, user = {}, options = {}) {
     return;
   }
 
-  let { streamingFlags, ...rest } = options;
+  let { streamingFlags, localFlags, ...rest } = options;
 
   options = {
     sendEventsOnlyForVariation: true,
     ...rest
   };
+
+  if (options.bootstrap === 'localFlags' && !isNone(localFlags)) {
+    options.bootstrap = localFlags;
+  }
 
   let client = LDClient.initialize(clientSideId, user, options);
 

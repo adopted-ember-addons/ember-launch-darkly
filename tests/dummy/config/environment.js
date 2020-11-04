@@ -24,7 +24,11 @@ module.exports = function(environment) {
 
     launchDarkly: {
       clientSideId: '5c816f3fb510dd21a8607b72',
-      streamingFlags: true
+      streamingFlags: true,
+      bootstrap: 'localFlags',
+      localFlags: {
+        foo: 'bacon'
+      }
     }
   };
 
