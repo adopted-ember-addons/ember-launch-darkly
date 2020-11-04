@@ -25,6 +25,28 @@ class Context {
       this.flags.set(key, value);
     });
   }
+
+  enable(key) {
+    this.flags.set(key, true);
+  }
+
+  disable(key) {
+    this.flags.set(key, false);
+  }
+
+  set(key, value) {
+    this.flags.set(key, value);
+  }
+
+  get allFlags() {
+    let allFlags = {};
+
+    for (let [key, value] of this.flags.entries()) {
+      allFlags[key] = value;
+    }
+
+    return allFlags;
+  }
 }
 
 async function initialize(clientSideId, user = {}, options = {}) {
