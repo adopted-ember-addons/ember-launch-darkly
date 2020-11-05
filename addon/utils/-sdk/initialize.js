@@ -40,18 +40,18 @@ export async function initialize(clientSideId, user = {}, options = {}) {
   let {
     streamingFlags = false,
     localFlags = {},
-    mode = 'remote',
+    mode = 'local',
     ...rest
   } = options;
 
   if (!['local', 'remote'].includes(mode)) {
     warn(
-      `"config.mode" must either be set to either "local" or "remote". Defaulting to "remote". (Invalid value: "${mode}")`,
+      `"config.mode" must either be set to either "local" or "remote". Defaulting to "local". (Invalid value: "${mode}")`,
       false,
       { id: 'ember-launch-darkly.invalid-config-property.mode' }
     );
 
-    mode = 'remote';
+    mode = 'local';
   }
 
   if (mode === 'local') {
