@@ -6,7 +6,7 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 <hr/>
 
-_**Warning**: This version of the addon is built of Ember Octane (>= v3.15) and beyond. It contains breaking changes from the previous release. If you would like to migrate from a previous version to this one, please following the instructions in the MIGRATING.md file._
+_**Warning**: This version of the addon is built of Ember Octane (>= v3.15) and beyond. It contains breaking changes from the previous releases. If you would like to migrate from a previous version to this one, please following the instructions in the [MIGRATING.md](MIGRATING.md) file._
 
 <hr/>
 
