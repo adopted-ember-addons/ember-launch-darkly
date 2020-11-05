@@ -1,9 +1,9 @@
 import {
-  Context,
+  default as Context,
   getCurrentContext,
   setCurrentContext,
   removeCurrentContext
-} from 'ember-launch-darkly/utils/-sdk';
+} from 'ember-launch-darkly/utils/-sdk/context';
 
 export default function setupLaunchDarkly(hooks) {
   hooks.beforeEach(function() {
