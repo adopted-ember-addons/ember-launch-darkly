@@ -4,11 +4,12 @@
 
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
 
-<hr/>
+## Version matrix
 
-_**Warning**: This version of the addon is built of Ember Octane (>= v3.15) and beyond. It contains breaking changes from the previous releases. If you would like to migrate from a previous version to this one, please following the instructions in the [MIGRATING.md](MIGRATING.md) file._
-
-<hr/>
+|                                        Addon version                                         |                             Ember version                              |                                                                                             |
+| :------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+|  [v1.0.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0)   | >= [v3.1.5](https://github.com/emberjs/ember.js/releases/tag/v3.15.0)  |                                     [README](README.md)                                     |
+| <= [v0.7.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v0.7.0) | <= [v3.14.3](https://github.com/emberjs/ember.js/releases/tag/v3.14.3) | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v0.7.0/README.md) |
 
 ## Table of Contents
 
@@ -31,7 +32,7 @@ _**Warning**: This version of the addon is built of Ember Octane (>= v3.15) and 
 7. [Test helpers](#test-helpers)
    1. [Acceptance tests](#acceptance-tests)
    2. [Integration tests](#integration-tests)
-8. [Migration from < v1.0](#migration-from--v10)
+8. [Upgrading to v1.x](#upgrading-to-v1x)
 
 ## Installation
 
@@ -423,8 +424,8 @@ module('Integration | Component | foo', function (hooks) {
 });
 ```
 
-## Migration from < v1.0
+## Upgrading to v1.x
 
-For migration steps from version of ember-launch-darkly < v1.0, refer to the [MIGRATING.md](MIGRATING.md) file.
+Version 1.x of the addon is built of Ember Octane (>= v3.15) and beyond. It contains breaking changes from the previous releases. If you would like to upgrade from v0.7 or earlier, please following the instructions in [UPGRADING_TO_1.x.md](UPGRADING_TO_1.x.md) file.
 
 <p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>
