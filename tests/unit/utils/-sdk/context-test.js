@@ -115,4 +115,17 @@ module('Unit | Utility | SDK | Context', function() {
       'Operating in remote mode'
     );
   });
+
+  test('user', function(assert) {
+    let client = {
+      getUser() {
+        return { key: 'foo' };
+      }
+    };
+
+    assert.deepEqual(new Context({}).user, {
+      key: 'local-mode-no-user-specified'
+    });
+    assert.deepEqual(new Context({}, client).user, { key: 'foo' });
+  });
 });

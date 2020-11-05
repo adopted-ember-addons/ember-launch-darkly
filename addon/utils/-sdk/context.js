@@ -70,4 +70,12 @@ export default class Context {
   get client() {
     return this._client;
   }
+
+  get user() {
+    if (this.isLocal) {
+      return { key: 'local-mode-no-user-specified' };
+    }
+
+    return this.client.getUser();
+  }
 }
