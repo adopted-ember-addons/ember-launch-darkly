@@ -10,6 +10,29 @@ _**Warning**: This version of the addon is built of Ember Octane (>= v3.15) and 
 
 <hr/>
 
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Configuration](#configuration)
+   1. [`clientSideId`](#clientsideid-required)
+   2. [`mode`](#mode)
+   3. [`localFlags`](#localflags)
+   4. [`streamingFlags`](#streamingflags)
+   5. [`bootstrap`](#bootstrap)
+   6. [Launch Darkly specific config](#launch-darkly-specific-config)
+3. [Usage](#usage)
+   1. [`initialize`](#initialize)
+   2. [`identify`](#identify)
+   3. [`variation` (template helper)](#variation-template-helper)
+   4. [`variation` (javascript helper)](#variation-javascript-helper)
+4. [Local feature flags](#local-feature-flags)
+5. [Streaming feature flags](#streaming-feature-flags)
+6. [Content Security Policy](#content-security-policy)
+7. [Test helpers](#test-helpers)
+   1. [Acceptance tests](#acceptance-tests)
+   2. [Integration tests](#integration-tests)
+8. [Migration from < v1.0](#migration-from--v10)
+
 ## Installation
 
 ```bash
@@ -55,22 +78,22 @@ _Default_: `null`
 
 ### `streamingFlags`
 
-Streaming options for the feature flags for which you'd like to subscribe to realtime updates. See the [Streaming Feature Flags section](#streaming-feature-flags) for more detailed info on what the possible options are for streaming flags.
+Streaming options for the feature flags for which you'd like to subscribe to real-time updates. See the [Streaming Feature Flags section](#streaming-feature-flags) for more detailed info on what the possible options are for streaming flags.
 
 _Default_: `false`
 
 ### `bootstrap`
 
-The Launch Darkly client supports the idea of [bootstrapping your feature flags with an initial set of values](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping) so that the `variation` function can be called before the flags have been fetched frm Launch Darkly.
+The Launch Darkly client supports the idea of [bootstrapping your feature flags with an initial set of values](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping) so that the `variation` function can be called before the flags have been fetched from Launch Darkly.
 
-If the `bootstrap` propery is set to `localFlags`, ember-launch-darkly will use the flags specified in `localFlags` as the bootstrap flag values passed to Launch Darkly. Other than that, the `bootstrap` property will be passed directly through to Launch Darkly.
+If the `bootstrap` property is set to `localFlags`, ember-launch-darkly will use the flags specified in `localFlags` as the bootstrap flag values passed to Launch Darkly. Other than that, the `bootstrap` property will be passed directly through to Launch Darkly.
 
 _Default_: `null`
-_Possible Values_: `localFlags` otherwise whatever LaunchDarkly expects based on it's [Bootstrapping documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping).
+_Possible Values_: `localFlags` otherwise whatever Launch Darkly expects based on it's [Bootstrapping documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping).
 
 ### Launch Darkly specific config
 
-Any other properties passed in as configuration will be passed straight through to LaunchDarkly.
+Any other properties passed in as configuration will be passed straight through to Launch Darkly.
 
 _Possible Values_: [As documented in the section titled "Customizing your client" in the Launch Darkly documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client).
 
@@ -247,7 +270,7 @@ When `mode: 'local'`, the Launch Darkly flags context is available in the JS con
 > window.__LD__.user // return the user that the client has been initialized with
 ```
 
-## Streaming Feature Flags
+## Streaming feature flags
 
 Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streamingFlags` configuration option](#streaming-flags) allows you to specify, in a couple of ways, which flags you'd like to stream.
 
@@ -289,7 +312,7 @@ launchDarkly: {
 }
 ```
 
-As Launch Darkly's realtime updates to flags uses the [Event Source API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), certain browsers will require a polyfill to be included. ember-launch-darkly uses [EmberCLI targets](http://rwjblue.com/2017/04/21/ember-cli-targets/) to automatically decide whether or not to include the polyfill. Ensure your project contains a valid `config/targets.js` file if you require this functionality.
+As Launch Darkly's real-time updates to flags uses the [Event Source API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), certain browsers will require a polyfill to be included. ember-launch-darkly uses [EmberCLI targets](http://rwjblue.com/2017/04/21/ember-cli-targets/) to automatically decide whether or not to include the polyfill. Ensure your project contains a valid `config/targets.js` file if you require this functionality.
 
 ## Content Security Policy
 
@@ -311,9 +334,9 @@ module.exports = function (environment) {
 };
 ```
 
-## Test Helpers
+## Test helpers
 
-### Acceptance Tests
+### Acceptance tests
 
 Add the `setupLaunchDarkly` hook to the top of your test file. This will ensure that Launch Darkly uses defaults your feature flags to
 `false` instead of using what is defined in the `localFlags` config. This allows your tests to start off in a known default state.
@@ -364,7 +387,7 @@ module('Acceptance | Homepage', function (hooks) {
 });
 ```
 
-### Integration Tests
+### Integration tests
 
 Use the `setupLaunchDarkly` hook and `withVariation` helper in component tests to control feature flags as well.
 
@@ -399,5 +422,9 @@ module('Integration | Component | foo', function (hooks) {
   });
 });
 ```
+
+## Migration from < v1.0
+
+For migration steps from version of ember-launch-darkly < v1.0, refer to the [MIGRATING.md](MIGRATING.md) file.
 
 <p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>
