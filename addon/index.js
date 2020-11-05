@@ -1,1 +1,5 @@
-export { initialize, variation } from 'ember-launch-darkly/utils/-sdk';
+export {
+  identify,
+  initialize,
+  variation
+} from 'ember-launch-darkly/utils/-sdk';
