@@ -125,7 +125,7 @@ export default class ApplicationRoute extends Route {
       key: 'aa0ceb',
     };
 
-    return await nitialize(user);
+    return await initialize(user);
   }
 }
 ```
@@ -151,9 +151,9 @@ export default class SessionRoute extends Route {
 
   async afterModel(session) {
     let user = {
-      key: session.get('user.id'),
-      firstName: session.get('user.firstName'),
-      email: session.get('user.email')
+      key: session.user.id,
+      firstName: session.user.firstName,
+      email: session.user.email
     };
 
     return await identify(user);
