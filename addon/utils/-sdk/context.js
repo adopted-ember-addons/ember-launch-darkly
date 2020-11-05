@@ -6,7 +6,15 @@ export function setCurrentContext(context) {
 }
 
 export function getCurrentContext() {
-  return window.__LD__;
+  let context = window.__LD__;
+
+  if (!context) {
+    throw new Error(
+      'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `varitaion`.'
+    );
+  }
+
+  return context;
 }
 
 export function removeCurrentContext() {

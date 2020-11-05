@@ -28,9 +28,13 @@ export function shouldUpdateFlag(key, streamingConfig) {
 }
 
 export async function initialize(clientSideId, user = {}, options = {}) {
-  let context = getCurrentContext();
-  if (context) {
-    return;
+  try {
+    if (getCurrentContext()) {
+      return;
+    }
+  } catch (_) {
+    // `initialize` has not been run yet and so the current context doesn't
+    // exist. Let's go ahead and create one.
   }
 
   let { streamingFlags, localFlags = {}, mode = 'remote', ...rest } = options;
@@ -46,7 +50,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
   }
 
   if (mode === 'local') {
-    context = new Context(localFlags);
+    let context = new Context(localFlags);
     setCurrentContext(context);
 
     return;
@@ -67,7 +71,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
 
   let flags = client.allFlags();
 
-  context = new Context(flags, client);
+  let context = new Context(flags, client);
 
   client.on('change', updates => {
     let flagsToUpdate = {};
