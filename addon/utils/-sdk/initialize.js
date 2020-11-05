@@ -37,7 +37,12 @@ export async function initialize(clientSideId, user = {}, options = {}) {
     // exist. Let's go ahead and create one.
   }
 
-  let { streamingFlags, localFlags = {}, mode = 'remote', ...rest } = options;
+  let {
+    streamingFlags = false,
+    localFlags = {},
+    mode = 'remote',
+    ...rest
+  } = options;
 
   if (!['local', 'remote'].includes(mode)) {
     warn(
