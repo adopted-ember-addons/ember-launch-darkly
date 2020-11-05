@@ -88,11 +88,14 @@ module('Unit | Utility | SDK | Context', function() {
   });
 
   test('#get', function(assert) {
-    assert.expect(1);
-
     let context = new Context({ foo: true, bar: false });
 
     assert.equal(context.get('foo'), true, 'Initial flag state');
+    assert.equal(
+      context.get('moo', 'bah'),
+      'bah',
+      `Return default value if flag doesn't exist`
+    );
   });
 
   test('allFlags', function(assert) {

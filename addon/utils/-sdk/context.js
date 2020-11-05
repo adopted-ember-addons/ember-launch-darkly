@@ -49,7 +49,11 @@ export default class Context {
     this._flags.set(key, value);
   }
 
-  get(key) {
+  get(key, defaultValue) {
+    if (!this._flags.has(key) && !isNone(defaultValue)) {
+      return defaultValue;
+    }
+
     return this._flags.get(key);
   }
 
