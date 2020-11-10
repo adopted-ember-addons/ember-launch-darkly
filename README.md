@@ -4,7 +4,7 @@
 
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
 
-## Version matrix
+## Compatibility
 
 |                                        Addon version                                         |                             Ember version                              |                                                                                             |
 | :------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
@@ -69,6 +69,7 @@ The mode in which the Launch Darkly client will run, either `local` or `remote`.
 When running in `local` mode, feature flags will be fetched from the `localFlags` defined in the config. This is likely appropriate when running the app locally, or in an external environment for which you don't have Launch Darkly setup. It allows you to have a sandboxed feature flag set that is not dependent on the Launch Darkly service or the state of the flags stored in Launch Darkly itself.
 
 _Default_: `local`
+
 _Possible Values_: `local`, `remote`
 
 ### `localFlags`
@@ -90,6 +91,7 @@ The Launch Darkly client supports the idea of [bootstrapping your feature flags 
 If the `bootstrap` property is set to `localFlags`, ember-launch-darkly will use the flags specified in `localFlags` as the bootstrap flag values passed to Launch Darkly. Other than that, the `bootstrap` property will be passed directly through to Launch Darkly.
 
 _Default_: `null`
+
 _Possible Values_: `localFlags` otherwise whatever Launch Darkly expects based on it's [Bootstrapping documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping).
 
 ### Launch Darkly specific config
