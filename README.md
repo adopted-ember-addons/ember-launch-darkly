@@ -6,10 +6,10 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 ## Compatibility
 
-|                                        Addon version                                         |                             Ember version                              |                                                                                             |
-| :------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
-|  [v1.0.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0)   | >= [v3.1.5](https://github.com/emberjs/ember.js/releases/tag/v3.15.0)  |                                     [README](README.md)                                     |
-| <= [v0.7.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v0.7.0) | <= [v3.14.3](https://github.com/emberjs/ember.js/releases/tag/v3.14.3) | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v0.7.0/README.md) |
+|                                       Addon version                                        |                            Ember version                             |                                                                                             |
+| :----------------------------------------------------------------------------------------: | :------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+|  [v2.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0)   | >= [v3.12](https://github.com/emberjs/ember.js/releases/tag/v3.12.4) |                                     [README](README.md)                                     |
+| <= [v1.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0) | <= [v3.11](https://github.com/emberjs/ember.js/releases/tag/v3.11.1) | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v1.0.0/README.md) |
 
 ## Table of Contents
 
@@ -32,7 +32,7 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 7. [Test helpers](#test-helpers)
    1. [Acceptance tests](#acceptance-tests)
    2. [Integration tests](#integration-tests)
-8. [Upgrading to v1.x](#upgrading-to-v1x)
+8. [Upgrading to v2.0](#upgrading-to-v20)
 
 ## Installation
 
@@ -426,8 +426,8 @@ module('Integration | Component | foo', function (hooks) {
 });
 ```
 
-## Upgrading to v1.x
+## Upgrading to v2.0
 
-Version 1.x of the addon is built of Ember Octane (>= v3.15) and beyond. It contains breaking changes from the previous releases. If you would like to upgrade from v0.7 or earlier, please following the instructions in [UPGRADING_TO_1.x.md](UPGRADING_TO_1.x.md) file.
+v2.0 of the addon is built for Ember Octane (>= v3.12) and beyond. It contains breaking changes from the previous releases. If you would like to upgrade from v1.0 or earlier, please following the instructions in [UPGRADING_TO_v2.x.md](UPGRADING_TO_v2.x.md) file.
 
 <p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>

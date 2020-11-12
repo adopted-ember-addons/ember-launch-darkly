@@ -2,8 +2,8 @@
 
 ## Overview
 
-The approach taken in [v1.x](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0) of this addon has changed slightly from versions [<= v0.7.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v0.7.0)
-and will require some modifications to config and code in order to upgrade. The steps below outline the things you will need to change in order to upgrade to [v1.x](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0).
+The approach taken in [v2.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0) of this addon has changed drastically from versions [<= v1.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0)
+and will require some modifications to config and code in order to upgrade. The steps below outline the things you will need to change in order to upgrade to [v2.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0).
 
 ## Migrate config
 
@@ -190,20 +190,20 @@ export default class LoginPageComponent extends Component {
 
 ## A note on the experimental `variation` Javascript helper
 
-Versions of this addon pre 1.x included [an experimental Babel transform that allowed users to import a `variation` function](https://github.com/adopted-ember-addons/ember-launch-darkly/tree/v0.7.0#javascript) in to Javascript instead of
+Versions of this addon pre `v2.0` included [an experimental Babel transform that allowed users to import a `variation` function](https://github.com/adopted-ember-addons/ember-launch-darkly/tree/v0.7.0#javascript) in to Javascript instead of
 referencing `this.launchDarkly.variation`. It was more than a shorthand for the variation function - it also tried to be a bit clever and, when used inside
 a computed property, attempted to add the feature flags as dependent keys of the computed property so as to ensure the computed property was re-computed if
 the flag changed.
 
 While this helper was useful, it was infinitely problematic. Thankfully, in an Ember Octane world, or more specifically, an `@tracked` world, this is totally unnecessary.
-Any code that checks for feature flags will re-computed if they change based on the fact that the flags our now tracked in v1.x.
+Any code that checks for feature flags will re-computed if they change based on the fact that the flags our now tracked in v2.0.
 
-Because the import of the `variation` function in v1.x is the same as the import of the old babel transform helper, no changes should need to be made here.
+Because the import of the `variation` function in v2.0 is the same as the import of the old babel transform helper, no changes should need to be made here.
 
-However, if you are using [v1.0.0-beta.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0-beta.0) there are likely a
+However, if you are using [v1.0.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0) specifically there are likely a
 couple of changes you will need to make.
 
-No doubt you will have stopped using the `computedWithVariation` helper ([DOC](https://github.com/adopted-ember-addons/ember-launch-darkly/tree/v1.0.0-beta.0#experimental-variation-javascript-helper)) as you won't be using computed properties in Octane any more and it doesn't work with
+No doubt you will have stopped using the `computedWithVariation` helper ([DOC](https://github.com/adopted-ember-addons/ember-launch-darkly/tree/v1.0.0#experimental-variation-javascript-helper)) as you won't be using computed properties in Octane any more and it doesn't work with
 the `@computed` decorator.
 
 However, you should also remove the code in your `ember-cli-build.js` that enables the Babel transform. So, remove this:
