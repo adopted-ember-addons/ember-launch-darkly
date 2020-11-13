@@ -73,5 +73,22 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
+      }
+    },
+    "git": {
+      "tagName": "v${version}",
+      "pushRepo": "upstream",
+      "requireUpstream": false
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
   }
 }
