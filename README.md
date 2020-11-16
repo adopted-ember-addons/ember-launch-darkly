@@ -1,4 +1,5 @@
 # ember-launch-darkly
+
 [![Build Status](https://travis-ci.org/adopted-ember-addons/ember-launch-darkly.svg?branch=master)](https://travis-ci.org/adopted-ember-addons/ember-launch-darkly)
 
 This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging service and provides helpers to implement feature flagging in your application
@@ -109,7 +110,7 @@ Before being used, Launch Darkly must be initialized. This should happen early s
 
 The `initialize()` function returns a promise that resolves when the Launch Darkly client is ready so Ember will wait until this happens before proceeding.
 
-The user `key` is the only required attribute. 
+The user `key` is the only required attribute.
 
 See the [Launch Darkly User documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#users) for the other attributes you can provide.
 
@@ -499,7 +500,7 @@ As Launch Darkly's realtime updates to flags uses the [Event Source API](https:/
 ### Acceptance Tests
 
 Add the `setupLaunchDarkly` hook to the top of your test file. This will ensure that Launch Darkly uses a test stub client which defaults your feature flags to
-`false` instead of using what is defined in the `localFeatureFlags` config.  This allows your tests to start off in a known default state.
+`false` instead of using what is defined in the `localFeatureFlags` config. This allows your tests to start off in a known default state.
 
 ```js
 import { module, test } from 'qunit';
