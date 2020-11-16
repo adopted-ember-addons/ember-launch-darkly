@@ -1,4 +1,4 @@
-import StubClient from './helpers/launch-darkly-client-test';
+import StubClient from './helpers/launch-darkly-test-client';
 
 function setupLaunchDarkly(hooks) {
   hooks.beforeEach(function() {
@@ -8,14 +8,14 @@ function setupLaunchDarkly(hooks) {
       );
     }
 
-    this.owner.register('service:launch-darkly-client', StubClient)
+    this.owner.register('service:launch-darkly-client', StubClient);
 
     this.withVariation = (key, value = true) => {
       let client = this.owner.lookup('service:launch-darkly-client');
       client.setVariation(key, value);
 
       return value;
-    }
+    };
   });
 
   hooks.afterEach(function() {
