@@ -20,8 +20,7 @@
     "start": "ember serve",
     "test": "npm-run-all lint:* test:*",
     "test:ember": "ember test",
-    "test:ember-compatibility": "ember try:each",
-    "test:node": "./node_modules/mocha/bin/mocha nodetests/**/*-test.js"
+    "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
     "ember-auto-import": "^1.6.0",
@@ -36,12 +35,10 @@
     "@glimmer/component": "^1.0.2",
     "@glimmer/tracking": "^1.0.2",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-tester": "^10.0.0",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-funnel": "^3.0.3",
     "broccoli-merge-trees": "^4.2.0",
     "browserslist": "^4.14.7",
-    "chai": "^4.2.0",
     "concurrently": "^5.3.0",
     "ember-auto-import": "^1.6.0",
     "ember-cli": "~3.22.0",
@@ -67,7 +64,6 @@
     "eslint-plugin-ember": "^9.3.0",
     "eslint-plugin-node": "^11.1.0",
     "loader.js": "^4.7.0",
-    "mocha": "^8.2.1",
     "npm-run-all": "^4.1.5",
     "qunit-dom": "^1.5.0",
     "release-it": "^14.2.1",
