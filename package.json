@@ -1,6 +1,6 @@
 {
   "name": "ember-launch-darkly",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "A modern Ember addon to wrap the Launch Darkly service",
   "keywords": [
     "ember-addon"
