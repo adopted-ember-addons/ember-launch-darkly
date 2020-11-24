@@ -1,4 +1,4 @@
-const pluginTester = require('babel-plugin-tester');
+const pluginTester = require('babel-plugin-tester').default;
 const plugin = require('../babel-plugin');
 
 pluginTester({
@@ -24,8 +24,8 @@ pluginTester({
       });
       `,
       output: `
-      import { Component } from '@ember/component';
-      import { computed } from '@ember/computed';
+      import { Component } from "@ember/component";
+      import { computed } from "@ember/computed";
       export default Component.extend({
         discount: computed(function () {
           if (this.get("launchDarkly.new-pricing")) {
@@ -33,7 +33,7 @@ pluginTester({
           }
 
           return 2;
-        })
+        }),
       });
       `
     },
@@ -56,8 +56,8 @@ pluginTester({
       });
       `,
       output: `
-      import { Component } from '@ember/component';
-      import { computed } from '@ember/computed';
+      import { Component } from "@ember/component";
+      import { computed } from "@ember/computed";
       export default Component.extend({
         discount: computed(function () {
           if (this.get("launchDarkly.new-pricing")) {
@@ -65,7 +65,7 @@ pluginTester({
           }
 
           return 2;
-        })
+        }),
       });
       `
     },
@@ -99,8 +99,8 @@ pluginTester({
       });
       `,
       output: `
-      import { Component } from '@ember/component';
-      import { computedWithVariation } from 'ember-launch-darkly';
+      import { Component } from "@ember/component";
+      import { computedWithVariation } from "ember-launch-darkly";
       export default Component.extend({
         discount: computedWithVariation("launchDarkly.new-pricing", function () {
           if (this.get("launchDarkly.new-pricing")) {
@@ -111,15 +111,15 @@ pluginTester({
         }),
         colors: computedWithVariation("launchDarkly.{red,green}", function () {
           if (this.get("launchDarkly.red")) {
-            return 'red';
+            return "red";
           }
 
           if (this.get("launchDarkly.green")) {
-            return 'green';
+            return "green";
           }
 
-          return 'blue';
-        })
+          return "blue";
+        }),
       });
       `
     },
@@ -153,8 +153,8 @@ pluginTester({
       });
       `,
       output: `
-      import { Component } from '@ember/component';
-      import { computedWithVariation as computed } from 'ember-launch-darkly';
+      import { Component } from "@ember/component";
+      import { computedWithVariation as computed } from "ember-launch-darkly";
       export default Component.extend({
         discount: computed("launchDarkly.new-pricing", function () {
           if (this.get("launchDarkly.new-pricing")) {
@@ -165,15 +165,15 @@ pluginTester({
         }),
         colors: computed("launchDarkly.{red,green}", function () {
           if (this.get("launchDarkly.red")) {
-            return 'red';
+            return "red";
           }
 
           if (this.get("launchDarkly.green")) {
-            return 'green';
+            return "green";
           }
 
-          return 'blue';
-        })
+          return "blue";
+        }),
       });
       `
     },
@@ -195,7 +195,7 @@ pluginTester({
       });
       `,
       output: `
-      import { Component } from '@ember/component';
+      import { Component } from "@ember/component";
       export default Component.extend({
         discount() {
           if (this.get("launchDarkly.new-pricing")) {
@@ -203,8 +203,7 @@ pluginTester({
           }
 
           return 2;
-        }
-
+        },
       });
       `
     }
