@@ -17,7 +17,7 @@ export default Service.extend(Evented, {
     this._allFlags = localFeatureFlags;
   },
 
-  initialize(user) {
+  initialize(user /*, config */) {
     return this.identify(user);
   },
 

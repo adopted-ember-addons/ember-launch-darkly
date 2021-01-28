@@ -15,8 +15,8 @@ export default Service.extend({
     this._seenFlags = [];
   },
 
-  initialize(user = {}/*, options = {}*/) {
-    return this.get('_client').initialize(user);
+  initialize(user = {}, options = {}) {
+    return this.get('_client').initialize(user, options);
   },
 
   identify(user) {
