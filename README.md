@@ -110,14 +110,14 @@ Before being used, Launch Darkly must be initialized. This should happen early s
 
 The `initialize()` function returns a promise that resolves when the Launch Darkly client is ready so Ember will wait until this happens before proceeding.
 
-The user `key` is the only required attribute.
-
-See the [Launch Darkly User documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#users) for the other attributes you can provide.
+This function's API mirrors that of the Launch Darkly client, [so see the Launch Darkly docs on initializing the client for more info](https://docs.launchdarkly.com/sdk/client-side/javascript#initializing-the-client).
 
 ```js
-// /app/application/route.js
+// /app/routes/application.js
 
 import Route from '@ember/routing/route';
+
+import config from 'my-app/config/environment';
 
 import { initialize } from 'ember-launch-darkly';
 
@@ -127,7 +127,9 @@ export default class ApplicationRoute extends Route {
       key: 'aa0ceb',
     };
 
-    return await initialize(user);
+    let { clientSideId, ...rest } = config
+    
+    return await initialize(clientSideId, user, rest);
   }
 }
 ```
@@ -137,7 +139,7 @@ export default class ApplicationRoute extends Route {
 If you initialized Launch Darkly with an anonymous user and want to re-initialize it for a specific user to receive the flags for that user, you can use `identify`. This must be called after `initialize` has been called.
 
 ```js
-// /app/session/route.js
+// /app/routes/session.js
 
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
