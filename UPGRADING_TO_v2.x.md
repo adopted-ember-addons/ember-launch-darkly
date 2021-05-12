@@ -52,7 +52,7 @@ module.exports = function (environment) {
 Ember Launch Darkly no longer uses services and so the initialization should change from this:
 
 ```js
-// /app/application/route.js
+// /app/routes/application.js
 
 import Route from '@ember/routing/route';
 
@@ -71,7 +71,7 @@ export default Route.extend({
 to this:
 
 ```js
-// /app/application/route.js
+// /app/routes/application.js
 
 import Route from '@ember/routing/route';
 
