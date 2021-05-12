@@ -75,6 +75,8 @@ to this:
 
 import Route from '@ember/routing/route';
 
+import config from 'my-app/config/environment';
+
 import { initialize } from 'ember-launch-darkly';
 
 export default class ApplicationRoute extends Route {
@@ -83,7 +85,9 @@ export default class ApplicationRoute extends Route {
       key: 'aa0ceb',
     };
 
-    return await initialize(user);
+    let { clientSideId, ...rest } = config;
+    
+    return await initialize(clientSideId, user, rest);
   }
 }
 ```
@@ -93,7 +97,7 @@ export default class ApplicationRoute extends Route {
 Ember Launch Darkly no longer uses services and so the identification should change from this:
 
 ```js
-// /app/session/route.js
+// /app/routes/session.js
 
 import Route from '@ember/routing/route';
 
@@ -119,7 +123,7 @@ export default Route.extend({
 to this:
 
 ```js
-// /app/session/route.js
+// /app/routes/session.js
 
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
