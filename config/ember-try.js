@@ -7,14 +7,6 @@ module.exports = async function() {
     useYarn: true,
     scenarios: [
       {
-        name: 'ember-3.17',
-        npm: {
-          devDependencies: {
-            'ember-source': '~3.17.0'
-          }
-        }
-      },
-      {
         name: 'ember-lts-3.20',
         npm: {
           devDependencies: {
@@ -23,7 +15,17 @@ module.exports = async function() {
         }
       },
       {
+        name: 'ember-lts-4.4',
+        allowedToFail: true,
+        npm: {
+          devDependencies: {
+            'ember-source': '~4.4.3'
+          }
+        }
+      },
+      {
         name: 'ember-release',
+        allowedToFail: true,
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('release')
@@ -32,6 +34,7 @@ module.exports = async function() {
       },
       {
         name: 'ember-beta',
+        allowedToFail: true,
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('beta')
@@ -40,6 +43,7 @@ module.exports = async function() {
       },
       {
         name: 'ember-canary',
+        allowedToFail: true,
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('canary')

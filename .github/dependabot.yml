@@ -1,0 +1,19 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  labels:
+  - dependencies
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: ember-source
+    versions:
+    - 3.24.0
+    - 3.24.1
+  - dependency-name: ember-cli
+    versions:
+    - 3.24.0
