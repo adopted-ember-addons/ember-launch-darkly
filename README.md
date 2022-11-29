@@ -13,26 +13,29 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Configuration](#configuration)
-   1. [`clientSideId`](#clientsideid-required)
-   2. [`mode`](#mode)
-   3. [`localFlags`](#localflags)
-   4. [`streamingFlags`](#streamingflags)
-   5. [`bootstrap`](#bootstrap)
-   6. [Launch Darkly specific config](#launch-darkly-specific-config)
-3. [Usage](#usage)
-   1. [`initialize`](#initialize)
-   2. [`identify`](#identify)
-   3. [`variation` (template helper)](#variation-template-helper)
-   4. [`variation` (javascript helper)](#variation-javascript-helper)
-4. [Local feature flags](#local-feature-flags)
-5. [Streaming feature flags](#streaming-feature-flags)
-6. [Content Security Policy](#content-security-policy)
-7. [Test helpers](#test-helpers)
-   1. [Acceptance tests](#acceptance-tests)
-   2. [Integration tests](#integration-tests)
-8. [Upgrading to v2.0](#upgrading-to-v20)
+- [Ember Launch Darkly](#ember-launch-darkly)
+  - [Compatibility](#compatibility)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+    - [`clientSideId` (required)](#clientsideid-required)
+    - [`mode`](#mode)
+    - [`localFlags`](#localflags)
+    - [`streamingFlags`](#streamingflags)
+    - [`bootstrap`](#bootstrap)
+    - [Launch Darkly specific config](#launch-darkly-specific-config)
+  - [Usage](#usage)
+    - [Initialize](#initialize)
+    - [Identify](#identify)
+    - [variation (template helper)](#variation-template-helper)
+    - [variation (javascript helper)](#variation-javascript-helper)
+  - [Local feature flags](#local-feature-flags)
+  - [Streaming feature flags](#streaming-feature-flags)
+  - [Content Security Policy](#content-security-policy)
+  - [Test helpers](#test-helpers)
+    - [Acceptance tests](#acceptance-tests)
+    - [Integration tests](#integration-tests)
+  - [Upgrading to v2.0](#upgrading-to-v20)
 
 ## Installation
 
@@ -43,6 +46,9 @@ $ ember install ember-launch-darkly
 ## Configuration
 
 ember-launch-darkly can be configured from `config/environment.js` as follows:
+
+
+
 
 ```js
 module.exports = function (environment) {
