@@ -1,7 +1,18 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-maps-and-sets';
 
+const STORAGE_KEY = 'ember-launch-darkly';
+
+function setPersistedFlags(context) {
+  let persistedFlags = window.localStorage.getItem(STORAGE_KEY);
+
+  if (persistedFlags) {
+    context.replaceFlags(JSON.parse(persistedFlags));
+  }
+}
+
 function setCurrentContext(context) {
+  setPersistedFlags(context);
   window.__LD__ = context;
 }
 
@@ -62,6 +73,14 @@ class Context {
     return this._flags.get(key);
   }
 
+  persist() {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.allFlags));
+  }
+
+  resetPersistence() {
+    window.localStorage.removeItem(STORAGE_KEY);
+  }
+
   get allFlags() {
     let allFlags = {};
 
@@ -74,6 +93,11 @@ class Context {
 
   get isLocal() {
     return isNone(this.client);
+  }
+
+  get persisted() {
+    let persisted = window.localStorage.getItem(STORAGE_KEY);
+    return persisted ? JSON.parse(persisted) : undefined;
   }
 
   get client() {
@@ -93,5 +117,6 @@ export {
   getCurrentContext,
   removeCurrentContext,
   setCurrentContext,
+  setPersistedFlags,
   Context as default
 };
