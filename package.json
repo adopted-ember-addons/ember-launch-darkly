@@ -37,7 +37,7 @@
     "@glimmer/tracking": "^1.1.2",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
-    "broccoli-funnel": "^3.0.3",
+    "broccoli-funnel": "^3.0.8",
     "broccoli-merge-trees": "^4.2.0",
     "browserslist": "^4.21.4",
     "concurrently": "^7.6.0",
