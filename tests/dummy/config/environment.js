@@ -26,15 +26,15 @@ module.exports = function (environment) {
       mode: 'remote',
       clientSideId: '5c816f3fb510dd21a8607b72',
       streamingFlags: {
-        'make-shape-blink': true
+        'make-shape-blink': true,
       },
       localFlags: {
         shape: 'square',
         'shape-background-color': 'purple',
-        'make-shape-blink': false
-      }
+        'make-shape-blink': false,
+      },
       //bootstrap: 'localFlags'
-    }
+    },
   };
 
   if (environment === 'development') {

@@ -2,20 +2,20 @@ import { module, test } from 'qunit';
 
 import Context, {
   setCurrentContext,
-  removeCurrentContext
+  removeCurrentContext,
 } from 'ember-launch-darkly/-sdk/context';
 import { identify } from 'ember-launch-darkly/-sdk/identify';
 
-module('Unit | SDK | Identify', function(hooks) {
-  hooks.afterEach(function() {
+module('Unit | SDK | Identify', function (hooks) {
+  hooks.afterEach(function () {
     removeCurrentContext();
   });
 
-  test('identifying a user - local', async function(assert) {
+  test('identifying a user - local', async function (assert) {
     assert.expect(1);
 
     let flags = {
-      cheese: 'bacon'
+      cheese: 'bacon',
     };
 
     let context = new Context(flags);
@@ -31,11 +31,11 @@ module('Unit | SDK | Identify', function(hooks) {
     );
   });
 
-  test('identifying a user - remote', async function(assert) {
+  test('identifying a user - remote', async function (assert) {
     assert.expect(2);
 
     let flags = {
-      cheese: 'bacon'
+      cheese: 'bacon',
     };
 
     let client = {
@@ -43,16 +43,16 @@ module('Unit | SDK | Identify', function(hooks) {
         assert.deepEqual(
           user,
           {
-            key: 'cheese'
+            key: 'cheese',
           },
           'Identify on LD client called'
         );
 
         return {
           foo: true,
-          bar: false
+          bar: false,
         };
-      }
+      },
     };
 
     let context = new Context(flags, client);
@@ -65,7 +65,7 @@ module('Unit | SDK | Identify', function(hooks) {
       context.allFlags,
       {
         foo: true,
-        bar: false
+        bar: false,
       },
       'User identified and flags updated'
     );

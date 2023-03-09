@@ -93,5 +93,5 @@ export {
   getCurrentContext,
   removeCurrentContext,
   setCurrentContext,
-  Context as default
+  Context as default,
 };

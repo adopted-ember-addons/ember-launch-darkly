@@ -2,21 +2,21 @@ import { module, test } from 'qunit';
 
 import Context, {
   setCurrentContext,
-  removeCurrentContext
+  removeCurrentContext,
 } from 'ember-launch-darkly/-sdk/context';
 
 import { variation } from 'ember-launch-darkly/-sdk/variation';
 
-module('Unit | SDK | Variation', function(hooks) {
-  hooks.afterEach(function() {
+module('Unit | SDK | Variation', function (hooks) {
+  hooks.afterEach(function () {
     removeCurrentContext();
   });
 
-  test('evaluating a variation - local', async function(assert) {
+  test('evaluating a variation - local', async function (assert) {
     assert.expect(1);
 
     let flags = {
-      foo: 'bar'
+      foo: 'bar',
     };
 
     let context = new Context(flags);
@@ -28,17 +28,17 @@ module('Unit | SDK | Variation', function(hooks) {
     assert.equal(result, 'bar', 'Variation value returned');
   });
 
-  test('evaluating a variation - remote', async function(assert) {
+  test('evaluating a variation - remote', async function (assert) {
     assert.expect(2);
 
     let flags = {
-      cheese: 'bacon'
+      cheese: 'bacon',
     };
 
     let client = {
       variation(key) {
         assert.equal(key, 'cheese', 'Variation event sent to LD');
-      }
+      },
     };
 
     let context = new Context(flags, client);
@@ -50,7 +50,7 @@ module('Unit | SDK | Variation', function(hooks) {
     assert.equal(result, 'bacon', 'Variation value returned');
   });
 
-  test('default variation value', async function(assert) {
+  test('default variation value', async function (assert) {
     assert.expect(2);
 
     let flags = {};

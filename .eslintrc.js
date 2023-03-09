@@ -23,16 +23,14 @@ module.exports = {
   overrides: [
     // node files
     {
-      files: [
-        'nodetests/**/*.js'
-      ],
+      files: ['nodetests/**/*.js'],
       parserOptions: {
-        sourceType: 'module'
+        sourceType: 'module',
       },
       env: {
         browser: false,
-        node: true
-      }
+        node: true,
+      },
     },
     {
       files: [
@@ -50,7 +48,7 @@ module.exports = {
         'addon/**',
         'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**'
+        'tests/dummy/app/**',
       ],
       parserOptions: {
         sourceType: 'script',
