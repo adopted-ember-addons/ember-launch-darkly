@@ -25,7 +25,7 @@ module('Unit | SDK | Variation', function (hooks) {
 
     let result = variation('foo');
 
-    assert.equal(result, 'bar', 'Variation value returned');
+    assert.strictEqual(result, 'bar', 'Variation value returned');
   });
 
   test('evaluating a variation - remote', async function (assert) {
@@ -37,7 +37,7 @@ module('Unit | SDK | Variation', function (hooks) {
 
     let client = {
       variation(key) {
-        assert.equal(key, 'cheese', 'Variation event sent to LD');
+        assert.strictEqual(key, 'cheese', 'Variation event sent to LD');
       },
     };
 
@@ -47,7 +47,7 @@ module('Unit | SDK | Variation', function (hooks) {
 
     let result = variation('cheese');
 
-    assert.equal(result, 'bacon', 'Variation value returned');
+    assert.strictEqual(result, 'bacon', 'Variation value returned');
   });
 
   test('default variation value', async function (assert) {
@@ -60,10 +60,10 @@ module('Unit | SDK | Variation', function (hooks) {
 
     let result = variation('foo');
 
-    assert.equal(result, undefined);
+    assert.strictEqual(result, undefined);
 
     result = variation('foo', 'cheese');
 
-    assert.equal(result, 'cheese');
+    assert.strictEqual(result, 'cheese');
   });
 });
