@@ -9,7 +9,7 @@ export default class ApplicationRoute extends Route {
     let { clientSideId, ...options } = config.launchDarkly;
 
     let user = {
-      anonymous: true
+      anonymous: true,
     };
 
     await initialize(clientSideId, user, options);

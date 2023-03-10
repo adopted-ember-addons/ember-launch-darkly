@@ -5,11 +5,11 @@ import hbs from 'htmlbars-inline-precompile';
 
 import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 
-module('Integration | Helper | variation', function(hooks) {
+module('Integration | Helper | variation', function (hooks) {
   setupRenderingTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test('it returns a variation', async function(assert) {
+  test('it returns a variation', async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -27,7 +27,7 @@ module('Integration | Helper | variation', function(hooks) {
     assert.dom('h1').hasText('YAY', 'Feature flag is enabled');
   });
 
-  test('it returns the default value if variation is unknown', async function(assert) {
+  test('it returns the default value if variation is unknown', async function (assert) {
     assert.expect(2);
 
     await render(hbs`<h1>{{variation "cheese" defaultValue="bacon"}}</h1>`);

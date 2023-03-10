@@ -8,4 +8,3 @@ export default class IdentifiedUserController extends Controller {
     return capitalize(variation('shape'));
   }
 }
-

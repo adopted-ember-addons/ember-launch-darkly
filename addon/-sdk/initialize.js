@@ -63,7 +63,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
 
   options = {
     sendEventsOnlyForVariation: true,
-    ...rest
+    ...rest,
   };
 
   if (options.bootstrap === 'localFlags' && !isNone(localFlags)) {
@@ -74,7 +74,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
 
   await client.waitForInitialization();
 
-  client.on('change', updates => {
+  client.on('change', (updates) => {
     let context = getCurrentContext();
     let flagsToUpdate = {};
     for (let [key, { current }] of Object.entries(updates)) {

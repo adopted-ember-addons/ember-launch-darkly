@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -26,15 +26,15 @@ module.exports = function(environment) {
       mode: 'remote',
       clientSideId: '5c816f3fb510dd21a8607b72',
       streamingFlags: {
-        'make-shape-blink': true
+        'make-shape-blink': true,
       },
       localFlags: {
         shape: 'square',
         'shape-background-color': 'purple',
-        'make-shape-blink': false
-      }
+        'make-shape-blink': false,
+      },
       //bootstrap: 'localFlags'
-    }
+    },
   };
 
   if (environment === 'development') {

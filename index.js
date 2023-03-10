@@ -12,7 +12,7 @@ const EVENT_SOURCE_NON_SUPPORTED_BROWSERS = [
   'Edge > 0',
   'Firefox < 6.0',
   'ie > 0',
-  'Safari < 5'
+  'Safari < 5',
 ];
 
 module.exports = {
@@ -44,7 +44,7 @@ module.exports = {
     return new Funnel(
       path.dirname(require.resolve('event-source-polyfill/src/eventsource.js')),
       {
-        files: ['eventsource.js']
+        files: ['eventsource.js'],
       }
     );
   },
@@ -56,10 +56,10 @@ module.exports = {
         EVENT_SOURCE_NON_SUPPORTED_BROWSERS
       );
 
-      return prohibitedBrowsers.filter(version => browsers.includes(version))
+      return prohibitedBrowsers.filter((version) => browsers.includes(version))
         .length;
     }
 
     return false;
-  }
+  },
 };

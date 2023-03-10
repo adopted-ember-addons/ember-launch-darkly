@@ -4,11 +4,11 @@ import {
   default as Context,
   getCurrentContext,
   setCurrentContext,
-  removeCurrentContext
+  removeCurrentContext,
 } from 'ember-launch-darkly/-sdk/context';
 
 export default function setupLaunchDarkly(hooks) {
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     if (!this.owner) {
       throw new Error(
         'You must call one of the ember-qunit setupTest(), setupRenderingTest() or setupApplicationTest() methods before calling setupLaunchDarkly()'
@@ -18,7 +18,7 @@ export default function setupLaunchDarkly(hooks) {
     let config = this.owner.resolveRegistration('config:environment');
     let { localFlags } = {
       localFlags: {},
-      ...config.launchDarkly
+      ...config.launchDarkly,
     };
 
     localFlags = Object.keys(localFlags).reduce((acc, key) => {
@@ -40,7 +40,7 @@ export default function setupLaunchDarkly(hooks) {
     };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     delete this.withVariation;
     removeCurrentContext();
   });
