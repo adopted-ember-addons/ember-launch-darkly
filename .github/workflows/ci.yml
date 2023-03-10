@@ -1,4 +1,4 @@
-name: 'CI'
+name: CI
 
 on:
   push:
@@ -58,13 +58,15 @@ jobs:
       fail-fast: false
       matrix:
         try-scenario:
-          - ember-lts-3.20
+          - ember-lts-3.28
           - ember-lts-4.4
           - ember-release
           - ember-beta
           - ember-canary
           - ember-classic
           - ember-default-with-jquery
+          - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3
@@ -76,4 +78,4 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run Tests
-        run: yarn test:ember-compatibility ${{ matrix.scenario }}
+        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}

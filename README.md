@@ -40,15 +40,12 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 ## Installation
 
 ```bash
-$ ember install ember-launch-darkly
+ember install ember-launch-darkly
 ```
 
 ## Configuration
 
 ember-launch-darkly can be configured from `config/environment.js` as follows:
-
-
-
 
 ```js
 module.exports = function (environment) {
@@ -133,8 +130,8 @@ export default class ApplicationRoute extends Route {
       key: 'aa0ceb',
     };
 
-    let { clientSideId, ...rest } = config
-    
+    let { clientSideId, ...rest } = config;
+
     return await initialize(clientSideId, user, rest);
   }
 }
@@ -178,7 +175,7 @@ ember-launch-darkly provides a `variation` helper to check your feature flags in
 If your feature flag is a boolean based flag, you might use it in an `{{if}}` like so:
 
 ```hbs
-{{#if (variation "new-login-screen")}}
+{{#if (variation 'new-login-screen')}}
   {{login-screen}}
 {{else}}
   {{old-login-screen}}
@@ -283,7 +280,7 @@ When `mode: 'local'`, the Launch Darkly flags context is available in the JS con
 
 ## Streaming feature flags
 
-Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streamingFlags` configuration option](#streaming-flags) allows you to specify, in a couple of ways, which flags you'd like to stream.
+Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streamingFlags` configuration option](#streamingflags) allows you to specify, in a couple of ways, which flags you'd like to stream.
 
 To disable streaming completely, use the following configuration:
 
