@@ -46,7 +46,7 @@
     "broccoli-merge-trees": "^4.2.0",
     "browserslist": "^4.21.4",
     "concurrently": "^7.6.0",
-    "ember-cli": "~3.28.0",
+    "ember-cli": "~4.11.0",
     "ember-cli-babili": "^0.2.0",
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-inject-live-reload": "^2.1.0",
