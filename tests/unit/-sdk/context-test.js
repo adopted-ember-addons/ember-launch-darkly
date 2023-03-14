@@ -5,14 +5,14 @@ import Context, { setPersistedFlags } from 'ember-launch-darkly/-sdk/context';
 module('Unit | SDK | Context', function () {
   test('constructor', function (assert) {
     let context = new Context({});
-    assert.equal(
+    assert.strictEqual(
       Object.keys(context.allFlags).length,
       0,
       'Initialize with no flags'
     );
 
     context = new Context({ foo: true });
-    assert.equal(
+    assert.strictEqual(
       Object.keys(context.allFlags).length,
       1,
       'Initialize with flags'
@@ -22,7 +22,7 @@ module('Unit | SDK | Context', function () {
   test('#updateFlags', function (assert) {
     let context = new Context({ foo: true, bar: true });
 
-    assert.equal(
+    assert.strictEqual(
       Object.keys(context.allFlags).length,
       2,
       'Initialize with flags'
@@ -44,7 +44,7 @@ module('Unit | SDK | Context', function () {
   test('#replaceFlags', function (assert) {
     let context = new Context({ foo: true, bar: true });
 
-    assert.equal(
+    assert.strictEqual(
       Object.keys(context.allFlags).length,
       2,
       'Initialize with flags'
@@ -120,7 +120,7 @@ module('Unit | SDK | Context', function () {
     let context = new Context({ foo: true, bar: false });
 
     assert.true(context.get('foo'), 'Initial flag state');
-    assert.equal(
+    assert.strictEqual(
       context.get('moo', 'bah'),
       'bah',
       `Return default value if flag doesn't exist`
