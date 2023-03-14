@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 
-import Context from 'ember-launch-darkly/-sdk/context';
+import Context, { setPersistedFlags } from 'ember-launch-darkly/-sdk/context';
 
 module('Unit | SDK | Context', function () {
   test('constructor', function (assert) {
@@ -155,5 +155,37 @@ module('Unit | SDK | Context', function () {
       key: 'local-mode-no-user-specified',
     });
     assert.deepEqual(new Context({}, client).user, { key: 'foo' });
+  });
+
+  module('#persistence', function (innerHooks) {
+    innerHooks.afterEach(function () {
+      window.localStorage.removeItem('ember-launch-darkly');
+    });
+
+    test('#persist / persisted', function (assert) {
+      let context = new Context({ foo: true, bar: false });
+      context.persist();
+
+      assert.deepEqual(
+        context.persisted,
+        { foo: true, bar: false },
+        'Flags persisted in local storage'
+      );
+    });
+
+    test('#setPersistedFlags', function (assert) {
+      window.localStorage.setItem(
+        'ember-launch-darkly',
+        JSON.stringify({ foo: true, bar: false })
+      );
+      let context = new Context({ foo: false, bar: true });
+      setPersistedFlags(context);
+
+      assert.deepEqual(
+        context.allFlags,
+        { foo: true, bar: false },
+        'Persisted flags were set to context'
+      );
+    });
   });
 });
