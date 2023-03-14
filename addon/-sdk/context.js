@@ -118,5 +118,5 @@ export {
   removeCurrentContext,
   setCurrentContext,
   setPersistedFlags,
-  Context as default
+  Context as default,
 };

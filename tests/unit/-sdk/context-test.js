@@ -2,8 +2,8 @@ import { module, test } from 'qunit';
 
 import Context, { setPersistedFlags } from 'ember-launch-darkly/-sdk/context';
 
-module('Unit | SDK | Context', function() {
-  test('constructor', function(assert) {
+module('Unit | SDK | Context', function () {
+  test('constructor', function (assert) {
     let context = new Context({});
     assert.equal(
       Object.keys(context.allFlags).length,
@@ -19,7 +19,7 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('#updateFlags', function(assert) {
+  test('#updateFlags', function (assert) {
     let context = new Context({ foo: true, bar: true });
 
     assert.equal(
@@ -35,13 +35,13 @@ module('Unit | SDK | Context', function() {
       {
         foo: true,
         bar: false,
-        baz: true
+        baz: true,
       },
       'Update flags'
     );
   });
 
-  test('#replaceFlags', function(assert) {
+  test('#replaceFlags', function (assert) {
     let context = new Context({ foo: true, bar: true });
 
     assert.equal(
@@ -56,13 +56,13 @@ module('Unit | SDK | Context', function() {
       context.allFlags,
       {
         bar: false,
-        baz: true
+        baz: true,
       },
       'Replace flags'
     );
   });
 
-  test('#enable', function(assert) {
+  test('#enable', function (assert) {
     let context = new Context({ foo: true, bar: false });
 
     assert.deepEqual(
@@ -80,7 +80,7 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('#disable', function(assert) {
+  test('#disable', function (assert) {
     let context = new Context({ foo: true, bar: false });
 
     assert.deepEqual(
@@ -98,7 +98,7 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('#set', function(assert) {
+  test('#set', function (assert) {
     let context = new Context({ foo: true, bar: false });
 
     assert.deepEqual(
@@ -116,10 +116,10 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('#get', function(assert) {
+  test('#get', function (assert) {
     let context = new Context({ foo: true, bar: false });
 
-    assert.equal(context.get('foo'), true, 'Initial flag state');
+    assert.true(context.get('foo'), 'Initial flag state');
     assert.equal(
       context.get('moo', 'bah'),
       'bah',
@@ -127,7 +127,7 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('allFlags', function(assert) {
+  test('allFlags', function (assert) {
     let context = new Context({ foo: true, bar: false });
 
     let flags = context.allFlags;
@@ -139,24 +139,20 @@ module('Unit | SDK | Context', function() {
     );
   });
 
-  test('isLocal', function(assert) {
-    assert.equal(new Context({}).isLocal, true, 'Operating in local mode');
-    assert.equal(
-      new Context({}, {}).isLocal,
-      false,
-      'Operating in remote mode'
-    );
+  test('isLocal', function (assert) {
+    assert.true(new Context({}).isLocal, 'Operating in local mode');
+    assert.false(new Context({}, {}).isLocal, 'Operating in remote mode');
   });
 
-  test('user', function(assert) {
+  test('user', function (assert) {
     let client = {
       getUser() {
         return { key: 'foo' };
-      }
+      },
     };
 
     assert.deepEqual(new Context({}).user, {
-      key: 'local-mode-no-user-specified'
+      key: 'local-mode-no-user-specified',
     });
     assert.deepEqual(new Context({}, client).user, { key: 'foo' });
   });

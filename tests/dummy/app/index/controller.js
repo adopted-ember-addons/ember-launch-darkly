@@ -8,4 +8,3 @@ export default class IndexController extends Controller {
     return capitalize(variation('shape'));
   }
 }
-

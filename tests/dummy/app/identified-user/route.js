@@ -8,8 +8,8 @@ export default class IdentifiedUserRoute extends Route {
       key: '666',
       email: 'joe@example.com',
       custom: {
-        fullName: 'Joe Bloggs'
-      }
+        fullName: 'Joe Bloggs',
+      },
     };
 
     await identify(user);

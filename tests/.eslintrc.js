@@ -1,5 +1,5 @@
 module.exports = {
   globals: {
-    withVariation: true
-  }
+    withVariation: true,
+  },
 };
