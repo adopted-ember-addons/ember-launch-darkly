@@ -278,6 +278,21 @@ When `mode: 'local'`, the Launch Darkly flags context is available in the JS con
 > window.__LD__.user // return the user that the client has been initialized with
 ```
 
+### Persisting local feature flags
+
+When `mode: 'local'` there is also an option to 'persist' the flags to localStorage. This could be useful if you don't want to enable a flag yet for other users, but need it to be enabled for your own scenario.
+
+```js
+//setting the flag as usual
+> window.__LD__.set('stringFlag', 'goodbye')
+
+// this persists all the set flags to localStorage, so when the page is refreshed they are loaded from there
+> window.__LD__.persist()
+
+//to unset the flags you can use
+> window.__LD__.resetPersistence()
+```
+
 ## Streaming feature flags
 
 Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streamingFlags` configuration option](#streamingflags) allows you to specify, in a couple of ways, which flags you'd like to stream.
