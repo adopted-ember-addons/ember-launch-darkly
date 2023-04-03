@@ -1,5 +1,6 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-maps-and-sets';
+import window from 'ember-window-mock';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 

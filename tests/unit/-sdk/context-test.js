@@ -1,8 +1,11 @@
 import { module, test } from 'qunit';
+import window from 'ember-window-mock';
+import { setupWindowMock } from 'ember-window-mock/test-support';
 
 import Context, { setPersistedFlags } from 'ember-launch-darkly/-sdk/context';
 
-module('Unit | SDK | Context', function () {
+module('Unit | SDK | Context', function (hooks) {
+  setupWindowMock(hooks);
   test('constructor', function (assert) {
     let context = new Context({});
     assert.strictEqual(
