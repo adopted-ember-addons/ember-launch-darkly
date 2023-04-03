@@ -33,7 +33,7 @@ export default Service.extend(Evented, {
     }
     
     if (!user.anonymous) {
-      assert('user.key must be specified in initilize payload if not anonymous ', user.key );
+      assert('user.key must be specified in initialize payload if not anonymous', user.key);
 
       if (!user.key) {
         warn('user.key not specified in initialize payload. Defaulting all feature flags to "false"', false, { id: 'ember-launch-darkly.user-key-not-specified' });
