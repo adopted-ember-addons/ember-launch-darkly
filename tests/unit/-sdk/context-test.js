@@ -146,7 +146,7 @@ module('Unit | SDK | Context', function () {
 
   test('user', function (assert) {
     let client = {
-      getUser() {
+      getContext() {
         return { key: 'foo' };
       },
     };

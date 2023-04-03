@@ -109,7 +109,7 @@ class Context {
       return { key: 'local-mode-no-user-specified' };
     }
 
-    return this.client.getUser();
+    return this.client.getContext();
   }
 }
 
