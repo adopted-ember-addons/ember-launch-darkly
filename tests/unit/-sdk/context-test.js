@@ -149,7 +149,7 @@ module('Unit | SDK | Context', function (hooks) {
 
   test('user', function (assert) {
     let client = {
-      getUser() {
+      getContext() {
         return { key: 'foo' };
       },
     };
