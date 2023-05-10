@@ -51,6 +51,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Run Tests
         run: yarn test:ember
+        working-directory: test-app
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
