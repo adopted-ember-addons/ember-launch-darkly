@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.0.0",
+    "ember-window-mock": "^0.8.1",
     "launchdarkly-js-client-sdk": "^3.1.1",
     "tracked-maps-and-sets": "^3.0.2"
   },

@@ -8,6 +8,7 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 |                                       Addon version                                        |                             Ember version                             |                                                                                             |
 | :----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+|  [v3.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0)   | >= [v3.28](https://github.com/emberjs/ember.js/releases/tag/v3.28.0) and [v4.4](https://github.com/emberjs/ember.js/releases/tag/v4.4.0)  |                                     [README](README.md)                                     |
 |  [v2.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0)   | >= [v3.17](https://github.com/emberjs/ember.js/releases/tag/v3.17.3)  |                                     [README](README.md)                                     |
 | <= [v1.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0) | <= [v3.16](https://github.com/emberjs/ember.js/releases/tag/v3.16.10) | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v1.0.0/README.md) |
 
@@ -278,6 +279,21 @@ When `mode: 'local'`, the Launch Darkly flags context is available in the JS con
 > window.__LD__.user // return the user that the client has been initialized with
 ```
 
+### Persisting local feature flags
+
+When `mode: 'local'` there is also an option to 'persist' the flags to localStorage. This could be useful if you don't want to enable a flag yet for other users, but need it to be enabled for your own scenario.
+
+```js
+//setting the flag as usual
+> window.__LD__.set('stringFlag', 'goodbye')
+
+// this persists all the set flags to localStorage, so when the page is refreshed they are loaded from there
+> window.__LD__.persist()
+
+//to unset the flags you can use
+> window.__LD__.resetPersistence()
+```
+
 ## Streaming feature flags
 
 Launch Darkly supports the ability to subscribe to changes to feature flags so that apps can react in real-time to these changes. The [`streamingFlags` configuration option](#streamingflags) allows you to specify, in a couple of ways, which flags you'd like to stream.
@@ -436,3 +452,13 @@ module('Integration | Component | foo', function (hooks) {
 v2.0 of the addon is built for Ember Octane (>= v3.17) and beyond. It contains breaking changes from the previous releases. If you would like to upgrade from v1.0 or earlier, please following the instructions in [UPGRADING_TO_v2.x.md](UPGRADING_TO_v2.x.md) file.
 
 <p align="center"><sub>Made with :heart: by The Ember Launch Darkly Team</sub></p>
+
+## Upgrading to v3.0
+
+Below you can find a list of deprecations, most of them should already be working correctly with modern ember apps:
+- Dropped node support below v16
+- Dropped ember support below LTS v3.28 and 4.4
+
+### Deprecations
+
+- The `Context` exposed an undocumented getter `user` which returned the value of Launchdarkly's `getUser()` helper. With [Launchdarkly's v3 release](https://github.com/launchdarkly/js-client-sdk/blob/main/CHANGELOG.md#changed-breaking-changes-from-3x), `getUser()` has been removed in favor of `getContext()`. Both should return the same, so for now we replaced it to just return `getContext()`. We still recommend using the native helpers as much as possible since the `client` is exposed through the addon. This avoids breaking changes in the addon in the future. **We will remove the `user` getter in the next major release.**

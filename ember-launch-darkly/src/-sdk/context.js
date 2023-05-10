@@ -1,5 +1,6 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-maps-and-sets';
+import window from 'ember-window-mock';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 
@@ -109,7 +110,7 @@ class Context {
       return { key: 'local-mode-no-user-specified' };
     }
 
-    return this.client.getUser();
+    return this.client.getContext();
   }
 }
 
