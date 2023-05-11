@@ -1,0 +1,9 @@
+<br />
+<br />
+
+{{#let (component (ensure-safe-component this.shape)) as |Shape|}}
+  <Shape
+    class={{if (variation "make-shape-blink") "blink" "foo"}}
+    @color={{variation "shape-background-color"}}
+  />
+{{/let}}

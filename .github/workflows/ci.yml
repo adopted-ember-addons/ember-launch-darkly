@@ -7,6 +7,10 @@ on:
       - 'v*'
   pull_request: {}
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 env:
   NODE_VERSION: 16
 
@@ -47,6 +51,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Run Tests
         run: yarn test:ember
+        working-directory: test-app
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -63,7 +68,6 @@ jobs:
           - ember-release
           - ember-beta
           - ember-canary
-          - ember-classic
           - embroider-safe
           - embroider-optimized
 
@@ -77,4 +81,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run Tests
-        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        run: yarn ember try:one ${{ matrix.try-scenario }}
+        working-directory: test-app
