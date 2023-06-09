@@ -1,6 +1,6 @@
 {
   "name": "ember-launch-darkly",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A modern Ember addon to wrap the Launch Darkly service",
   "keywords": [
     "ember-addon"
@@ -45,12 +45,12 @@
     "concurrently": "^7.6.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-ember": "^11.4.7",
+    "eslint-plugin-ember": "^11.8.0",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-qunit": "^7.3.4",
     "prettier": "^2.8.8",
-    "rollup": "^3.19.1",
+    "rollup": "^3.23.1",
     "rollup-plugin-copy": "3.4.0"
   },
   "peerDependencies": {
