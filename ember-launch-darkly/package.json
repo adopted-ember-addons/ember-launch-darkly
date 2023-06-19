@@ -43,7 +43,7 @@
     "@rollup/plugin-babel": "^6.0.3",
     "babel-eslint": "^10.1.0",
     "concurrently": "^7.6.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-ember": "^11.8.0",
     "eslint-plugin-n": "^15.6.1",
