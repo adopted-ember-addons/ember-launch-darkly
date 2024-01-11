@@ -40,7 +40,8 @@ export default function setupLaunchDarkly(hooks) {
     };
   });
 
-  hooks.afterEach(function () {
+  hooks.afterEach(async function () {
+    await settled();
     delete this.withVariation;
     removeCurrentContext();
   });
