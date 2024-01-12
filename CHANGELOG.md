@@ -1,3 +1,13 @@
+
+## v3.1.1 (2024-01-12)
+
+#### :bug: Bug Fix
+* [#527](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/527) fix: update peerDeps to include ember-source v5 ([@aklkv](https://github.com/aklkv))
+* [#526](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/526) fix: make sure renderers are settled before tearing down the context ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## v3.1.0 (2023-05-12)
 
 ## v3.1.0-beta.1 (2023-05-11)
