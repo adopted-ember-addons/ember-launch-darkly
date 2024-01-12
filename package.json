@@ -35,9 +35,7 @@
       "@release-it-plugins/workspaces": true
     },
     "git": {
-      "tagName": "v${version}",
-      "pushRepo": "upstream",
-      "requireUpstream": false
+      "tagName": "v${version}"
     },
     "github": {
       "release": true,
