@@ -131,7 +131,7 @@ export default class ApplicationRoute extends Route {
       key: 'aa0ceb',
     };
 
-    let { clientSideId, ...rest } = config;
+    let { launchDarkly: { clientSideId }, ...rest } = config;
 
     return await initialize(clientSideId, user, rest);
   }
