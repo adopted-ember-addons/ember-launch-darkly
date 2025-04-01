@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly';
 
 module('Integration | Helper | variation', function (hooks) {
   setupRenderingTest(hooks);

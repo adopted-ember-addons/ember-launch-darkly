@@ -370,7 +370,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly'';
 
 module('Acceptance | Homepage', function (hooks) {
   setupApplicationTest(hooks);
@@ -421,7 +421,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+import setupLaunchDarkly from 'ember-launch-darkly/test-support/setup-launch-darkly';
 
 module('Integration | Component | foo', function (hooks) {
   setupRenderingTest(hooks);
