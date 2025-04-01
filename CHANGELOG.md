@@ -2,6 +2,17 @@
 
 ## Release (2025-04-01)
 
+* ember-launch-darkly 4.0.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#573](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/573) Add correct repository ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+## Release (2025-04-01)
+
 * ember-launch-darkly 4.0.0 (major)
 
 #### :boom: Breaking Change
