@@ -1,0 +1,3 @@
+packages:
+  - 'ember-launch-darkly'
+  - 'test-app'

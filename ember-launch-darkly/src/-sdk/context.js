@@ -1,5 +1,5 @@
 import { isNone } from '@ember/utils';
-import { TrackedMap } from 'tracked-maps-and-sets';
+import { TrackedMap } from 'tracked-built-ins';
 import window from 'ember-window-mock';
 
 const STORAGE_KEY = 'ember-launch-darkly';
@@ -22,7 +22,7 @@ function getCurrentContext() {
 
   if (!context) {
     throw new Error(
-      'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `variation`.'
+      'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `variation`.',
     );
   }
 

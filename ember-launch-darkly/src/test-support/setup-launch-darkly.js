@@ -5,13 +5,13 @@ import {
   getCurrentContext,
   setCurrentContext,
   removeCurrentContext,
-} from 'ember-launch-darkly/-sdk/context';
+} from '../-sdk/context.js';
 
 export default function setupLaunchDarkly(hooks) {
   hooks.beforeEach(function () {
     if (!this.owner) {
       throw new Error(
-        'You must call one of the ember-qunit setupTest(), setupRenderingTest() or setupApplicationTest() methods before calling setupLaunchDarkly()'
+        'You must call one of the ember-qunit setupTest(), setupRenderingTest() or setupApplicationTest() methods before calling setupLaunchDarkly()',
       );
     }
 

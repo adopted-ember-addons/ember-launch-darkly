@@ -6,7 +6,4 @@ export default class Router extends EmberRouter {
   rootURL = config.rootURL;
 }
 
-Router.map(function () {
-  this.route('identified-user');
-  this.route('streaming-flags');
-});
+Router.map(function () {});

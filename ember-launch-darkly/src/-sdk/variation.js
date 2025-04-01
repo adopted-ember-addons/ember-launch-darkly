@@ -1,4 +1,4 @@
-import { getCurrentContext } from './context';
+import { getCurrentContext } from './context.js';
 
 export function variation(key, defaultValue = null) {
   let context = getCurrentContext();

@@ -1,3 +1,3 @@
-export { initialize } from './initialize';
-export { identify } from './identify';
-export { variation } from './variation';
+export { initialize } from './initialize.js';
+export { identify } from './identify.js';
+export { variation } from './variation.js';

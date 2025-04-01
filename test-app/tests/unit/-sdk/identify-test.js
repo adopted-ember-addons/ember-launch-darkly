@@ -27,7 +27,7 @@ module('Unit | SDK | Identify', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       flags,
-      'User identified and flags updated'
+      'User identified and flags updated',
     );
   });
 
@@ -45,7 +45,7 @@ module('Unit | SDK | Identify', function (hooks) {
           {
             key: 'cheese',
           },
-          'Identify on LD client called'
+          'Identify on LD client called',
         );
 
         return {
@@ -67,7 +67,7 @@ module('Unit | SDK | Identify', function (hooks) {
         foo: true,
         bar: false,
       },
-      'User identified and flags updated'
+      'User identified and flags updated',
     );
   });
 });
