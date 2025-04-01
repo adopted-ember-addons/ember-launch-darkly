@@ -1,4 +1,4 @@
-import { getCurrentContext } from './context';
+import { getCurrentContext } from './context.js';
 
 export async function identify(user, hash = null) {
   let context = getCurrentContext();

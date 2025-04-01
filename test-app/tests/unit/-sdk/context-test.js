@@ -11,14 +11,14 @@ module('Unit | SDK | Context', function (hooks) {
     assert.strictEqual(
       Object.keys(context.allFlags).length,
       0,
-      'Initialize with no flags'
+      'Initialize with no flags',
     );
 
     context = new Context({ foo: true });
     assert.strictEqual(
       Object.keys(context.allFlags).length,
       1,
-      'Initialize with flags'
+      'Initialize with flags',
     );
   });
 
@@ -28,7 +28,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.strictEqual(
       Object.keys(context.allFlags).length,
       2,
-      'Initialize with flags'
+      'Initialize with flags',
     );
 
     context.updateFlags({ bar: false, baz: true });
@@ -40,7 +40,7 @@ module('Unit | SDK | Context', function (hooks) {
         bar: false,
         baz: true,
       },
-      'Update flags'
+      'Update flags',
     );
   });
 
@@ -50,7 +50,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.strictEqual(
       Object.keys(context.allFlags).length,
       2,
-      'Initialize with flags'
+      'Initialize with flags',
     );
 
     context.replaceFlags({ bar: false, baz: true });
@@ -61,7 +61,7 @@ module('Unit | SDK | Context', function (hooks) {
         bar: false,
         baz: true,
       },
-      'Replace flags'
+      'Replace flags',
     );
   });
 
@@ -71,7 +71,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: true, bar: false },
-      'Initial flag state'
+      'Initial flag state',
     );
 
     context.enable('bar');
@@ -79,7 +79,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: true, bar: true },
-      'Updated flag state'
+      'Updated flag state',
     );
   });
 
@@ -89,7 +89,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: true, bar: false },
-      'Initial flag state'
+      'Initial flag state',
     );
 
     context.disable('foo');
@@ -97,7 +97,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: false, bar: false },
-      'Updated flag state'
+      'Updated flag state',
     );
   });
 
@@ -107,7 +107,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: true, bar: false },
-      'Initial flag state'
+      'Initial flag state',
     );
 
     context.set('foo', 'baz');
@@ -115,7 +115,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       context.allFlags,
       { foo: 'baz', bar: false },
-      'Updated flag state'
+      'Updated flag state',
     );
   });
 
@@ -126,7 +126,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.strictEqual(
       context.get('moo', 'bah'),
       'bah',
-      `Return default value if flag doesn't exist`
+      `Return default value if flag doesn't exist`,
     );
   });
 
@@ -138,7 +138,7 @@ module('Unit | SDK | Context', function (hooks) {
     assert.deepEqual(
       flags,
       { foo: true, bar: false },
-      'All flags accounted for'
+      'All flags accounted for',
     );
   });
 
@@ -172,14 +172,14 @@ module('Unit | SDK | Context', function (hooks) {
       assert.deepEqual(
         context.persisted,
         { foo: true, bar: false },
-        'Flags persisted in local storage'
+        'Flags persisted in local storage',
       );
     });
 
     test('#setPersistedFlags', function (assert) {
       window.localStorage.setItem(
         'ember-launch-darkly',
-        JSON.stringify({ foo: true, bar: false })
+        JSON.stringify({ foo: true, bar: false }),
       );
       let context = new Context({ foo: false, bar: true });
       setPersistedFlags(context);
@@ -187,7 +187,7 @@ module('Unit | SDK | Context', function (hooks) {
       assert.deepEqual(
         context.allFlags,
         { foo: true, bar: false },
-        'Persisted flags were set to context'
+        'Persisted flags were set to context',
       );
     });
   });

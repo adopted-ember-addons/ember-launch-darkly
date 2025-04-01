@@ -1,49 +1,23 @@
 {
-  "name": "ember-launch-darkly",
-  "version": "3.1.1",
   "private": true,
-  "workspaces": [
-    "ember-launch-darkly",
-    "test-app"
-  ],
-  "repository": "https://github.com/adopted-ember-addons/ember-launch-darkly",
+  "repository": "",
   "license": "MIT",
-  "author": "The Ember Launch Darkly Team",
+  "author": "",
   "scripts": {
-    "build": "yarn workspace ember-launch-darkly run build",
-    "lint": "yarn workspaces run lint",
-    "lint:fix": "yarn workspaces run lint:fix",
-    "prepare": "yarn build",
-    "start": "concurrently 'npm:start:*' --restart-after 5000 --prefix-colors cyan,white,yellow",
-    "start:addon": "yarn workspace ember-launch-darkly run start",
-    "start:test": "yarn workspace test-app run start",
-    "test": "yarn workspaces run test"
+    "build": "pnpm --filter ember-launch-darkly build",
+    "lint": "pnpm --filter '*' lint",
+    "lint:fix": "pnpm --filter '*' lint:fix",
+    "prepare": "pnpm build",
+    "start": "concurrently 'pnpm:start:*' --restart-after 5000 --prefixColors auto",
+    "start:addon": "pnpm --filter ember-launch-darkly start --no-watch.clearScreen",
+    "start:test-app": "pnpm --filter test-app start",
+    "test": "pnpm --filter '*' test",
+    "test:ember": "pnpm --filter '*' test:ember"
   },
+  "packageManager": "pnpm@10.0.0",
   "devDependencies": {
-    "@release-it-plugins/lerna-changelog": "^6.0.0",
-    "@release-it-plugins/workspaces": "^4.0.0",
-    "concurrently": "^8.2.2",
-    "prettier": "^2.8.4",
-    "release-it": "^16.0.0"
-  },
-  "release-it": {
-    "plugins": {
-      "@release-it-plugins/lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": false
-      },
-      "@release-it-plugins/workspaces": true
-    },
-    "git": {
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
-    },
-    "npm": false
-  },
-  "volta": {
-    "node": "16.20.2"
+    "concurrently": "^9.1.2",
+    "prettier": "^3.0.3",
+    "prettier-plugin-ember-template-tag": "^2.0.2"
   }
 }

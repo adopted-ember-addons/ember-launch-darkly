@@ -1,1 +1,1 @@
-export { default as setupLaunchDarkly } from './setup-launch-darkly';
+export { default as setupLaunchDarkly } from './setup-launch-darkly.js';

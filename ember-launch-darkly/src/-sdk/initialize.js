@@ -3,7 +3,7 @@ import { warn } from '@ember/debug';
 
 import * as LDClient from 'launchdarkly-js-client-sdk';
 
-import Context, { getCurrentContext, setCurrentContext } from './context';
+import Context, { getCurrentContext, setCurrentContext } from './context.js';
 
 export function shouldUpdateFlag(key, streamingConfig) {
   if (streamingConfig === true) {
@@ -32,7 +32,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
     if (getCurrentContext()) {
       return;
     }
-  } catch (_) {
+  } catch {
     // `initialize` has not been run yet and so the current context doesn't
     // exist. Let's go ahead and create one.
   }
@@ -48,7 +48,7 @@ export async function initialize(clientSideId, user = {}, options = {}) {
     warn(
       `"config.mode" must be set to either "local" or "remote". Defaulting to "local". (Invalid value: "${mode}")`,
       false,
-      { id: 'ember-launch-darkly.invalid-config-property.mode' }
+      { id: 'ember-launch-darkly.invalid-config-property.mode' },
     );
 
     mode = 'local';
