@@ -6,11 +6,12 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 ## Compatibility
 
-|                                       Addon version                                        |                             Ember version                             |                                                                                             |
-| :----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
-|  [v3.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0)   | >= [v3.28](https://github.com/emberjs/ember.js/releases/tag/v3.28.0) and [v4.4](https://github.com/emberjs/ember.js/releases/tag/v4.4.0)  |                                     [README](README.md)                                     |
-|  [v2.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v2.0.0)   | >= [v3.17](https://github.com/emberjs/ember.js/releases/tag/v3.17.3)  |                                     [README](README.md)                                     |
-| <= [v1.0](https://github.com/adopted-ember-addons/ember-launch-darkly/releases/tag/v1.0.0) | <= [v3.16](https://github.com/emberjs/ember.js/releases/tag/v3.16.10) | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v1.0.0/README.md) |
+| Addon version | Ember version     |                                                                                             |
+|---------------|-------------------|---------------------------------------------------------------------------------------------|
+| v4.0          | >= v4.12          | [README](README.md)                                                                         |
+| v3.0          | >= v3.28 and v4.4 | [README](README.md)                                                                         |
+| v2.0          | >= v3.17          | [README](README.md)                                                                         |
+| <= v1.0       | <= v3.16          | [README](https://github.com/adopted-ember-addons/ember-launch-darkly/blob/v1.0.0/README.md) |
 
 ## Table of Contents
 
