@@ -1,6 +1,9 @@
 {
   "private": true,
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:adopted-ember-addons/ember-launch-darkly.git"
+  },
   "license": "MIT",
   "author": "",
   "scripts": {
@@ -14,10 +17,11 @@
     "test": "pnpm --filter '*' test",
     "test:ember": "pnpm --filter '*' test:ember"
   },
-  "packageManager": "pnpm@10.0.0",
   "devDependencies": {
     "concurrently": "^9.1.2",
     "prettier": "^3.0.3",
-    "prettier-plugin-ember-template-tag": "^2.0.2"
-  }
+    "prettier-plugin-ember-template-tag": "^2.0.2",
+    "release-plan": "^0.16.0"
+  },
+  "packageManager": "pnpm@10.0.0"
 }
