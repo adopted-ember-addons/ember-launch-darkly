@@ -1,0 +1,18 @@
+{
+  "solution": {
+    "ember-launch-darkly": {
+      "impact": "major",
+      "oldVersion": "3.1.1",
+      "newVersion": "4.0.0",
+      "tagName": "latest",
+      "constraints": [
+        {
+          "impact": "major",
+          "reason": "Appears in changelog section :boom: Breaking Change"
+        }
+      ],
+      "pkgJSONPath": "./ember-launch-darkly/package.json"
+    }
+  },
+  "description": "## Release (2025-04-01)\n\n* ember-launch-darkly 4.0.0 (major)\n\n#### :boom: Breaking Change\n* `ember-launch-darkly`\n  * [#570](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/570) Drop support for Ember < 4.12 ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+}
