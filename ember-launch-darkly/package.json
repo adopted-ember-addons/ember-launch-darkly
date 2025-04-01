@@ -5,7 +5,10 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:adopted-ember-addons/ember-launch-darkly.git"
+  },
   "license": "MIT",
   "author": "",
   "exports": {
