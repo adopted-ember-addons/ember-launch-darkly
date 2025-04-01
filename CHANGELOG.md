@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-04-01)
+
+* ember-launch-darkly 4.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-launch-darkly`
+  * [#570](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/570) Drop support for Ember < 4.12 ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 
 ## v3.1.1 (2024-01-12)
 
