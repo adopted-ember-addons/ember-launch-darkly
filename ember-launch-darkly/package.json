@@ -63,6 +63,7 @@
     "prettier-plugin-ember-template-tag": "^2.0.4",
     "rollup": "^4.39.0",
     "rollup-plugin-copy": "^3.5.0",
+    "tracked-built-ins": "^4.0.0",
     "webpack": "^5.98.0"
   },
   "peerDependencies": {
