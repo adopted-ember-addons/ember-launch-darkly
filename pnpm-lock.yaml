@@ -39,9 +39,6 @@ importers:
       launchdarkly-js-client-sdk:
         specifier: ^3.1.1
         version: 3.5.0
-      tracked-built-ins:
-        specifier: ^4.0.0
-        version: 4.0.0(@babel/core@7.26.10)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
