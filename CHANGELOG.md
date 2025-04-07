@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2025-04-07)
+
+* ember-launch-darkly 5.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-launch-darkly`
+  * [#592](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/592) Make @ember/test-helpers a peerDep ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+  * [#591](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/591) Make tracked-built-ins a peerDep ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2025-04-01)
 
 * ember-launch-darkly 4.0.1 (patch)
