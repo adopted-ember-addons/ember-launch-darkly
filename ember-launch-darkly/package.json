@@ -1,6 +1,6 @@
 {
   "name": "ember-launch-darkly",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "The default blueprint for Embroider v2 addons.",
   "keywords": [
     "ember-addon"
