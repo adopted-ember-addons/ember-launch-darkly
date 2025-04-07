@@ -24,9 +24,6 @@ importers:
 
   ember-launch-darkly:
     dependencies:
-      '@ember/test-helpers':
-        specifier: ^3.2.0
-        version: 3.3.1(efbedc71a02e03a5e43ae9f37a15fc65)
       '@embroider/addon-shim':
         specifier: ^1.8.9
         version: 1.9.0
@@ -49,6 +46,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.25.6
         version: 7.27.0
+      '@ember/test-helpers':
+        specifier: ^5.2.1
+        version: 5.2.1(2253a6e55e078ea1367153318ebc9b35)
       '@embroider/addon-dev':
         specifier: ^8.0.1
         version: 8.0.1(rollup@4.39.0)
@@ -122,7 +122,7 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       '@ember/test-helpers':
-        specifier: ^5.1.0
+        specifier: ^5.2.1
         version: 5.2.1(2253a6e55e078ea1367153318ebc9b35)
       '@embroider/macros':
         specifier: ^1.17.1
@@ -1016,20 +1016,10 @@ packages:
     resolution: {integrity: sha512-a1OQ+w9vDvMXd9BNA9r779yr8MAPguGaMGbIeTMPWACeWBdD6bACBB5iKE3gNyrJAYKMq2wab6BKmRFS3Qw3hw==}
     engines: {node: 10.* || 12.* || >= 14}
 
-  '@ember/test-helpers@3.3.1':
-    resolution: {integrity: sha512-h4uFBy4pquBtHsHI+tx9S0wtMmn1L+8dkXiDiyoqG1+3e0Awk6GBujiFM9s4ANq6wC8uIhC3wEFyts10h2OAoQ==}
-    engines: {node: 16.* || >= 18}
-    peerDependencies:
-      ember-source: ^4.0.0 || ^5.0.0
-
   '@ember/test-helpers@5.2.1':
     resolution: {integrity: sha512-hxY3379AvMolYnQsi9pqrR7tup/SmE/9zzkpiLnu2VTmrW8xsgV7MrXF1a3xw2twLWPSzVF8T3VDPyvuHbvqfw==}
     peerDependencies:
       ember-source: '>= 4.0.0'
-
-  '@ember/test-waiters@3.1.0':
-    resolution: {integrity: sha512-bb9h95ktG2wKY9+ja1sdsFBdOms2lB19VWs8wmNpzgHv1NCetonBoV5jHBV4DHt0uS1tg9z66cZqhUVlYs96KQ==}
-    engines: {node: 10.* || 12.* || >= 14.*}
 
   '@ember/test-waiters@4.1.0':
     resolution: {integrity: sha512-qRFA0OumYv7/C3hmx4ETC2dlPzyD549D+naPhcrnV2xCnc3AZlKouWyoFnNF+Cje918kRp9aEefVgV3vmGL5Bg==}
@@ -7924,28 +7914,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ember/test-helpers@3.3.1(efbedc71a02e03a5e43ae9f37a15fc65)':
-    dependencies:
-      '@ember/test-waiters': 3.1.0
-      '@embroider/macros': 1.16.12
-      '@simple-dom/interface': 1.4.0
-      broccoli-debug: 0.6.5
-      broccoli-funnel: 3.0.8
-      dom-element-descriptors: 0.5.1
-      ember-auto-import: 2.10.0(webpack@5.98.0)
-      ember-cli-babel: 8.2.0(@babel/core@7.26.10)
-      ember-cli-htmlbars: 6.3.0
-      ember-source: 5.12.0(6260bef743aa6bb9840196cc5f627706)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-      - webpack
-
   '@ember/test-helpers@5.2.1(2253a6e55e078ea1367153318ebc9b35)':
     dependencies:
       '@ember/test-waiters': 4.1.0
-      '@embroider/addon-shim': 1.9.0
+      '@embroider/addon-shim': 1.10.0
       '@embroider/macros': 1.17.1
       '@simple-dom/interface': 1.4.0
       decorator-transforms: 2.3.0(@babel/core@7.26.10)
@@ -7954,15 +7926,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
-      - supports-color
-
-  '@ember/test-waiters@3.1.0':
-    dependencies:
-      calculate-cache-key-for-tree: 2.0.0
-      ember-cli-babel: 7.26.11
-      ember-cli-version-checker: 5.1.2
-      semver: 7.7.1
-    transitivePeerDependencies:
       - supports-color
 
   '@ember/test-waiters@4.1.0':
