@@ -25,8 +25,8 @@ importers:
   ember-launch-darkly:
     dependencies:
       '@embroider/addon-shim':
-        specifier: ^1.8.9
-        version: 1.9.0
+        specifier: ^1.10.0
+        version: 1.10.0
       decorator-transforms:
         specifier: ^2.2.2
         version: 2.3.0(@babel/core@7.26.10)
@@ -1036,10 +1036,6 @@ packages:
 
   '@embroider/addon-shim@1.10.0':
     resolution: {integrity: sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==}
-    engines: {node: 12.* || 14.* || >= 16}
-
-  '@embroider/addon-shim@1.9.0':
-    resolution: {integrity: sha512-fMzayl/licUL8VRAy4qXROKcYvHwUbV8aTh4m97L5/MRuVpxbcAy92DGGTqx5OBKCSQN3gMg+sUKeE6AviefpQ==}
     engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/core@4.0.1':
@@ -7972,15 +7968,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@embroider/addon-shim@1.9.0':
-    dependencies:
-      '@embroider/shared-internals': 2.9.0
-      broccoli-funnel: 3.0.8
-      common-ancestor-path: 1.0.1
-      semver: 7.7.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@embroider/core@4.0.1':
     dependencies:
       '@babel/core': 7.26.10
@@ -10854,7 +10841,7 @@ snapshots:
 
   ember-modifier@4.2.0(2253a6e55e078ea1367153318ebc9b35):
     dependencies:
-      '@embroider/addon-shim': 1.9.0
+      '@embroider/addon-shim': 1.10.0
       decorator-transforms: 2.3.0(@babel/core@7.26.10)
       ember-cli-normalize-entity-name: 1.0.0
       ember-cli-string-utils: 1.1.0
@@ -10866,7 +10853,7 @@ snapshots:
 
   ember-page-title@9.0.1(6744524fbef110a49f3863b251c87174):
     dependencies:
-      '@embroider/addon-shim': 1.9.0
+      '@embroider/addon-shim': 1.10.0
       '@simple-dom/document': 1.4.0
       ember-source: 5.12.0(6260bef743aa6bb9840196cc5f627706)
     transitivePeerDependencies:
@@ -10875,7 +10862,7 @@ snapshots:
   ember-qunit@9.0.2(1f3f0a93eb8dad6d188702a9de36e523):
     dependencies:
       '@ember/test-helpers': 5.2.1(2253a6e55e078ea1367153318ebc9b35)
-      '@embroider/addon-shim': 1.9.0
+      '@embroider/addon-shim': 1.10.0
       '@embroider/macros': 1.17.1
       ember-source: 5.12.0(6260bef743aa6bb9840196cc5f627706)
       qunit: 2.24.1
@@ -11049,7 +11036,7 @@ snapshots:
 
   ember-window-mock@1.0.2:
     dependencies:
-      '@embroider/addon-shim': 1.9.0
+      '@embroider/addon-shim': 1.10.0
       '@embroider/macros': 1.16.12
     transitivePeerDependencies:
       - '@glint/template'
