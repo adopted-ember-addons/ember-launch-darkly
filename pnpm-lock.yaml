@@ -125,8 +125,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(fbcfe60d6bdef4f241b2b6a79cbc88ae)
       '@embroider/macros':
-        specifier: ^1.17.1
-        version: 1.17.1
+        specifier: ^1.17.2
+        version: 1.17.2
       '@embroider/test-setup':
         specifier: ^4.0.0
         version: 4.0.0
@@ -1057,6 +1057,15 @@ packages:
 
   '@embroider/macros@1.17.1':
     resolution: {integrity: sha512-pi039RDy2CvgM+RwJ9NMFU4wYMKlSp9p+WyHFfQpZ2e/HL78O1KM1+MEaKnIve6MrXvo7QD7/Kn6MpMTzV1MSQ==}
+    engines: {node: 12.* || 14.* || >= 16}
+    peerDependencies:
+      '@glint/template': ^1.0.0
+    peerDependenciesMeta:
+      '@glint/template':
+        optional: true
+
+  '@embroider/macros@1.17.2':
+    resolution: {integrity: sha512-mgGdufPjL8MAzhYNN1QfHRCFQzv/KEcH9EmObn7y4QC4nPQAPcxEdR8xYZhgTLtKHaVfmN27rXKk+XI7jQAxAg==}
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
       '@glint/template': ^1.0.0
@@ -7767,7 +7776,7 @@ snapshots:
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-cli-path-utils: 1.0.0
@@ -7784,7 +7793,7 @@ snapshots:
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7795,7 +7804,7 @@ snapshots:
   '@ember-data/graph@5.3.12(f6382970916bb6defdc92e6d1b4de3ed)':
     dependencies:
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7808,7 +7817,7 @@ snapshots:
       '@ember-data/graph': 5.3.12(f6382970916bb6defdc92e6d1b4de3ed)
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
     transitivePeerDependencies:
@@ -7821,7 +7830,7 @@ snapshots:
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember/test-waiters': 4.1.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7839,7 +7848,7 @@ snapshots:
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember-data/tracking': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-cli-string-utils: 1.1.0
@@ -7855,7 +7864,7 @@ snapshots:
 
   '@ember-data/request-utils@5.3.12(1a023005dbe284f59680eaa33bb6fac0)':
     dependencies:
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7866,7 +7875,7 @@ snapshots:
   '@ember-data/request@5.3.12(@warp-drive/core-types@0.0.2)':
     dependencies:
       '@ember/test-waiters': 4.1.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
     transitivePeerDependencies:
@@ -7881,7 +7890,7 @@ snapshots:
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-cli-path-utils: 1.0.0
@@ -7897,7 +7906,7 @@ snapshots:
       '@ember-data/request': 5.3.12(@warp-drive/core-types@0.0.2)
       '@ember-data/request-utils': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember-data/tracking': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7907,7 +7916,7 @@ snapshots:
 
   '@ember-data/tracking@5.3.12(1a023005dbe284f59680eaa33bb6fac0)':
     dependencies:
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -7945,7 +7954,7 @@ snapshots:
   '@ember/test-waiters@4.1.0':
     dependencies:
       '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -8038,6 +8047,19 @@ snapshots:
       - supports-color
 
   '@embroider/macros@1.17.1':
+    dependencies:
+      '@embroider/shared-internals': 3.0.0
+      assert-never: 1.4.0
+      babel-import-util: 3.0.1
+      ember-cli-babel: 7.26.11
+      find-up: 5.0.0
+      lodash: 4.17.21
+      resolve: 1.22.10
+      semver: 7.7.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@embroider/macros@1.17.2':
     dependencies:
       '@embroider/shared-internals': 3.0.0
       assert-never: 1.4.0
@@ -8819,7 +8841,7 @@ snapshots:
   '@warp-drive/build-config@0.0.2':
     dependencies:
       '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       babel-import-util: 2.1.1
       broccoli-funnel: 3.0.8
       semver: 7.7.1
@@ -8829,7 +8851,7 @@ snapshots:
 
   '@warp-drive/core-types@0.0.2':
     dependencies:
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
     transitivePeerDependencies:
       - '@glint/template'
@@ -10364,7 +10386,7 @@ snapshots:
       '@babel/plugin-proposal-private-methods': 7.18.6(@babel/core@7.26.10)
       '@babel/plugin-transform-class-static-block': 7.26.0(@babel/core@7.26.10)
       '@babel/preset-env': 7.26.9(@babel/core@7.26.10)
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@embroider/shared-internals': 2.9.0
       babel-loader: 8.4.1(@babel/core@7.26.10)(webpack@5.99.6)
       babel-plugin-ember-modules-api-polyfill: 3.5.0
@@ -10810,7 +10832,7 @@ snapshots:
       '@ember-data/store': 5.3.12(89ad02d4210b9976a6b71f7084a103bc)
       '@ember-data/tracking': 5.3.12(1a023005dbe284f59680eaa33bb6fac0)
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       '@warp-drive/build-config': 0.0.2
       '@warp-drive/core-types': 0.0.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
@@ -10885,7 +10907,7 @@ snapshots:
     dependencies:
       '@ember/test-helpers': 5.2.1(fbcfe60d6bdef4f241b2b6a79cbc88ae)
       '@embroider/addon-shim': 1.9.0
-      '@embroider/macros': 1.17.1
+      '@embroider/macros': 1.17.2
       ember-source: 5.12.0(0117dc06b987952b62bb89fe072e58ea)
       qunit: 2.24.1
       qunit-theme-ember: 1.0.0
