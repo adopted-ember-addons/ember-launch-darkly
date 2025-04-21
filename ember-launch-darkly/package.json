@@ -1,16 +1,18 @@
 {
   "name": "ember-launch-darkly",
   "version": "5.0.0",
-  "description": "The default blueprint for Embroider v2 addons.",
+  "description": "A modern Ember addon to wrap the Launch Darkly service",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "Launch Darkly",
+    "feature flags"
   ],
   "repository": {
     "type": "git",
     "url": "git@github.com:adopted-ember-addons/ember-launch-darkly.git"
   },
   "license": "MIT",
-  "author": "",
+  "author": "The Ember Launch Darkly Team",
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
