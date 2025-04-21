@@ -38,7 +38,7 @@
     "test": "echo 'A v2 addon does not have tests, run tests in test-app'"
   },
   "dependencies": {
-    "@embroider/addon-shim": "^1.8.9",
+    "@embroider/addon-shim": "^1.10.0",
     "decorator-transforms": "^2.2.2",
     "ember-window-mock": "^1.0.2",
     "launchdarkly-js-client-sdk": "^3.1.1"
