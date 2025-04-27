@@ -18,7 +18,7 @@ export default function setupLaunchDarkly(hooks) {
     let config = this.owner.resolveRegistration('config:environment');
     let { localFlags } = {
       localFlags: {},
-      ...config.launchDarkly,
+      ...(config?.launchDarkly || {}),
     };
 
     localFlags = Object.keys(localFlags).reduce((acc, key) => {
