@@ -8,6 +8,7 @@ This addon wraps the [Launch Darkly](https://launchdarkly.com/) feature flagging
 
 | Addon version | Ember version     |                                                                                             |
 |---------------|-------------------|---------------------------------------------------------------------------------------------|
+| v5.0          | >= v4.12          | [README](README.md)                                                                         |
 | v4.0          | >= v4.12          | [README](README.md)                                                                         |
 | v3.0          | >= v3.28 and v4.4 | [README](README.md)                                                                         |
 | v2.0          | >= v3.17          | [README](README.md)                                                                         |
