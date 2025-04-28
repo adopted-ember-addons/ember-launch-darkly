@@ -1,24 +1,31 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-built-ins';
 import window from 'ember-window-mock';
+import { type LDClient } from 'launchdarkly-js-client-sdk';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 
-function setPersistedFlags(context) {
-  let persistedFlags = window.localStorage.getItem(STORAGE_KEY);
-
-  if (persistedFlags) {
-    context.replaceFlags(JSON.parse(persistedFlags));
+declare global {
+  interface Window {
+    __LD__?: Context;
   }
 }
 
-function setCurrentContext(context) {
+function setPersistedFlags(context: Context) {
+  const persistedFlags = window.localStorage.getItem(STORAGE_KEY);
+
+  if (persistedFlags) {
+    context.replaceFlags(JSON.parse(persistedFlags) as Record<string, unknown>);
+  }
+}
+
+function setCurrentContext(context: Context) {
   setPersistedFlags(context);
   window.__LD__ = context;
 }
 
 function getCurrentContext() {
-  let context = window.__LD__;
+  const context = window.__LD__;
 
   if (!context) {
     throw new Error(
@@ -34,39 +41,39 @@ function removeCurrentContext() {
 }
 
 class Context {
-  _flags = new TrackedMap();
-  _client = null;
+  _flags = new TrackedMap<string, unknown>();
+  _client?: LDClient | null = null;
 
-  constructor(flags = {}, client) {
+  constructor(flags: Record<string, unknown> = {}, client?: LDClient) {
     this._client = client;
 
     this.updateFlags(flags);
   }
 
-  updateFlags(flags) {
-    for (let [key, value] of Object.entries(flags)) {
+  updateFlags(flags: Record<string, unknown>) {
+    for (const [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
     }
   }
 
-  replaceFlags(flags) {
+  replaceFlags(flags: Record<string, unknown>) {
     this._flags.clear();
     this.updateFlags(flags);
   }
 
-  enable(key) {
+  enable(key: string) {
     this._flags.set(key, true);
   }
 
-  disable(key) {
+  disable(key: string) {
     this._flags.set(key, false);
   }
 
-  set(key, value) {
+  set(key: string, value: boolean) {
     this._flags.set(key, value);
   }
 
-  get(key, defaultValue) {
+  get(key: string, defaultValue?: boolean | null) {
     if (!this._flags.has(key) && !isNone(defaultValue)) {
       return defaultValue;
     }
@@ -82,10 +89,10 @@ class Context {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
-  get allFlags() {
-    let allFlags = {};
+  get allFlags(): Record<string, unknown> {
+    const allFlags: Record<string, unknown> = {};
 
-    for (let [key, value] of this._flags.entries()) {
+    for (const [key, value] of this._flags.entries()) {
       allFlags[key] = value;
     }
 
@@ -96,12 +103,14 @@ class Context {
     return isNone(this.client);
   }
 
-  get persisted() {
-    let persisted = window.localStorage.getItem(STORAGE_KEY);
-    return persisted ? JSON.parse(persisted) : undefined;
+  get persisted(): Record<string, unknown> | undefined {
+    const persisted = window.localStorage.getItem(STORAGE_KEY);
+    return persisted
+      ? (JSON.parse(persisted) as Record<string, unknown>)
+      : undefined;
   }
 
-  get client() {
+  get client(): LDClient | null | undefined {
     return this._client;
   }
 
@@ -110,7 +119,11 @@ class Context {
       return { key: 'local-mode-no-user-specified' };
     }
 
-    return this.client.getContext();
+    if (this.client) {
+      return this.client.getContext();
+    }
+
+    return { key: 'unknown-user' };
   }
 }
 
