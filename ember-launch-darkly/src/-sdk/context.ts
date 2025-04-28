@@ -15,7 +15,7 @@ function setPersistedFlags(context: Context) {
   const persistedFlags = window.localStorage.getItem(STORAGE_KEY);
 
   if (persistedFlags) {
-    context.replaceFlags(JSON.parse(persistedFlags));
+    context.replaceFlags(JSON.parse(persistedFlags) as Record<string, unknown>);
   }
 }
 
