@@ -70,7 +70,7 @@ export async function initialize(
   }
 
   if (mode === 'local') {
-    let context = new Context(localFlags);
+    const context = new Context(localFlags);
     setCurrentContext(context);
 
     return;
@@ -85,15 +85,15 @@ export async function initialize(
     options.bootstrap = localFlags;
   }
 
-  let client = LDClient.initialize(clientSideId, user, options);
+  const client = LDClient.initialize(clientSideId, user, options);
 
   await client.waitForInitialization();
 
   client.on('change', (updates) => {
-    let context = getCurrentContext();
-    let flagsToUpdate = {};
+    const context = getCurrentContext();
+    const flagsToUpdate = {};
     // @ts-expect-error TODO: fix this type error
-    for (let [key, { current }] of Object.entries(updates)) {
+    for (const [key, { current }] of Object.entries(updates)) {
       if (shouldUpdateFlag(key, streamingFlags)) {
         // @ts-expect-error TODO: fix this type error
         flagsToUpdate[key] = current;
@@ -103,9 +103,9 @@ export async function initialize(
     context.updateFlags(flagsToUpdate);
   });
 
-  let flags = client.allFlags();
+  const flags = client.allFlags();
 
-  let context = new Context(flags, client);
+  const context = new Context(flags, client);
 
   setCurrentContext(context);
 }

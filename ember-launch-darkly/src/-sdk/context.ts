@@ -11,7 +11,7 @@ declare global {
 }
 
 function setPersistedFlags(context: Context) {
-  let persistedFlags = window.localStorage.getItem(STORAGE_KEY);
+  const persistedFlags = window.localStorage.getItem(STORAGE_KEY);
 
   if (persistedFlags) {
     context.replaceFlags(JSON.parse(persistedFlags));
@@ -24,7 +24,7 @@ function setCurrentContext(context: Context) {
 }
 
 function getCurrentContext() {
-  let context = window.__LD__;
+  const context = window.__LD__;
 
   if (!context) {
     throw new Error(
@@ -50,7 +50,7 @@ class Context {
   }
 
   updateFlags(flags: object) {
-    for (let [key, value] of Object.entries(flags)) {
+    for (const [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
     }
   }
@@ -89,11 +89,10 @@ class Context {
   }
 
   get allFlags() {
-    let allFlags = {};
+    const allFlags: Record<string, unknown> = {};
 
-    for (let [key, value] of this._flags.entries()) {
-      // @ts-expect-error TODO: fix this type error
-      allFlags[key] = value;
+    for (const [key, value] of this._flags.entries()) {
+      allFlags[key as keyof object] = value;
     }
 
     return allFlags;
@@ -104,7 +103,7 @@ class Context {
   }
 
   get persisted() {
-    let persisted = window.localStorage.getItem(STORAGE_KEY);
+    const persisted = window.localStorage.getItem(STORAGE_KEY);
     return persisted ? JSON.parse(persisted) : undefined;
   }
 

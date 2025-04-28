@@ -22,7 +22,7 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
     }
 
     // @ts-expect-error TODO: fix this type error
-    let config = this.owner.resolveRegistration('config:environment');
+    const config = this.owner.resolveRegistration('config:environment');
     let { localFlags } = {
       localFlags: {},
       ...(config?.launchDarkly || {}),
@@ -35,12 +35,12 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
       return acc;
     }, {});
 
-    let context = new Context(localFlags);
+    const context = new Context(localFlags);
 
     setCurrentContext(context);
 
     this.withVariation = (key, value = true) => {
-      let context = getCurrentContext();
+      const context = getCurrentContext();
 
       context.set(key, value);
 
