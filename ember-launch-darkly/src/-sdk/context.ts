@@ -1,6 +1,7 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-built-ins';
 import window from 'ember-window-mock';
+import { type LDClient } from 'launchdarkly-js-client-sdk';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 
@@ -40,22 +41,22 @@ function removeCurrentContext() {
 }
 
 class Context {
-  _flags = new TrackedMap();
-  _client: any = null;
+  _flags = new TrackedMap<string, unknown>();
+  _client?: LDClient | null = null;
 
-  constructor(flags = {}, client?: any) {
+  constructor(flags: Record<string, unknown> = {}, client?: LDClient) {
     this._client = client;
 
     this.updateFlags(flags);
   }
 
-  updateFlags(flags: object) {
+  updateFlags(flags: Record<string, unknown>) {
     for (const [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
     }
   }
 
-  replaceFlags(flags: object) {
+  replaceFlags(flags: Record<string, unknown>) {
     this._flags.clear();
     this.updateFlags(flags);
   }
@@ -88,11 +89,11 @@ class Context {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
-  get allFlags() {
+  get allFlags(): Record<string, unknown> {
     const allFlags: Record<string, unknown> = {};
 
     for (const [key, value] of this._flags.entries()) {
-      allFlags[key as keyof object] = value;
+      allFlags[key] = value;
     }
 
     return allFlags;
@@ -102,12 +103,14 @@ class Context {
     return isNone(this.client);
   }
 
-  get persisted() {
+  get persisted(): Record<string, unknown> | undefined {
     const persisted = window.localStorage.getItem(STORAGE_KEY);
-    return persisted ? JSON.parse(persisted) : undefined;
+    return persisted
+      ? (JSON.parse(persisted) as Record<string, unknown>)
+      : undefined;
   }
 
-  get client() {
+  get client(): LDClient | null | undefined {
     return this._client;
   }
 
@@ -116,7 +119,11 @@ class Context {
       return { key: 'local-mode-no-user-specified' };
     }
 
-    return this.client?.getContext();
+    if (this.client) {
+      return this.client.getContext();
+    }
+
+    return { key: 'unknown-user' };
   }
 }
 
