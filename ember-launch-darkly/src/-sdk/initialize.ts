@@ -7,6 +7,15 @@ import Context, { getCurrentContext, setCurrentContext } from './context.ts';
 
 type StreamingConfig = { allExcept?: Array<string>; [key: string]: unknown };
 
+export interface EmberLaunchDarklyOptions
+  extends Omit<LDClient.LDOptions, 'bootstrap'> {
+  bootstrap?: 'localFlags' | LDClient.LDOptions['bootstrap'];
+  localFlags?: Record<string, unknown>;
+  mode?: string;
+  sendEventsOnlyForVariation?: boolean;
+  streamingFlags?: boolean;
+}
+
 export function shouldUpdateFlag(
   key: string,
   streamingConfig?: StreamingConfig | boolean,
@@ -35,13 +44,7 @@ export function shouldUpdateFlag(
 export async function initialize(
   clientSideId: string,
   user = {},
-  options: {
-    bootstrap?: any;
-    localFlags?: object;
-    mode?: string;
-    sendEventsOnlyForVariation?: boolean;
-    streamingFlags?: boolean;
-  } = {},
+  options: EmberLaunchDarklyOptions = {},
 ) {
   try {
     if (getCurrentContext()) {
@@ -52,12 +55,8 @@ export async function initialize(
     // exist. Let's go ahead and create one.
   }
 
-  let {
-    streamingFlags = false,
-    localFlags = {},
-    mode = 'local',
-    ...rest
-  } = options;
+  const { streamingFlags = false, localFlags = {}, ...rest } = options;
+  let { mode = 'local' } = options;
 
   if (!['local', 'remote'].includes(mode)) {
     warn(
@@ -85,17 +84,20 @@ export async function initialize(
     options.bootstrap = localFlags;
   }
 
-  const client = LDClient.initialize(clientSideId, user, options);
+  const client = LDClient.initialize(
+    clientSideId,
+    user,
+    options as LDClient.LDOptions,
+  );
 
   await client.waitForInitialization();
 
-  client.on('change', (updates) => {
+  client.on('change', (updates: Record<string, unknown>) => {
     const context = getCurrentContext();
-    const flagsToUpdate = {};
+    const flagsToUpdate: Record<string, unknown> = {};
     // @ts-expect-error TODO: fix this type error
     for (const [key, { current }] of Object.entries(updates)) {
       if (shouldUpdateFlag(key, streamingFlags)) {
-        // @ts-expect-error TODO: fix this type error
         flagsToUpdate[key] = current;
       }
     }

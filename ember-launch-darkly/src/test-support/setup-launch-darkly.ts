@@ -1,3 +1,4 @@
+import type ApplicationInstance from '@ember/application/instance';
 import { settled, type TestContext } from '@ember/test-helpers';
 import type { setupTest } from 'ember-qunit';
 
@@ -7,6 +8,7 @@ import {
   setCurrentContext,
   removeCurrentContext,
 } from '../-sdk/context.ts';
+import type { EmberLaunchDarklyOptions } from '../-sdk/initialize.ts';
 
 type NestedHooks = Parameters<typeof setupTest>[0];
 interface LDTestContext extends TestContext {
@@ -21,12 +23,14 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
       );
     }
 
-    // @ts-expect-error TODO: fix this type error
-    const config = this.owner.resolveRegistration('config:environment');
+    const owner = this.owner as ApplicationInstance;
+    const config = owner.resolveRegistration('config:environment') as {
+      launchDarkly: EmberLaunchDarklyOptions;
+    };
     let { localFlags } = {
       localFlags: {},
       ...(config?.launchDarkly || {}),
-    };
+    } as { localFlags: Record<string, unknown> };
 
     localFlags = Object.keys(localFlags).reduce((acc, key) => {
       // @ts-expect-error TODO: fix this type error
