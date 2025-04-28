@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-04-28)
+
+* ember-launch-darkly 5.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-launch-darkly`
+  * [#616](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/616) Add typescript/glint support ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2025-04-07)
 
 * ember-launch-darkly 5.0.0 (major)
