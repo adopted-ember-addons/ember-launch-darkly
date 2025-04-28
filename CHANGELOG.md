@@ -2,6 +2,17 @@
 
 ## Release (2025-04-28)
 
+* ember-launch-darkly 5.2.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-launch-darkly`
+  * [#609](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/609) Add back reexport for test-support ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
+## Release (2025-04-28)
+
 * ember-launch-darkly 5.1.0 (minor)
 
 #### :rocket: Enhancement
