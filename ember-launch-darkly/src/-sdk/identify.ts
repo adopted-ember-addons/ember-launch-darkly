@@ -1,6 +1,6 @@
-import { getCurrentContext } from './context.js';
+import { getCurrentContext } from './context.ts';
 
-export async function identify(user, hash = null) {
+export async function identify(user: any, hash = null) {
   let context = getCurrentContext();
 
   if (!context.isLocal) {

@@ -4,7 +4,13 @@ import window from 'ember-window-mock';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 
-function setPersistedFlags(context) {
+declare global {
+  interface Window {
+    __LD__?: Context;
+  }
+}
+
+function setPersistedFlags(context: Context) {
   let persistedFlags = window.localStorage.getItem(STORAGE_KEY);
 
   if (persistedFlags) {
@@ -12,7 +18,7 @@ function setPersistedFlags(context) {
   }
 }
 
-function setCurrentContext(context) {
+function setCurrentContext(context: Context) {
   setPersistedFlags(context);
   window.__LD__ = context;
 }
@@ -35,38 +41,38 @@ function removeCurrentContext() {
 
 class Context {
   _flags = new TrackedMap();
-  _client = null;
+  _client: any = null;
 
-  constructor(flags = {}, client) {
+  constructor(flags = {}, client?: any) {
     this._client = client;
 
     this.updateFlags(flags);
   }
 
-  updateFlags(flags) {
+  updateFlags(flags: object) {
     for (let [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
     }
   }
 
-  replaceFlags(flags) {
+  replaceFlags(flags: object) {
     this._flags.clear();
     this.updateFlags(flags);
   }
 
-  enable(key) {
+  enable(key: string) {
     this._flags.set(key, true);
   }
 
-  disable(key) {
+  disable(key: string) {
     this._flags.set(key, false);
   }
 
-  set(key, value) {
+  set(key: string, value: boolean) {
     this._flags.set(key, value);
   }
 
-  get(key, defaultValue) {
+  get(key: string, defaultValue?: boolean | null) {
     if (!this._flags.has(key) && !isNone(defaultValue)) {
       return defaultValue;
     }
@@ -86,6 +92,7 @@ class Context {
     let allFlags = {};
 
     for (let [key, value] of this._flags.entries()) {
+      // @ts-expect-error TODO: fix this type error
       allFlags[key] = value;
     }
 
@@ -110,7 +117,7 @@ class Context {
       return { key: 'local-mode-no-user-specified' };
     }
 
-    return this.client.getContext();
+    return this.client?.getContext();
   }
 }
 

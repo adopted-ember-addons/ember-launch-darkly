@@ -1,6 +1,6 @@
-import { getCurrentContext } from './context.js';
+import { getCurrentContext } from './context.ts';
 
-export function variation(key, defaultValue = null) {
+export function variation(key: string, defaultValue = null) {
   let context = getCurrentContext();
 
   if (!context.isLocal) {

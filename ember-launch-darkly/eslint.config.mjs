@@ -19,17 +19,28 @@ import ember from 'eslint-plugin-ember/recommended';
 import importPlugin from 'eslint-plugin-import';
 import n from 'eslint-plugin-n';
 import globals from 'globals';
+import ts from 'typescript-eslint';
 
-const esmParserOptions = {
-  ecmaFeatures: { modules: true },
-  ecmaVersion: 'latest',
+const parserOptions = {
+  esm: {
+    js: {
+      ecmaFeatures: { modules: true },
+      ecmaVersion: 'latest',
+    },
+    ts: {
+      projectService: true,
+      project: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
 };
 
-export default [
+export default ts.config(
   js.configs.recommended,
-  prettier,
   ember.configs.base,
   ember.configs.gjs,
+  ember.configs.gts,
+  prettier,
   /**
    * Ignores must be in their own object
    * https://eslint.org/docs/latest/use/configure/ignore
@@ -54,11 +65,19 @@ export default [
   {
     files: ['**/*.{js,gjs}'],
     languageOptions: {
-      parserOptions: esmParserOptions,
+      parserOptions: parserOptions.esm.js,
       globals: {
         ...globals.browser,
       },
     },
+  },
+  {
+    files: ['**/*.{ts,gts}'],
+    languageOptions: {
+      parser: ember.parser,
+      parserOptions: parserOptions.esm.ts,
+    },
+    extends: [...ts.configs.recommendedTypeChecked, ember.configs.gts],
   },
   {
     files: ['src/**/*'],
@@ -105,10 +124,10 @@ export default [
     languageOptions: {
       sourceType: 'module',
       ecmaVersion: 'latest',
-      parserOptions: esmParserOptions,
+      parserOptions: parserOptions.esm.js,
       globals: {
         ...globals.node,
       },
     },
   },
-];
+);
