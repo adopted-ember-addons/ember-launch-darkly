@@ -1,7 +1,7 @@
 import { isNone } from '@ember/utils';
 import { TrackedMap } from 'tracked-built-ins';
 import window from 'ember-window-mock';
-import { type LDClient } from 'launchdarkly-js-client-sdk';
+import type { LDClient, LDFlagSet } from 'launchdarkly-js-client-sdk';
 
 const STORAGE_KEY = 'ember-launch-darkly';
 
@@ -15,7 +15,7 @@ function setPersistedFlags(context: Context) {
   const persistedFlags = window.localStorage.getItem(STORAGE_KEY);
 
   if (persistedFlags) {
-    context.replaceFlags(JSON.parse(persistedFlags) as Record<string, unknown>);
+    context.replaceFlags(JSON.parse(persistedFlags) as LDFlagSet);
   }
 }
 
@@ -44,19 +44,19 @@ class Context {
   _flags = new TrackedMap<string, unknown>();
   _client?: LDClient | null = null;
 
-  constructor(flags: Record<string, unknown> = {}, client?: LDClient) {
+  constructor(flags: LDFlagSet = {}, client?: LDClient) {
     this._client = client;
 
     this.updateFlags(flags);
   }
 
-  updateFlags(flags: Record<string, unknown>) {
+  updateFlags(flags: LDFlagSet) {
     for (const [key, value] of Object.entries(flags)) {
       this._flags.set(key, value);
     }
   }
 
-  replaceFlags(flags: Record<string, unknown>) {
+  replaceFlags(flags: LDFlagSet) {
     this._flags.clear();
     this.updateFlags(flags);
   }
@@ -73,7 +73,7 @@ class Context {
     this._flags.set(key, value);
   }
 
-  get(key: string, defaultValue?: boolean | null) {
+  get<ELDFlagValue>(key: string, defaultValue?: ELDFlagValue | boolean | null) {
     if (!this._flags.has(key) && !isNone(defaultValue)) {
       return defaultValue;
     }
@@ -89,8 +89,8 @@ class Context {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
-  get allFlags(): Record<string, unknown> {
-    const allFlags: Record<string, unknown> = {};
+  get allFlags() {
+    const allFlags: LDFlagSet = {};
 
     for (const [key, value] of this._flags.entries()) {
       allFlags[key] = value;
@@ -103,11 +103,9 @@ class Context {
     return isNone(this.client);
   }
 
-  get persisted(): Record<string, unknown> | undefined {
+  get persisted(): LDFlagSet | undefined {
     const persisted = window.localStorage.getItem(STORAGE_KEY);
-    return persisted
-      ? (JSON.parse(persisted) as Record<string, unknown>)
-      : undefined;
+    return persisted ? (JSON.parse(persisted) as LDFlagSet) : undefined;
   }
 
   get client(): LDClient | null | undefined {
