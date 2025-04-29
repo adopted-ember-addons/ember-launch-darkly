@@ -2,8 +2,8 @@
   "solution": {
     "ember-launch-darkly": {
       "impact": "patch",
-      "oldVersion": "5.2.0",
-      "newVersion": "5.2.1",
+      "oldVersion": "5.2.1",
+      "newVersion": "5.2.2",
       "tagName": "latest",
       "constraints": [
         {
@@ -14,5 +14,5 @@
       "pkgJSONPath": "./ember-launch-darkly/package.json"
     }
   },
-  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#619](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/619) Make variation generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#622](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/622) Try again to fix generic types ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
 }
