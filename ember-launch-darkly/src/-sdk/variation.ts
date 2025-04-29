@@ -3,7 +3,7 @@ import { getCurrentContext } from './context.ts';
 export function variation<ELDFlagValue>(
   key: string,
   defaultValue: ELDFlagValue | boolean | null = null,
-): unknown {
+): ELDFlagValue | boolean {
   const context = getCurrentContext();
 
   if (!context.isLocal) {
