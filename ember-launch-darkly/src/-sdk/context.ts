@@ -73,12 +73,15 @@ class Context {
     this._flags.set(key, value);
   }
 
-  get<ELDFlagValue>(key: string, defaultValue?: ELDFlagValue | boolean | null) {
+  get<ELDFlagValue>(
+    key: string,
+    defaultValue?: ELDFlagValue | boolean | null,
+  ): ELDFlagValue | boolean {
     if (!this._flags.has(key) && !isNone(defaultValue)) {
       return defaultValue;
     }
 
-    return this._flags.get(key);
+    return this._flags.get(key) as ELDFlagValue | boolean;
   }
 
   persist() {
