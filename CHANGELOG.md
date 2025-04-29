@@ -2,6 +2,17 @@
 
 ## Release (2025-04-29)
 
+* ember-launch-darkly 5.2.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#624](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/624) Tweak generics again ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+## Release (2025-04-29)
+
 * ember-launch-darkly 5.2.2 (patch)
 
 #### :bug: Bug Fix
