@@ -88,18 +88,11 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get<T>(key: keyof ELDFlagSet, defaultValue?: T | null): T {
-    const value = this._flags.get(key);
-
-    if (isNone(value)) {
-      if (!isNone(defaultValue)) {
-        return defaultValue;
-      }
-      throw new Error(
-        `Flag ${String(key)} is missing and no default value was provided.`,
-      );
+    if (!this._flags.has(key) && !isNone(defaultValue)) {
+      return defaultValue;
     }
 
-    return value as T;
+    return this._flags.get(key) as T;
   }
 
   persist() {
