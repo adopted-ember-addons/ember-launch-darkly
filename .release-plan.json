@@ -1,18 +1,8 @@
 {
   "solution": {
     "ember-launch-darkly": {
-      "impact": "minor",
-      "oldVersion": "5.1.0",
-      "newVersion": "5.2.0",
-      "tagName": "latest",
-      "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        }
-      ],
-      "pkgJSONPath": "./ember-launch-darkly/package.json"
+      "oldVersion": "5.2.0"
     }
   },
-  "description": "## Release (2025-04-28)\n\n* ember-launch-darkly 5.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-launch-darkly`\n  * [#609](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/609) Add back reexport for test-support ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
+  "description": "\n\n\n\n"
 }

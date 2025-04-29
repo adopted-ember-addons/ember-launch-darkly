@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2025-04-28)
 
 * ember-launch-darkly 5.2.0 (minor)
