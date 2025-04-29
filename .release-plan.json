@@ -1,18 +1,18 @@
 {
   "solution": {
     "ember-launch-darkly": {
-      "impact": "minor",
-      "oldVersion": "5.1.0",
-      "newVersion": "5.2.0",
+      "impact": "patch",
+      "oldVersion": "5.2.0",
+      "newVersion": "5.2.1",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./ember-launch-darkly/package.json"
     }
   },
-  "description": "## Release (2025-04-28)\n\n* ember-launch-darkly 5.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-launch-darkly`\n  * [#609](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/609) Add back reexport for test-support ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
+  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#619](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/619) Make variation generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
 }
