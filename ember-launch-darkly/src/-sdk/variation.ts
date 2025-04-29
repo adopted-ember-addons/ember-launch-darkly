@@ -1,8 +1,8 @@
 import { getCurrentContext } from './context.ts';
 
-export function variation(
+export function variation<ELDFlagValue>(
   key: string,
-  defaultValue: boolean | null = null,
+  defaultValue: ELDFlagValue | boolean | null = null,
 ): unknown {
   const context = getCurrentContext();
 
@@ -10,5 +10,5 @@ export function variation(
     context.client?.variation(key);
   }
 
-  return context.get(key, defaultValue);
+  return context.get<ELDFlagValue>(key, defaultValue);
 }
