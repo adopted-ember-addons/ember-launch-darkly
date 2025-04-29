@@ -2,8 +2,8 @@
   "solution": {
     "ember-launch-darkly": {
       "impact": "patch",
-      "oldVersion": "5.2.2",
-      "newVersion": "5.2.3",
+      "oldVersion": "5.2.3",
+      "newVersion": "5.2.4",
       "tagName": "latest",
       "constraints": [
         {
@@ -14,5 +14,5 @@
       "pkgJSONPath": "./ember-launch-darkly/package.json"
     }
   },
-  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#624](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/624) Tweak generics again ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#626](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/626) Make Context more generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
 }
