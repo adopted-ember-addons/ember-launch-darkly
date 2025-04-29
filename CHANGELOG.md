@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-04-29)
+
+* ember-launch-darkly 5.2.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#619](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/619) Make variation generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2025-04-28)
 
 * ember-launch-darkly 5.2.0 (minor)
