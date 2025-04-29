@@ -1,14 +1,14 @@
 import { getCurrentContext } from './context.ts';
 
-export function variation<ELDFlagValue>(
+export function variation<ELDFlagDefaultValue>(
   key: string,
-  defaultValue: ELDFlagValue | null = null,
-): ELDFlagValue {
+  defaultValue: ELDFlagDefaultValue | null = null,
+) {
   const context = getCurrentContext();
 
   if (!context.isLocal) {
     context.client?.variation(key);
   }
 
-  return context.get<ELDFlagValue>(key, defaultValue);
+  return context.get(key, defaultValue);
 }
