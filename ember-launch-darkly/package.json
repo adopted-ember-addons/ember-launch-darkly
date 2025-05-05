@@ -76,7 +76,7 @@
     "ember-qunit": "^9.0.2",
     "ember-source": "^5.4.0",
     "ember-template-lint": "^7.0.8",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-ember": "^12.3.3",
     "eslint-plugin-import": "^2.31.0",
