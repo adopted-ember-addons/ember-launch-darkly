@@ -3,7 +3,11 @@ import { warn } from '@ember/debug';
 
 import * as LDClient from 'launchdarkly-js-client-sdk';
 
-import Context, { getCurrentContext, setCurrentContext } from './context.ts';
+import Context, {
+  getCurrentContext,
+  setCurrentContext,
+  setLaunchDarklyConfig,
+} from './context.ts';
 
 type StreamingConfig = { allExcept?: Array<string>; [key: string]: unknown };
 
@@ -14,6 +18,7 @@ export interface EmberLaunchDarklyOptions
   mode?: string;
   sendEventsOnlyForVariation?: boolean;
   streamingFlags?: boolean;
+  suppressInitializationError?: boolean;
 }
 
 export function shouldUpdateFlag(
@@ -71,6 +76,7 @@ export async function initialize(
   if (mode === 'local') {
     const context = new Context(localFlags);
     setCurrentContext(context);
+    setLaunchDarklyConfig(options.suppressInitializationError);
 
     return;
   }
