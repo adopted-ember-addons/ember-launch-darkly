@@ -6,6 +6,7 @@ import {
   default as Context,
   getCurrentContext,
   setCurrentContext,
+  setLaunchDarklyConfig,
   removeCurrentContext,
 } from '../-sdk/context.ts';
 import type { EmberLaunchDarklyOptions } from '../-sdk/initialize.ts';
@@ -42,6 +43,9 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
     const context = new Context(localFlags);
 
     setCurrentContext(context);
+
+    const { suppressInitializationError = false } = config?.launchDarkly || {};
+    setLaunchDarklyConfig(suppressInitializationError);
 
     this.withVariation = (key, value = true) => {
       const context = getCurrentContext();

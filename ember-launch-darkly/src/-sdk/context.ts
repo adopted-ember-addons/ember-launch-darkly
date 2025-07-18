@@ -13,6 +13,10 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     __LD__?: Context<any>;
+    // Add config for graceful error handling
+    __LD_CONFIG__?: {
+      suppressInitializationError?: boolean;
+    };
   }
 }
 
@@ -33,12 +37,19 @@ function setCurrentContext<ELDFlagSet extends LDFlagSet>(
   window.__LD__ = context;
 }
 
+function setLaunchDarklyConfig(suppressInitializationError = false) {
+  window.__LD_CONFIG__ = {
+    suppressInitializationError,
+  };
+}
+
 function getCurrentContext<
   Flags extends LDFlagSet = LDFlagSet,
 >(): Context<Flags> {
   const context = window.__LD__;
+  const config = window.__LD_CONFIG__;
 
-  if (!context) {
+  if (!context && !config?.suppressInitializationError) {
     throw new Error(
       'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `variation`.',
     );
@@ -143,6 +154,7 @@ export {
   getCurrentContext,
   removeCurrentContext,
   setCurrentContext,
+  setLaunchDarklyConfig,
   setPersistedFlags,
   Context as default,
 };

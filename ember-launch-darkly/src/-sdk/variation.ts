@@ -6,6 +6,8 @@ export function variation<ELDFlagDefaultValue>(
 ) {
   const context = getCurrentContext();
 
+  if (!context) return;
+
   if (!context.isLocal) {
     context.client?.variation(key);
   }
