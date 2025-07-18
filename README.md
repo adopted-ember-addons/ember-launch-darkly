@@ -100,6 +100,13 @@ _Default_: `null`
 
 _Possible Values_: `localFlags` otherwise whatever Launch Darkly expects based on its [Bootstrapping documentation](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping).
 
+
+### `suppressInitializationError`
+
+Allows graceful handling of "Launch Darkly has not been initialized" errors. When set to `true`, the addon will not throw an error if the Launch Darkly client has not been initialized before calling `variation` or other methods.
+
+_Default_: `false`
+
 ### Launch Darkly specific config
 
 Any other properties passed in as configuration will be passed straight through to Launch Darkly.
