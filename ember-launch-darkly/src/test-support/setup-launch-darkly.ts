@@ -46,6 +46,12 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
     this.withVariation = (key, value = true) => {
       const context = getCurrentContext();
 
+      if (!context) {
+        throw new Error(
+          'LaunchDarkly context is missing. Ensure `setupLaunchDarkly` has initialized correctly.',
+        );
+      }
+
       context.set(key, value);
 
       return settled();

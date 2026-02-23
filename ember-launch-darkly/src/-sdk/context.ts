@@ -35,16 +35,8 @@ function setCurrentContext<ELDFlagSet extends LDFlagSet>(
 
 function getCurrentContext<
   Flags extends LDFlagSet = LDFlagSet,
->(): Context<Flags> {
-  const context = window.__LD__;
-
-  if (!context) {
-    throw new Error(
-      'Launch Darkly has not been initialized. Ensure that you run the `initialize` function before `variation`.',
-    );
-  }
-
-  return context as Context<Flags>;
+>(): Context<Flags> | null {
+  return (window.__LD__ as Context<Flags>) ?? null;
 }
 
 function removeCurrentContext() {

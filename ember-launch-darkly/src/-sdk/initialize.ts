@@ -94,6 +94,11 @@ export async function initialize(
 
   client.on('change', (updates: Record<string, unknown>) => {
     const context = getCurrentContext();
+
+    if (!context) {
+      return;
+    }
+
     const flagsToUpdate: Record<string, unknown> = {};
     // @ts-expect-error TODO: fix this type error
     for (const [key, { current }] of Object.entries(updates)) {
