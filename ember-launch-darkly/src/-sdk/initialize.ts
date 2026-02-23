@@ -14,6 +14,15 @@ export interface EmberLaunchDarklyOptions
   mode?: string;
   sendEventsOnlyForVariation?: boolean;
   streamingFlags?: boolean;
+
+  /**
+   * Timeout in seconds for `waitForInitialization()`. If the SDK does not
+   * initialize within this time, the promise will be rejected and the app
+   * will continue with bootstrap/default flag values.
+   *
+   * @default 5
+   */
+  timeout?: number;
 }
 
 export function shouldUpdateFlag(
@@ -55,7 +64,12 @@ export async function initialize(
     // exist. Let's go ahead and create one.
   }
 
-  const { streamingFlags = false, localFlags = {}, ...rest } = options;
+  const {
+    streamingFlags = false,
+    localFlags = {},
+    timeout = 5,
+    ...rest
+  } = options;
   let { mode = 'local' } = options;
 
   if (!['local', 'remote'].includes(mode)) {
@@ -90,7 +104,15 @@ export async function initialize(
     options as LDClient.LDOptions,
   );
 
-  await client.waitForInitialization();
+  try {
+    await client.waitForInitialization(timeout);
+  } catch (error) {
+    warn(
+      `LaunchDarkly SDK failed to initialize within ${String(timeout)}s. Using ${options.bootstrap ? 'bootstrap' : 'default'} flag values. Error: ${String(error)}`,
+      false,
+      { id: 'ember-launch-darkly.initialization-timeout' },
+    );
+  }
 
   client.on('change', (updates: Record<string, unknown>) => {
     const context = getCurrentContext();
