@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2026-02-23)
+
+* ember-launch-darkly 5.3.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-launch-darkly`
+  * [#704](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/704) feat: add configurable timeout to waitForInitialization ([@aklkv](https://github.com/aklkv))
+  * [#702](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/702) feat: graceful context handling when LaunchDarkly is not initialized ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2025-04-29)
 
 * ember-launch-darkly 5.2.4 (patch)

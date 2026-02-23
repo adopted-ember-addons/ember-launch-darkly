@@ -1,18 +1,18 @@
 {
   "solution": {
     "ember-launch-darkly": {
-      "impact": "patch",
-      "oldVersion": "5.2.3",
-      "newVersion": "5.2.4",
+      "impact": "minor",
+      "oldVersion": "5.2.4",
+      "newVersion": "5.3.0",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         }
       ],
       "pkgJSONPath": "./ember-launch-darkly/package.json"
     }
   },
-  "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#626](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/626) Make Context more generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "## Release (2026-02-23)\n\n* ember-launch-darkly 5.3.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-launch-darkly`\n  * [#704](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/704) feat: add configurable timeout to waitForInitialization ([@aklkv](https://github.com/aklkv))\n  * [#702](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/702) feat: graceful context handling when LaunchDarkly is not initialized ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
 }
