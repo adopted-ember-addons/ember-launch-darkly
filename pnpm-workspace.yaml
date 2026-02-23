@@ -1,3 +1,20 @@
+# Docs: https://pnpm.io/settings
+# https://github.com/emberjs/rfcs/pull/907
+
 packages:
-  - 'ember-launch-darkly'
-  - 'test-app'
+  - .
+
+# we don't want addons to be bad citizens of the ecosystem
+autoInstallPeers: false
+resolvePeersFromWorkspaceRoot: false
+
+# Optimizations
+dedupePeerDependents: true
+
+# Compatibility
+publicHoistPattern:
+  - ember-source
+resolutionMode: highest
+
+# Always verify deps before running any scripts
+verifyDepsBeforeRun: install

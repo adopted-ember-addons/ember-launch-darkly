@@ -11,7 +11,7 @@
           "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
-      "pkgJSONPath": "./ember-launch-darkly/package.json"
+      "pkgJSONPath": "./package.json"
     }
   },
   "description": "## Release (2025-04-29)\n\n* ember-launch-darkly 5.2.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#626](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/626) Make Context more generic ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
