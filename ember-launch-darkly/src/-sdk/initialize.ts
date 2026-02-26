@@ -23,6 +23,19 @@ export interface EmberLaunchDarklyOptions
    * @default 5
    */
   timeout?: number;
+
+  /**
+   * When `true`, re-throws the error from `waitForInitialization()` after
+   * logging a warning. This allows callers to implement their own fallback
+   * logic (e.g. re-initializing in local mode with default flags).
+   *
+   * When `false` (default), the error is swallowed and the context is set
+   * with whatever flags `client.allFlags()` returns (which may be empty
+   * `{}` when initialization fails).
+   *
+   * @default false
+   */
+  throwOnInitializationError?: boolean;
 }
 
 export function shouldUpdateFlag(
@@ -68,9 +81,11 @@ export async function initialize(
     streamingFlags = false,
     localFlags = {},
     timeout = 5,
+    throwOnInitializationError = false,
+    mode: initialMode = 'local',
     ...rest
   } = options;
-  let { mode = 'local' } = options;
+  let mode = initialMode;
 
   if (!['local', 'remote'].includes(mode)) {
     warn(
@@ -112,6 +127,10 @@ export async function initialize(
       false,
       { id: 'ember-launch-darkly.initialization-timeout' },
     );
+
+    if (throwOnInitializationError) {
+      throw error;
+    }
   }
 
   client.on('change', (updates: Record<string, unknown>) => {
