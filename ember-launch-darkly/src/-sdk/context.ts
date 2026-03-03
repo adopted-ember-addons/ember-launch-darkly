@@ -1,3 +1,4 @@
+import { warn } from '@ember/debug';
 import { tracked } from '@glimmer/tracking';
 import { TrackedMap } from 'tracked-built-ins';
 import type {
@@ -100,23 +101,25 @@ function removeCurrentContext() {
 }
 
 class Context<ELDFlagSet extends LDFlagSet> {
-  _flags = new TrackedMap<keyof ELDFlagSet, ELDFlagSet[keyof ELDFlagSet]>();
-  _client?: LDClient | null = null;
-  @tracked _initStatus: InitStatus;
-  @tracked _initError?: unknown;
-  @tracked _lastError?: Error;
-  _onStatusChange?: OnStatusChange;
-  _onError?: OnError;
+  @tracked initStatus: InitStatus;
+  @tracked initError?: unknown;
+  @tracked lastError?: Error;
+
+  #flags = new TrackedMap<keyof ELDFlagSet, ELDFlagSet[keyof ELDFlagSet]>();
+  #client?: LDClient | null = null;
+  #onStatusChange?: OnStatusChange;
+  #onError?: OnError;
 
   constructor(options: ContextOptions<ELDFlagSet> = {}) {
     const { flags, client, initStatus, initError, onStatusChange, onError } =
       options;
 
-    this._client = client;
-    this._initStatus = initStatus ?? (client ? 'initialized' : 'local');
-    this._initError = initError;
-    this._onStatusChange = onStatusChange;
-    this._onError = onError;
+    this.initStatus = initStatus ?? (client ? 'initialized' : 'local');
+    this.initError = initError;
+
+    this.#client = client;
+    this.#onStatusChange = onStatusChange;
+    this.#onError = onError;
 
     this.updateFlags(flags ?? ({} as ELDFlagSet));
   }
@@ -126,33 +129,33 @@ class Context<ELDFlagSet extends LDFlagSet> {
       keyof ELDFlagSet,
       ELDFlagSet[keyof ELDFlagSet],
     ][]) {
-      this._flags.set(key, value);
+      this.#flags.set(key, value);
     }
   }
 
   replaceFlags(flags: ELDFlagSet) {
-    this._flags.clear();
+    this.#flags.clear();
     this.updateFlags(flags);
   }
 
   enable(key: keyof ELDFlagSet) {
-    this._flags.set(key, true as ELDFlagSet[keyof ELDFlagSet]);
+    this.#flags.set(key, true as ELDFlagSet[keyof ELDFlagSet]);
   }
 
   disable(key: keyof ELDFlagSet) {
-    this._flags.set(key, false as ELDFlagSet[keyof ELDFlagSet]);
+    this.#flags.set(key, false as ELDFlagSet[keyof ELDFlagSet]);
   }
 
   set(key: keyof ELDFlagSet, value: LDFlagValue) {
-    this._flags.set(key, value as ELDFlagSet[keyof ELDFlagSet]);
+    this.#flags.set(key, value as ELDFlagSet[keyof ELDFlagSet]);
   }
 
   get<T>(key: keyof ELDFlagSet, defaultValue?: T | null): T {
-    if (!this._flags.has(key) && defaultValue != null) {
+    if (!this.#flags.has(key) && defaultValue != null) {
       return defaultValue;
     }
 
-    return this._flags.get(key) as T;
+    return this.#flags.get(key) as T;
   }
 
   persist() {
@@ -166,7 +169,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
   get allFlags() {
     const allFlags: LDFlagSet = {};
 
-    for (const [key, value] of this._flags.entries()) {
+    for (const [key, value] of this.#flags.entries()) {
       allFlags[key as string] = value;
     }
 
@@ -174,35 +177,14 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get isLocal() {
-    return this.client == null;
-  }
-
-  /**
-   * How initialization completed.
-   *
-   * - `'initialized'` — LD SDK initialized successfully.
-   * - `'failed'`      — LD SDK failed to initialize (flags may be empty or from bootstrap).
-   * - `'local'`       — Running in local mode.
-   *
-   * This property is reactive (`@tracked`). When the SDK recovers after a
-   * failed init, it automatically transitions to `'initialized'`.
-   */
-  get initStatus(): InitStatus {
-    return this._initStatus;
+    return !this.client;
   }
 
   /**
    * Whether initialization completed successfully (status is `'initialized'` or `'local'`).
    */
   get initSucceeded(): boolean {
-    return this._initStatus === 'initialized' || this._initStatus === 'local';
-  }
-
-  /**
-   * The error from `waitForInitialization()` if initialization failed, otherwise `undefined`.
-   */
-  get initError(): unknown {
-    return this._initError;
+    return this.initStatus === 'initialized' || this.initStatus === 'local';
   }
 
   /**
@@ -210,25 +192,15 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * @internal
    */
   transitionStatus(newStatus: InitStatus, error?: unknown) {
-    const previous = this._initStatus;
+    const previous = this.initStatus;
 
     if (previous === newStatus) {
       return;
     }
 
-    this._initStatus = newStatus;
-    this._initError = error;
-    this._onStatusChange?.(newStatus, previous);
-  }
-
-  /**
-   * The most recent runtime error emitted by the LD SDK, or `undefined`.
-   *
-   * Reactive (`@tracked`) — templates and computed properties that read this
-   * will automatically re-render when a new error arrives.
-   */
-  get lastError(): Error | undefined {
-    return this._lastError;
+    this.initStatus = newStatus;
+    this.initError = error;
+    this.#onStatusChange?.(newStatus, previous);
   }
 
   /**
@@ -236,8 +208,15 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * @internal
    */
   handleError(error: Error) {
-    this._lastError = error;
-    this._onError?.(error);
+    this.lastError = error;
+
+    if (this.#onError) {
+      this.#onError(error);
+    } else {
+      warn(`LaunchDarkly SDK error: ${String(error)}`, false, {
+        id: 'ember-launch-darkly.sdk-error',
+      });
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -256,7 +235,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * @see https://docs.launchdarkly.com/sdk/features/evaluation-reasons
    */
   variationDetail(key: string, defaultValue?: LDFlagValue): LDEvaluationDetail {
-    if (!this._client) {
+    if (!this.#client) {
       /* eslint-disable @typescript-eslint/no-unsafe-assignment */
       return {
         value: this.get<LDFlagValue>(key, defaultValue),
@@ -266,7 +245,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
       /* eslint-enable @typescript-eslint/no-unsafe-assignment */
     }
 
-    return this._client.variationDetail(key, defaultValue);
+    return this.#client.variationDetail(key, defaultValue);
   }
 
   /**
@@ -277,7 +256,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * @see https://docs.launchdarkly.com/sdk/features/events
    */
   track(key: string, data?: unknown, metricValue?: number) {
-    this._client?.track(key, data, metricValue);
+    this.#client?.track(key, data, metricValue);
   }
 
   /**
@@ -290,7 +269,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * @see https://docs.launchdarkly.com/sdk/features/flush
    */
   async flush(): Promise<void> {
-    await this._client?.flush();
+    await this.#client?.flush();
   }
 
   /**
@@ -304,15 +283,15 @@ class Context<ELDFlagSet extends LDFlagSet> {
    * during application teardown or in test cleanup.
    */
   async close({ force = false }: { force?: boolean } = {}): Promise<void> {
-    if (!this._client) {
+    if (!this.#client) {
       return;
     }
 
     if (force) {
       // Fire-and-forget — don't await the flush that close() triggers.
-      void this._client.close();
+      void this.#client.close();
     } else {
-      await this._client.close();
+      await this.#client.close();
     }
   }
 
@@ -336,7 +315,12 @@ class Context<ELDFlagSet extends LDFlagSet> {
    */
   async destroy({ force = false }: { force?: boolean } = {}): Promise<void> {
     await this.close({ force });
-    removeCurrentContext();
+
+    // Only remove if we're still the active context — another context may
+    // have been set while close() was awaiting.
+    if (getCurrentContext() === this) {
+      removeCurrentContext();
+    }
   }
 
   get persisted(): ELDFlagSet | undefined {
@@ -345,7 +329,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get client(): LDClient | null | undefined {
-    return this._client;
+    return this.#client;
   }
 
   get user() {

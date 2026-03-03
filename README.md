@@ -205,7 +205,7 @@ import { variation } from 'ember-launch-darkly';
 
 export default class PriceDisplay extends Component {
   get price() {
-    if (variation('new-price-plan')) {
+    if (variation('new-pricing-plan')) {
       return 99.0;
     }
     return 199.0;

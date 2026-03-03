@@ -250,7 +250,7 @@ import { Context } from 'ember-launch-darkly';
 // this automatically.
 ```
 
-The `setupLaunchDarkly` test helper now automatically calls `context.close()`
+The `setupLaunchDarkly` test helper now automatically calls `context.destroy()`
 in `afterEach` and provides a `withInitStatus` helper:
 
 ```js
@@ -278,6 +278,7 @@ All from `'ember-launch-darkly'`:
 | `identify` | function | Switch user context, returns `IdentifyResult` |
 | `variation` | function | Read a flag value (reactive) |
 | `getCurrentContext` | function | Get the current `Context` singleton |
+| `removeCurrentContext` | function | Remove the global context (prefer `context.destroy()` instead) |
 | `Context` | class | The reactive flag container |
 | `InitializeResult` | type | Return type of `initialize()` (includes `context`) |
 | `IdentifyResult` | type | Return type of `identify()` |
@@ -290,5 +291,4 @@ From `'ember-launch-darkly/test-support'`:
 
 | Export | Kind | Description |
 |---|---|---|
-| `removeCurrentContext` | function | Remove the global context (prefer `context.destroy()` instead) |
 | `setupLaunchDarkly` | function | Test helper — sets up context, provides `withVariation` and `withInitStatus` |

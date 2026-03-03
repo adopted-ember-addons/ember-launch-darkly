@@ -99,7 +99,7 @@ export function shouldUpdateFlag(
   }
 
   if (streamingConfig && typeof streamingConfig === 'object') {
-    if (streamingConfig.allExcept != null) {
+    if (streamingConfig.allExcept) {
       if (Array.isArray(streamingConfig.allExcept)) {
         return !streamingConfig.allExcept.includes(key);
       }
@@ -176,7 +176,7 @@ export async function initialize(
     ...rest,
   };
 
-  if (options.bootstrap === 'localFlags' && localFlags != null) {
+  if (options.bootstrap === 'localFlags' && localFlags) {
     options.bootstrap = localFlags;
   }
 

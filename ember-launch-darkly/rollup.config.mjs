@@ -3,8 +3,13 @@ import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
 import { Addon } from '@embroider/addon-dev/rollup';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(
+  readFileSync(resolve(__dirname, 'package.json'), 'utf8'),
+);
 
 const addon = new Addon({
   srcDir: 'src',
