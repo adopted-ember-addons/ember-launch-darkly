@@ -14,6 +14,7 @@
  */
 import babelParser from '@babel/eslint-parser';
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import prettier from 'eslint-config-prettier';
 import ember from 'eslint-plugin-ember/recommended';
 import importPlugin from 'eslint-plugin-import';
@@ -29,13 +30,12 @@ const parserOptions = {
     },
     ts: {
       projectService: true,
-      project: true,
       tsconfigRootDir: import.meta.dirname,
     },
   },
 };
 
-export default ts.config(
+export default defineConfig(
   js.configs.recommended,
   ember.configs.base,
   ember.configs.gjs,

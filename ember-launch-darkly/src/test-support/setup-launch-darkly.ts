@@ -1,18 +1,20 @@
 import type ApplicationInstance from '@ember/application/instance';
-import { settled, type TestContext } from '@ember/test-helpers';
+import { settled } from '@ember/test-helpers';
+import type { TestContext } from '@ember/test-helpers';
 import type { setupTest } from 'ember-qunit';
 
 import {
   default as Context,
   getCurrentContext,
   setCurrentContext,
-  removeCurrentContext,
 } from '../-sdk/context.ts';
+import type { InitStatus } from '../-sdk/context.ts';
 import type { EmberLaunchDarklyOptions } from '../-sdk/initialize.ts';
 
 type NestedHooks = Parameters<typeof setupTest>[0];
 interface LDTestContext extends TestContext {
   withVariation?: (key: string, value: boolean) => Promise<void>;
+  withInitStatus?: (status: InitStatus, error?: unknown) => Promise<void>;
 }
 
 export default function setupLaunchDarkly(hooks: NestedHooks) {
@@ -39,7 +41,7 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
       return acc;
     }, {});
 
-    const context = new Context(localFlags);
+    const context = new Context({ flags: localFlags });
 
     setCurrentContext(context);
 
@@ -56,11 +58,40 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
 
       return settled();
     };
+
+    /**
+     * Simulate a specific initialization status in tests.
+     *
+     * Useful for testing degraded-state UI when LaunchDarkly fails to
+     * initialize.
+     *
+     * @example
+     * ```js
+     * await this.withInitStatus('failed', new Error('timeout'));
+     * // Now context.initStatus === 'failed' and context.initError is the Error
+     * ```
+     */
+    this.withInitStatus = (status: InitStatus, error?: unknown) => {
+      const context = getCurrentContext();
+
+      if (!context) {
+        throw new Error(
+          'LaunchDarkly context is missing. Ensure `setupLaunchDarkly` has initialized correctly.',
+        );
+      }
+
+      context.transitionStatus(status, error);
+
+      return settled();
+    };
   });
 
   hooks.afterEach(async function (this: LDTestContext) {
+    const context = getCurrentContext();
+
+    await context?.destroy();
     await settled();
     delete this.withVariation;
-    removeCurrentContext();
+    delete this.withInitStatus;
   });
 }
