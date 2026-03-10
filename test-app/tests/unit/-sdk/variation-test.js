@@ -19,7 +19,7 @@ module('Unit | SDK | Variation', function (hooks) {
       foo: 'bar',
     };
 
-    let context = new Context(flags);
+    let context = new Context({ flags });
 
     setCurrentContext(context);
 
@@ -41,7 +41,7 @@ module('Unit | SDK | Variation', function (hooks) {
       },
     };
 
-    let context = new Context(flags, client);
+    let context = new Context({ flags, client });
 
     setCurrentContext(context);
 
@@ -54,7 +54,7 @@ module('Unit | SDK | Variation', function (hooks) {
     assert.expect(2);
 
     let flags = {};
-    let context = new Context(flags);
+    let context = new Context({ flags });
 
     setCurrentContext(context);
 

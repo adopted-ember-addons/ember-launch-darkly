@@ -12,18 +12,19 @@ module('Unit | SDK | Identify', function (hooks) {
   });
 
   test('identifying a user - local', async function (assert) {
-    assert.expect(1);
+    assert.expect(2);
 
     let flags = {
       cheese: 'bacon',
     };
 
-    let context = new Context(flags);
+    let context = new Context({ flags });
 
     setCurrentContext(context);
 
-    await identify({ key: 'cheese' });
+    let result = await identify({ key: 'cheese' });
 
+    assert.true(result.isOk, 'identify succeeded');
     assert.deepEqual(
       context.allFlags,
       flags,
@@ -32,7 +33,7 @@ module('Unit | SDK | Identify', function (hooks) {
   });
 
   test('identifying a user - remote', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     let flags = {
       cheese: 'bacon',
@@ -55,12 +56,13 @@ module('Unit | SDK | Identify', function (hooks) {
       },
     };
 
-    let context = new Context(flags, client);
+    let context = new Context({ flags, client });
 
     setCurrentContext(context);
 
-    await identify({ key: 'cheese' });
+    let result = await identify({ key: 'cheese' });
 
+    assert.true(result.isOk, 'identify succeeded');
     assert.deepEqual(
       context.allFlags,
       {
@@ -68,6 +70,40 @@ module('Unit | SDK | Identify', function (hooks) {
         bar: false,
       },
       'User identified and flags updated',
+    );
+  });
+
+  test('identify without initialization returns error result', async function (assert) {
+    let result = await identify({ key: 'cheese' });
+
+    assert.false(result.isOk, 'identify failed');
+    assert.ok(result.error, 'error is present');
+    assert.ok(
+      result.error.message.includes('has not been initialized'),
+      'error message indicates missing initialization',
+    );
+  });
+
+  test('identify with remote client failure returns error result', async function (assert) {
+    let flags = { foo: 'bar' };
+
+    let client = {
+      identify() {
+        throw new Error('Network error');
+      },
+    };
+
+    let context = new Context({ flags, client });
+    setCurrentContext(context);
+
+    let result = await identify({ key: 'cheese' });
+
+    assert.false(result.isOk, 'identify failed');
+    assert.ok(result.error, 'error is present');
+    assert.strictEqual(
+      result.error.message,
+      'Network error',
+      'original error is preserved',
     );
   });
 });
