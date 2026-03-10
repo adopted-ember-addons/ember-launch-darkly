@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-10)
+
+* ember-launch-darkly 6.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-launch-darkly`
+  * [#710](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/710) Structured results, SDK passthroughs, options-object Context, peerDeps ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2026-02-26)
 
 * ember-launch-darkly 5.3.1 (patch)
