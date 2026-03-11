@@ -1,5 +1,22 @@
 # Changelog
 
+## Release (2026-03-11)
+
+* ember-launch-darkly 6.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-launch-darkly`
+  * [#712](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/712) Migrate to @ember/addon-blueprint flat structure ([@aklkv](https://github.com/aklkv))
+  * [#710](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/710) Structured results, SDK passthroughs, options-object Context, peerDeps ([@aklkv](https://github.com/aklkv))
+
+#### :house: Internal
+* `ember-launch-darkly`
+  * [#713](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/713) Update actions versions ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 2
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2026-02-26)
 
 - ember-launch-darkly 5.3.1 (patch)
