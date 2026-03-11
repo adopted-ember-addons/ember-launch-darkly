@@ -12,8 +12,8 @@ import type { InitStatus } from '../-sdk/context.ts';
 import type { EmberLaunchDarklyOptions } from '../-sdk/initialize.ts';
 
 type NestedHooks = Parameters<typeof setupTest>[0];
-interface LDTestContext extends TestContext {
-  withVariation?: (key: string, value: boolean) => Promise<void>;
+export interface LDTestContext extends TestContext {
+  withVariation?: (key: string, value?: unknown) => Promise<void>;
   withInitStatus?: (status: InitStatus, error?: unknown) => Promise<void>;
 }
 

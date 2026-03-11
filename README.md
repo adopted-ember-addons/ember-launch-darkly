@@ -14,7 +14,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
 **What it does _not_ do:**
 
 - Hide the SDK — the full `LDClient` is accessible via `context.client` whenever you need it.
-- Re-implement SDK features — `track()`, `variationDetail()`, `flush()`, `close()` are thin passthroughs.
+- Re-implement SDK features — `track()`, `variationDetail()`, `flush()`, `close()` are thin passthrough.
 - Bundle the SDK — `launchdarkly-js-client-sdk` is a peer dependency. You control the version.
 
 ## Compatibility
@@ -42,6 +42,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
     - [Identify](#identify)
     - [variation (template helper)](#variation-template-helper)
     - [variation (javascript helper)](#variation-javascript-helper)
+    - [Strict mode templates (.gts/.gjs)](#strict-mode-templates-gtsgjs)
     - [Reactive initialization status](#reactive-initialization-status)
     - [Error handling](#error-handling)
     - [SDK passthroughs](#sdk-passthroughs)
@@ -217,6 +218,30 @@ export default class PriceDisplay extends Component {
 }
 ```
 
+### Strict mode templates (.gts/.gjs)
+
+For strict mode templates, import the helper explicitly:
+
+```ts
+import { variation } from "ember-launch-darkly/helpers";
+
+<template>
+  {{#if (variation "show-banner" defaultValue=false)}}
+    <Banner />
+  {{/if}}
+</template>
+```
+
+Or use the SDK function directly (positional args only, no `defaultValue=`):
+
+```ts
+import { variation } from "ember-launch-darkly";
+
+<template>
+  {{variation "flag-key"}}
+</template>
+```
+
 Flag values are **reactive** (`TrackedMap`-backed). When a flag changes, code that reads it re-renders automatically.
 
 ### Reactive initialization status
@@ -383,20 +408,31 @@ module("Acceptance | Pricing", function (hooks) {
 
 ### Integration tests
 
-```js
+```ts
+// variation-test.gts
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render } from "@ember/test-helpers";
-import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
 
-module("Integration | Component | pricing", function (hooks) {
+import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
+import { variation } from "ember-launch-darkly/helpers";
+
+import type { LDTestContext } from "ember-launch-darkly/test-support";
+
+module("Integration | Helper | variation", function (hooks) {
   setupRenderingTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test("shows discount badge", async function (assert) {
-    await this.withVariation("apply-discount", true);
+  test("shows discount badge", async function (this: LDTestContext, assert) {
+    await this.withVariation?.("apply-discount", true);
 
-    await render(hbs`<PricingCard />`);
+    await render(
+      <template>
+        {{#if (variation "apply-discount")}}
+          <span data-test-discount-badge>Discount!</span>
+        {{/if}}
+      </template>,
+    );
 
     assert.dom("[data-test-discount-badge]").exists();
   });

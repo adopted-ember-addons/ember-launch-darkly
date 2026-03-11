@@ -260,19 +260,59 @@ import { Context } from "ember-launch-darkly";
 The `setupLaunchDarkly` test helper now automatically calls `context.destroy()`
 in `afterEach` and provides a `withInitStatus` helper:
 
-```js
+```ts
+// my-component-test.gts
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render } from "@ember/test-helpers";
+
 import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
+import { variation } from "ember-launch-darkly/helpers";
+
+import type { LDTestContext } from "ember-launch-darkly/test-support";
 
 module("Integration | Component | my-component", function (hooks) {
   setupRenderingTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test("shows error banner when LD fails", async function (assert) {
-    await this.withInitStatus("failed", new Error("timeout"));
-    await render(hbs`<MyComponent />`);
+  test("shows error banner when LD fails", async function (this: LDTestContext, assert) {
+    await this.withInitStatus?.("failed", new Error("timeout"));
+
+    await render(
+      <template>
+        {{#if (variation "show-error")}}
+          <div data-test-error-banner>Error!</div>
+        {{/if}}
+      </template>,
+    );
+
     assert.dom("[data-test-error-banner]").exists();
   });
 });
+```
+
+## Strict mode templates (.gts/.gjs)
+
+v6 exports the `variation` helper from a dedicated path for use in strict mode templates:
+
+```ts
+import { variation } from "ember-launch-darkly/helpers";
+
+<template>
+  {{#if (variation "show-banner" defaultValue=false)}}
+    <Banner />
+  {{/if}}
+</template>
+```
+
+You can also import the SDK's `variation` function directly (positional args only):
+
+```ts
+import { variation } from "ember-launch-darkly";
+
+<template>
+  {{variation "flag-key"}}
+</template>
 ```
 
 ## Summary of new public exports
@@ -299,3 +339,11 @@ From `'ember-launch-darkly/test-support'`:
 | Export              | Kind     | Description                                                                  |
 | ------------------- | -------- | ---------------------------------------------------------------------------- |
 | `setupLaunchDarkly` | function | Test helper — sets up context, provides `withVariation` and `withInitStatus` |
+| `LDTestContext`     | type     | Type for test context with `withVariation` and `withInitStatus` methods      |
+
+From `'ember-launch-darkly/helpers'`:
+
+| Export               | Kind     | Description                                           |
+| -------------------- | -------- | ----------------------------------------------------- |
+| `variation`          | function | Template helper for strict mode templates (.gts/.gjs) |
+| `VariationSignature` | type     | Glint signature for the variation helper              |

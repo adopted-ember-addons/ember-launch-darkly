@@ -13,19 +13,15 @@
 
 ## Building the addon
 
-- `cd ember-launch-darkly`
 - `pnpm build`
 
 ## Running tests
 
-- `cd test-app`
-- `pnpm test` – Runs the test suite on the current Ember version
-- `pnpm test:watch` – Runs the test suite in "watch mode"
+- `pnpm test` – Runs the test suite
 
-## Running the test application
+## Running the demo application
 
-- `cd test-app`
 - `pnpm start`
-- Visit the test application at [http://localhost:4200](http://localhost:4200).
+- Visit the demo application at [http://localhost:4200](http://localhost:4200).
 
 For more information on using ember-cli, visit [https://cli.emberjs.com/release/](https://cli.emberjs.com/release/).

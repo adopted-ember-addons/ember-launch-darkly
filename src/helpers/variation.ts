@@ -1,8 +1,19 @@
-import { helper } from '@ember/component/helper';
-import { variation } from '../-sdk/variation.ts';
+import { variation as getVariation } from '../-sdk/variation.ts';
 
-function variationHelper([key]: [string], { defaultValue = null }) {
-  return variation(key, defaultValue);
+export interface VariationSignature {
+  Args: {
+    Positional: [key: string];
+    Named: { defaultValue?: unknown };
+  };
+  Return: string | number | boolean | null;
 }
 
-export default helper(variationHelper);
+export default function variation(
+  key: string,
+  options?: { defaultValue?: unknown },
+): VariationSignature['Return'] {
+  return getVariation(
+    key,
+    options?.defaultValue ?? null,
+  ) as VariationSignature['Return'];
+}
