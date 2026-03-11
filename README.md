@@ -144,7 +144,7 @@ export default class ApplicationRoute extends Route {
       await context.destroy({ force: true });
       await initialize(clientSideId, user, {
         mode: "local",
-        localFlags: DEFAULT_FLAGS,
+        localFlags: { "my-flag": false },
       });
     }
   }
