@@ -20,7 +20,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
 ## Compatibility
 
 | Addon version | Ember version     |                                                                                             |
-|---------------|-------------------|---------------------------------------------------------------------------------------------|
+| ------------- | ----------------- | ------------------------------------------------------------------------------------------- |
 | v6.0          | >= v4.12          | [README](README.md)                                                                         |
 | v5.0          | >= v4.12          | [UPGRADING](UPGRADING_TO_v6.x.md)                                                           |
 | v4.0          | >= v4.12          | [README](README.md)                                                                         |
@@ -77,11 +77,11 @@ Configure from `config/environment.js`:
 module.exports = function (environment) {
   let ENV = {
     launchDarkly: {
-      clientSideId: 'your-client-side-id', // required for remote mode
-      mode: environment === 'production' ? 'remote' : 'local',
+      clientSideId: "your-client-side-id", // required for remote mode
+      mode: environment === "production" ? "remote" : "local",
       localFlags: {
-        'new-pricing-plan': false,
-        'apply-discount': false,
+        "new-pricing-plan": false,
+        "apply-discount": false,
       },
     },
   };
@@ -92,18 +92,18 @@ module.exports = function (environment) {
 
 ### Configuration options
 
-| Option | Default | Description |
-|---|---|---|
-| `clientSideId` | — | Your [LaunchDarkly client-side ID](https://app.launchdarkly.com/settings#/projects). Required for `remote` mode. |
-| `mode` | `'local'` | `'local'` or `'remote'`. Local mode uses `localFlags` instead of the LD service. |
-| `localFlags` | `{}` | Initial flag values for local mode (also used as `bootstrap` values when `bootstrap: 'localFlags'`). |
-| `timeout` | `5` | Seconds to wait for `waitForInitialization()` before treating init as failed. |
-| `streamingFlags` | `false` | Subscribe to real-time flag updates. [See streaming section.](#streaming-feature-flags) |
-| `bootstrap` | — | [Bootstrap configuration](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping). Set to `'localFlags'` to use `localFlags` as bootstrap values. |
-| `onStatusChange` | — | `(newStatus, previousStatus) => void` callback for status transitions. |
-| `onError` | — | `(error) => void` callback for runtime SDK errors. |
-| `sendEventsOnlyForVariation` | `true` | [See note below.](#a-note-on-sendeventsonlyforvariation) |
-| _Other_ | — | Any other [LDOptions](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client) are passed through to the SDK. |
+| Option                       | Default   | Description                                                                                                                                                       |
+| ---------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientSideId`               | —         | Your [LaunchDarkly client-side ID](https://app.launchdarkly.com/settings#/projects). Required for `remote` mode.                                                  |
+| `mode`                       | `'local'` | `'local'` or `'remote'`. Local mode uses `localFlags` instead of the LD service.                                                                                  |
+| `localFlags`                 | `{}`      | Initial flag values for local mode (also used as `bootstrap` values when `bootstrap: 'localFlags'`).                                                              |
+| `timeout`                    | `5`       | Seconds to wait for `waitForInitialization()` before treating init as failed.                                                                                     |
+| `streamingFlags`             | `false`   | Subscribe to real-time flag updates. [See streaming section.](#streaming-feature-flags)                                                                           |
+| `bootstrap`                  | —         | [Bootstrap configuration](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping). Set to `'localFlags'` to use `localFlags` as bootstrap values. |
+| `onStatusChange`             | —         | `(newStatus, previousStatus) => void` callback for status transitions.                                                                                            |
+| `onError`                    | —         | `(error) => void` callback for runtime SDK errors.                                                                                                                |
+| `sendEventsOnlyForVariation` | `true`    | [See note below.](#a-note-on-sendeventsonlyforvariation)                                                                                                          |
+| _Other_                      | —         | Any other [LDOptions](https://docs.launchdarkly.com/sdk/client-side/javascript#customizing-your-client) are passed through to the SDK.                            |
 
 #### A note on `sendEventsOnlyForVariation`
 
@@ -117,20 +117,24 @@ Initialize LaunchDarkly early in your app's lifecycle — typically in the appli
 
 ```js
 // app/routes/application.js
-import Route from '@ember/routing/route';
-import { initialize } from 'ember-launch-darkly';
-import config from 'my-app/config/environment';
+import Route from "@ember/routing/route";
+import { initialize } from "ember-launch-darkly";
+import config from "my-app/config/environment";
 
 export default class ApplicationRoute extends Route {
   async beforeModel() {
     let { clientSideId, ...options } = config.launchDarkly;
 
-    let user = { key: 'aa0ceb', anonymous: true };
+    let user = { key: "aa0ceb", anonymous: true };
 
-    const { isOk, error, context } = await initialize(clientSideId, user, options);
+    const { isOk, error, context } = await initialize(
+      clientSideId,
+      user,
+      options,
+    );
 
     if (!isOk) {
-      console.warn('LaunchDarkly failed to initialize:', error);
+      console.warn("LaunchDarkly failed to initialize:", error);
 
       // Option A: Continue with default/bootstrap flag values.
       // context is still usable — flags will update if the SDK recovers.
@@ -138,7 +142,7 @@ export default class ApplicationRoute extends Route {
       // Option B: Tear down and fall back to local mode.
       await context.destroy({ force: true });
       await initialize(clientSideId, user, {
-        mode: 'local',
+        mode: "local",
         localFlags: DEFAULT_FLAGS,
       });
     }
@@ -150,10 +154,10 @@ export default class ApplicationRoute extends Route {
 
 ```ts
 interface InitializeResult {
-  isOk: boolean;                        // true for success or local mode
-  status: 'initialized' | 'failed' | 'local';
-  error?: unknown;                      // the error, if failed
-  context: Context;                     // the reactive flag context
+  isOk: boolean; // true for success or local mode
+  status: "initialized" | "failed" | "local";
+  error?: unknown; // the error, if failed
+  context: Context; // the reactive flag context
 }
 ```
 
@@ -162,7 +166,7 @@ interface InitializeResult {
 Switch the user context after initialization (e.g. after login):
 
 ```js
-import { identify } from 'ember-launch-darkly';
+import { identify } from "ember-launch-darkly";
 
 const { isOk, error } = await identify({
   key: session.user.id,
@@ -171,7 +175,7 @@ const { isOk, error } = await identify({
 });
 
 if (!isOk) {
-  console.error('identify failed:', error);
+  console.error("identify failed:", error);
 }
 ```
 
@@ -200,12 +204,12 @@ Multivariate flags:
 ### variation (javascript helper)
 
 ```js
-import Component from '@glimmer/component';
-import { variation } from 'ember-launch-darkly';
+import Component from "@glimmer/component";
+import { variation } from "ember-launch-darkly";
 
 export default class PriceDisplay extends Component {
   get price() {
-    if (variation('new-pricing-plan')) {
+    if (variation("new-pricing-plan")) {
       return 99.0;
     }
     return 199.0;
@@ -222,9 +226,9 @@ The context exposes reactive properties for initialization state:
 ```js
 const { context } = await initialize(clientSideId, user, options);
 
-context.initStatus;    // 'initialized' | 'failed' | 'local'
+context.initStatus; // 'initialized' | 'failed' | 'local'
 context.initSucceeded; // boolean
-context.initError;     // the error from waitForInitialization(), if any
+context.initError; // the error from waitForInitialization(), if any
 ```
 
 These are `@tracked`, so templates that read them auto-update. When the SDK
@@ -236,8 +240,8 @@ You can listen for transitions:
 ```js
 await initialize(clientSideId, user, {
   onStatusChange(newStatus, previousStatus) {
-    if (newStatus === 'initialized' && previousStatus === 'failed') {
-      console.log('LaunchDarkly recovered!');
+    if (newStatus === "initialized" && previousStatus === "failed") {
+      console.log("LaunchDarkly recovered!");
     }
   },
 });
@@ -265,11 +269,11 @@ in local mode:
 
 ```js
 // Evaluation reasons (requires evaluationReasons: true in options)
-const detail = context.variationDetail('my-flag');
+const detail = context.variationDetail("my-flag");
 // { value: true, variationIndex: 0, reason: { kind: 'FALLTHROUGH' } }
 
 // Track custom events for Experimentation
-context.track('purchase', { item: 'shirt' }, 42.0);
+context.track("purchase", { item: "shirt" }, 42.0);
 
 // Flush pending events (e.g. before page navigation)
 await context.flush();
@@ -285,7 +289,9 @@ await context.destroy();
 await context.destroy({ force: true }); // force variant
 
 // Direct access to the LDClient for anything else
-context.client?.on('change:my-flag', () => { /* ... */ });
+context.client?.on("change:my-flag", () => {
+  /* ... */
+});
 ```
 
 ## Local feature flags
@@ -307,16 +313,16 @@ launchDarkly: {
 
 ```js
 // Browser console
-window.__LD__.get('pricing-plan')             // 'plan-a'
-window.__LD__.set('pricing-plan', 'plan-b')   // change it
-window.__LD__.enable('apply-discount')         // shorthand for set(key, true)
-window.__LD__.disable('apply-discount')        // shorthand for set(key, false)
-window.__LD__.allFlags                         // { 'apply-discount': true, ... }
-window.__LD__.user                             // { key: 'local-mode-no-user-specified' }
+window.__LD__.get("pricing-plan"); // 'plan-a'
+window.__LD__.set("pricing-plan", "plan-b"); // change it
+window.__LD__.enable("apply-discount"); // shorthand for set(key, true)
+window.__LD__.disable("apply-discount"); // shorthand for set(key, false)
+window.__LD__.allFlags; // { 'apply-discount': true, ... }
+window.__LD__.user; // { key: 'local-mode-no-user-specified' }
 
 // Persist to localStorage (survives refresh)
-window.__LD__.persist()
-window.__LD__.resetPersistence()
+window.__LD__.persist();
+window.__LD__.resetPersistence();
 ```
 
 ## Streaming feature flags
@@ -357,20 +363,20 @@ contentSecurityPolicy: {
 `setupLaunchDarkly` resets all flags to `false` and provides `withVariation`:
 
 ```js
-import { module, test } from 'qunit';
-import { visit, click } from '@ember/test-helpers';
-import { setupApplicationTest } from 'ember-qunit';
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+import { module, test } from "qunit";
+import { visit, click } from "@ember/test-helpers";
+import { setupApplicationTest } from "ember-qunit";
+import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
 
-module('Acceptance | Pricing', function (hooks) {
+module("Acceptance | Pricing", function (hooks) {
   setupApplicationTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test('shows new pricing when flag is on', async function (assert) {
-    await this.withVariation('new-pricing-plan', 'plan-a');
-    await visit('/pricing');
+  test("shows new pricing when flag is on", async function (assert) {
+    await this.withVariation("new-pricing-plan", "plan-a");
+    await visit("/pricing");
 
-    assert.dom('.price').hasText('£ 99');
+    assert.dom(".price").hasText("£ 99");
   });
 });
 ```
@@ -378,21 +384,21 @@ module('Acceptance | Pricing', function (hooks) {
 ### Integration tests
 
 ```js
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render } from "@ember/test-helpers";
+import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
 
-module('Integration | Component | pricing', function (hooks) {
+module("Integration | Component | pricing", function (hooks) {
   setupRenderingTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test('shows discount badge', async function (assert) {
-    await this.withVariation('apply-discount', true);
+  test("shows discount badge", async function (assert) {
+    await this.withVariation("apply-discount", true);
 
     await render(hbs`<PricingCard />`);
 
-    assert.dom('[data-test-discount-badge]').exists();
+    assert.dom("[data-test-discount-badge]").exists();
   });
 });
 ```
@@ -402,12 +408,12 @@ module('Integration | Component | pricing', function (hooks) {
 Use `withInitStatus` to simulate degraded states:
 
 ```js
-test('shows error banner when LD fails', async function (assert) {
-  await this.withInitStatus('failed', new Error('timeout'));
+test("shows error banner when LD fails", async function (assert) {
+  await this.withInitStatus("failed", new Error("timeout"));
 
   await render(hbs`<StatusBanner />`);
 
-  assert.dom('[data-test-error-banner]').exists();
+  assert.dom("[data-test-error-banner]").exists();
 });
 ```
 
@@ -418,10 +424,10 @@ with the LaunchDarkly SDK and Ember's tracking system directly:
 
 ```ts
 // app/services/feature-flags.ts
-import Service from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { TrackedMap } from 'tracked-built-ins';
-import * as LDClient from 'launchdarkly-js-client-sdk';
+import Service from "@ember/service";
+import { tracked } from "@glimmer/tracking";
+import { TrackedMap } from "tracked-built-ins";
+import * as LDClient from "launchdarkly-js-client-sdk";
 
 export default class FeatureFlagsService extends Service {
   flags = new TrackedMap<string, unknown>();
@@ -450,7 +456,7 @@ export default class FeatureFlagsService extends Service {
     }
 
     // Subscribe to changes for reactive updates
-    this.client.on('change', (changes) => {
+    this.client.on("change", (changes) => {
       for (const [key, { current }] of Object.entries(changes)) {
         this.flags.set(key, current);
       }
@@ -483,19 +489,20 @@ export default class FeatureFlagsService extends Service {
 
 ```ts
 // app/routes/application.ts
-import Route from '@ember/routing/route';
-import { service } from '@ember/service';
-import type FeatureFlagsService from 'my-app/services/feature-flags';
-import config from 'my-app/config/environment';
+import Route from "@ember/routing/route";
+import { service } from "@ember/service";
+import type FeatureFlagsService from "my-app/services/feature-flags";
+import config from "my-app/config/environment";
 
 export default class ApplicationRoute extends Route {
   @service declare featureFlags: FeatureFlagsService;
 
   async beforeModel() {
-    await this.featureFlags.initialize(
-      config.launchDarkly.clientSideId,
-      { kind: 'user', key: 'anonymous', anonymous: true },
-    );
+    await this.featureFlags.initialize(config.launchDarkly.clientSideId, {
+      kind: "user",
+      key: "anonymous",
+      anonymous: true,
+    });
   }
 }
 ```

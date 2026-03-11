@@ -1,9 +1,14 @@
-# Prettier is also run from each package, so the ignores here
-# protect against files that may not be within a package
-
 # misc
 !.*
 .lint-todo/
+
+# compiled output
+dist/
+dist-tests/
+declarations/
+
+# lockfiles
+pnpm-lock.yaml
 
 # ember-try
 /.node_modules.ember-try/

@@ -15,7 +15,7 @@ Mirgate config from this:
 module.exports = function (environment) {
   let ENV = {
     launchDarkly: {
-      clientSideId: '1234',
+      clientSideId: "1234",
       local: true,
       localFeatureFlags: {
         foo: true,
@@ -34,8 +34,8 @@ to this:
 module.exports = function (environment) {
   let ENV = {
     launchDarkly: {
-      clientSideId: '1234',
-      mode: 'local',
+      clientSideId: "1234",
+      mode: "local",
       localFlags: {
         foo: true,
       },
@@ -54,12 +54,12 @@ Ember Launch Darkly no longer uses services and so the initialization should cha
 ```js
 // /app/routes/application.js
 
-import Route from '@ember/routing/route';
+import Route from "@ember/routing/route";
 
 export default Route.extend({
   model() {
     let user = {
-      key: 'aa0ceb',
+      key: "aa0ceb",
       anonymous: true,
     };
 
@@ -73,20 +73,20 @@ to this:
 ```js
 // /app/routes/application.js
 
-import Route from '@ember/routing/route';
+import Route from "@ember/routing/route";
 
-import config from 'my-app/config/environment';
+import config from "my-app/config/environment";
 
-import { initialize } from 'ember-launch-darkly';
+import { initialize } from "ember-launch-darkly";
 
 export default class ApplicationRoute extends Route {
   async model() {
     let user = {
-      key: 'aa0ceb',
+      key: "aa0ceb",
     };
 
     let { clientSideId, ...rest } = config;
-    
+
     return await initialize(clientSideId, user, rest);
   }
 }
@@ -99,7 +99,7 @@ Ember Launch Darkly no longer uses services and so the identification should cha
 ```js
 // /app/routes/session.js
 
-import Route from '@ember/routing/route';
+import Route from "@ember/routing/route";
 
 export default Route.extend({
   session: service(),
@@ -110,9 +110,9 @@ export default Route.extend({
 
   afterModel(session) {
     let user = {
-      key: session.get('user.id'),
-      firstName: session.get('user.firstName'),
-      email: session.get('user.email'),
+      key: session.get("user.id"),
+      firstName: session.get("user.firstName"),
+      email: session.get("user.email"),
     };
 
     return this.launchDarkly.identify(user);
@@ -156,13 +156,13 @@ Ember Launch Darkly no longer uses services and so checking of variations should
 ```js
 // /app/components/login-page/component.js
 
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import Component from "@ember/component";
+import { computed } from "@ember/object";
 
 export default Component.extend({
   actions: {
     getPrice() {
-      if (this.launchDarkly.variation('new-price-plan')) {
+      if (this.launchDarkly.variation("new-price-plan")) {
         return 99.0;
       }
 
@@ -177,13 +177,13 @@ to this:
 ```js
 // /app/components/login-page/component.js
 
-import Component from '@ember/component';
+import Component from "@ember/component";
 
-import { variation } from 'ember-launch-darkly';
+import { variation } from "ember-launch-darkly";
 
 export default class LoginPageComponent extends Component {
   get price() {
-    if (variation('new-price-plan')) {
+    if (variation("new-price-plan")) {
       return 99.0;
     }
 
@@ -215,12 +215,12 @@ However, you should also remove the code in your `ember-cli-build.js` that enabl
 ```js
 // ember-cli-build.js
 
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const EmberApp = require("ember-cli/lib/broccoli/ember-app");
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
     babel: {
-      plugins: [require.resolve('ember-launch-darkly/babel-plugin')], // <---- Remove this plugin.
+      plugins: [require.resolve("ember-launch-darkly/babel-plugin")], // <---- Remove this plugin.
     },
   });
 
@@ -233,10 +233,10 @@ module.exports = function (defaults) {
 If you want to access and modify local feature flags from the JS console you will need to change from doing this:
 
 ```js
-ld.variation('new-pricing-plan', 'plan-a'); // return the current value of the feature flag providing a default if it doesn't exist
-ld.setVariation('new-pricing-plan', 'plan-x'); // set the variation value
-ld.enable('apply-discount'); // helper to set the return value to `true`
-ld.disable('apply-discount'); // helper to set the return value to `false`
+ld.variation("new-pricing-plan", "plan-a"); // return the current value of the feature flag providing a default if it doesn't exist
+ld.setVariation("new-pricing-plan", "plan-x"); // set the variation value
+ld.enable("apply-discount"); // helper to set the return value to `true`
+ld.disable("apply-discount"); // helper to set the return value to `false`
 ld.allFlags(); // return the current list of feature flags and their values
 ld.user();
 ```
