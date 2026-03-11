@@ -1,3 +1,24 @@
+# Docs: https://pnpm.io/settings
+# https://github.com/emberjs/rfcs/pull/907
+
+# we don't want addons to be bad citizens of the ecosystem
+autoInstallPeers: false
+
+# we want true isolation,
+# if a dependency is not declared, we want an error
+resolvePeersFromWorkspaceRoot: false
+
+# Less strict, but required for tooling to not barf on duplicate peer trees.
+# (many libraries declare the same peers, which resolve to the same versions)
+peersSuffixMaxLength: 40
+dedupeInjectedDeps: true
+dedupePeerDependents: true
+publicHoistPattern:
+  - ember-source
+
+# highest is what everyone is used to, but
+# not ensuring folks are actually compatible with declared ranges.
+resolutionMode: highest
+
 packages:
-  - 'ember-launch-darkly'
-  - 'test-app'
+  - .

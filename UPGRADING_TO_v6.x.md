@@ -11,13 +11,13 @@ This guide covers the breaking changes and how to migrate.
 
 ## Breaking Changes at a Glance
 
-| Change | v5 | v6 |
-|---|---|---|
-| **SDK dependency** | bundled (`dependencies`) | **peer** (`peerDependencies`) — you install it |
-| **Context constructor** | 6 positional args | single options object |
-| **`initialize()` return** | `{ isOk, status, error }` | `{ isOk, status, error, context }` |
-| **`Context` / `getCurrentContext`** | private (had to import from `-sdk/context`) | **public** (import from `ember-launch-darkly`) |
-| **`throwOnInitializationError`** | Option that toggled throwing | **Removed** — use `result.isOk` / `result.error` |
+| Change                              | v5                                          | v6                                               |
+| ----------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| **SDK dependency**                  | bundled (`dependencies`)                    | **peer** (`peerDependencies`) — you install it   |
+| **Context constructor**             | 6 positional args                           | single options object                            |
+| **`initialize()` return**           | `{ isOk, status, error }`                   | `{ isOk, status, error, context }`               |
+| **`Context` / `getCurrentContext`** | private (had to import from `-sdk/context`) | **public** (import from `ember-launch-darkly`)   |
+| **`throwOnInitializationError`**    | Option that toggled throwing                | **Removed** — use `result.isOk` / `result.error` |
 
 ## Step 1: Install the SDK as a peer dependency
 
@@ -53,8 +53,8 @@ recommended way to access the LaunchDarkly context — no more private imports.
 ### Before (v5)
 
 ```js
-import { initialize } from 'ember-launch-darkly';
-import { getCurrentContext } from 'ember-launch-darkly/-sdk/context'; // private!
+import { initialize } from "ember-launch-darkly";
+import { getCurrentContext } from "ember-launch-darkly/-sdk/context"; // private!
 
 export default class ApplicationRoute extends Route {
   async model() {
@@ -69,7 +69,7 @@ export default class ApplicationRoute extends Route {
 ### After (v6)
 
 ```js
-import { initialize } from 'ember-launch-darkly';
+import { initialize } from "ember-launch-darkly";
 
 export default class ApplicationRoute extends Route {
   async model() {
@@ -80,7 +80,7 @@ export default class ApplicationRoute extends Route {
     );
 
     if (!isOk) {
-      console.warn('LD init failed:', error);
+      console.warn("LD init failed:", error);
     }
 
     // `context` is now part of the public API
@@ -94,7 +94,7 @@ If you still want to access the context from anywhere without threading it
 through, `getCurrentContext` is now a public export:
 
 ```js
-import { getCurrentContext } from 'ember-launch-darkly';
+import { getCurrentContext } from "ember-launch-darkly";
 ```
 
 ## Step 3: Replace `throwOnInitializationError`
@@ -122,7 +122,7 @@ const { isOk, error, context } = await initialize(clientSideId, user, options);
 
 if (!isOk) {
   // handle failure — context is still usable with default/bootstrap values
-  console.error('LaunchDarkly failed:', error);
+  console.error("LaunchDarkly failed:", error);
 }
 ```
 
@@ -134,10 +134,17 @@ constructor now takes a single options object instead of positional arguments.
 ### Before (v5)
 
 ```js
-import Context from 'ember-launch-darkly/-sdk/context';
+import Context from "ember-launch-darkly/-sdk/context";
 
 // 6 positional args — hard to read, easy to get wrong
-const context = new Context(flags, client, 'failed', error, onStatusChange, onError);
+const context = new Context(
+  flags,
+  client,
+  "failed",
+  error,
+  onStatusChange,
+  onError,
+);
 
 // local mode with flags only
 const context = new Context(localFlags);
@@ -146,13 +153,13 @@ const context = new Context(localFlags);
 ### After (v6)
 
 ```js
-import { Context } from 'ember-launch-darkly';
+import { Context } from "ember-launch-darkly";
 
 // Named options — self-documenting, order-independent
 const context = new Context({
   flags,
   client,
-  initStatus: 'failed',
+  initStatus: "failed",
   initError: error,
   onStatusChange,
   onError,
@@ -171,16 +178,16 @@ v6 adds several capabilities directly on the context object:
 ```js
 const { context } = await initialize(clientSideId, user, {
   onStatusChange(newStatus, previousStatus) {
-    if (newStatus === 'initialized' && previousStatus === 'failed') {
-      console.log('LaunchDarkly recovered!');
+    if (newStatus === "initialized" && previousStatus === "failed") {
+      console.log("LaunchDarkly recovered!");
     }
   },
 });
 
 // These are reactive (@tracked) — templates auto-update
-context.initStatus;    // 'initialized' | 'failed' | 'local'
+context.initStatus; // 'initialized' | 'failed' | 'local'
 context.initSucceeded; // boolean
-context.initError;     // the error, if any
+context.initError; // the error, if any
 ```
 
 ### Runtime error handling
@@ -200,11 +207,11 @@ context.lastError; // Error | undefined
 
 ```js
 // Evaluation reasons (requires evaluationReasons: true in options)
-const detail = context.variationDetail('my-flag');
+const detail = context.variationDetail("my-flag");
 // { value: true, variationIndex: 0, reason: { kind: 'FALLTHROUGH' } }
 
 // Track custom events for Experimentation
-context.track('purchase', { item: 'shirt' }, 42.0);
+context.track("purchase", { item: "shirt" }, 42.0);
 
 // Flush pending events (e.g. before page navigation)
 await context.flush();
@@ -238,13 +245,13 @@ If your tests import from the private `-sdk/context` path, update them:
 import Context, {
   setCurrentContext,
   removeCurrentContext,
-} from 'ember-launch-darkly/-sdk/context';
+} from "ember-launch-darkly/-sdk/context";
 ```
 
 ### After (v6)
 
 ```js
-import { Context } from 'ember-launch-darkly';
+import { Context } from "ember-launch-darkly";
 // setCurrentContext / removeCurrentContext are still available from the
 // private path for advanced test scenarios, but setupLaunchDarkly handles
 // this automatically.
@@ -253,42 +260,90 @@ import { Context } from 'ember-launch-darkly';
 The `setupLaunchDarkly` test helper now automatically calls `context.destroy()`
 in `afterEach` and provides a `withInitStatus` helper:
 
-```js
-import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
+```ts
+// my-component-test.gts
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render } from "@ember/test-helpers";
 
-module('Integration | Component | my-component', function (hooks) {
+import { setupLaunchDarkly } from "ember-launch-darkly/test-support";
+import { variation } from "ember-launch-darkly/helpers";
+
+import type { LDTestContext } from "ember-launch-darkly/test-support";
+
+module("Integration | Component | my-component", function (hooks) {
   setupRenderingTest(hooks);
   setupLaunchDarkly(hooks);
 
-  test('shows error banner when LD fails', async function (assert) {
-    await this.withInitStatus('failed', new Error('timeout'));
-    await render(hbs`<MyComponent />`);
-    assert.dom('[data-test-error-banner]').exists();
+  test("shows error banner when LD fails", async function (this: LDTestContext, assert) {
+    await this.withInitStatus?.("failed", new Error("timeout"));
+
+    await render(
+      <template>
+        {{#if (variation "show-error")}}
+          <div data-test-error-banner>Error!</div>
+        {{/if}}
+      </template>,
+    );
+
+    assert.dom("[data-test-error-banner]").exists();
   });
 });
+```
+
+## Strict mode templates (.gts/.gjs)
+
+v6 exports the `variation` helper from a dedicated path for use in strict mode templates:
+
+```ts
+import { variation } from "ember-launch-darkly/helpers";
+
+<template>
+  {{#if (variation "show-banner" defaultValue=false)}}
+    <Banner />
+  {{/if}}
+</template>
+```
+
+You can also import the SDK's `variation` function directly (positional args only):
+
+```ts
+import { variation } from "ember-launch-darkly";
+
+<template>
+  {{variation "flag-key"}}
+</template>
 ```
 
 ## Summary of new public exports
 
 All from `'ember-launch-darkly'`:
 
-| Export | Kind | Description |
-|---|---|---|
-| `initialize` | function | Initialize the LD client, returns `InitializeResult` |
-| `identify` | function | Switch user context, returns `IdentifyResult` |
-| `variation` | function | Read a flag value (reactive) |
-| `getCurrentContext` | function | Get the current `Context` singleton |
+| Export                 | Kind     | Description                                                    |
+| ---------------------- | -------- | -------------------------------------------------------------- |
+| `initialize`           | function | Initialize the LD client, returns `InitializeResult`           |
+| `identify`             | function | Switch user context, returns `IdentifyResult`                  |
+| `variation`            | function | Read a flag value (reactive)                                   |
+| `getCurrentContext`    | function | Get the current `Context` singleton                            |
 | `removeCurrentContext` | function | Remove the global context (prefer `context.destroy()` instead) |
-| `Context` | class | The reactive flag container |
-| `InitializeResult` | type | Return type of `initialize()` (includes `context`) |
-| `IdentifyResult` | type | Return type of `identify()` |
-| `ContextOptions` | type | Options for `new Context()` |
-| `InitStatus` | type | `'initialized' \| 'failed' \| 'local'` |
-| `OnStatusChange` | type | Callback for status transitions |
-| `OnError` | type | Callback for runtime errors |
+| `Context`              | class    | The reactive flag container                                    |
+| `InitializeResult`     | type     | Return type of `initialize()` (includes `context`)             |
+| `IdentifyResult`       | type     | Return type of `identify()`                                    |
+| `ContextOptions`       | type     | Options for `new Context()`                                    |
+| `InitStatus`           | type     | `'initialized' \| 'failed' \| 'local'`                         |
+| `OnStatusChange`       | type     | Callback for status transitions                                |
+| `OnError`              | type     | Callback for runtime errors                                    |
 
 From `'ember-launch-darkly/test-support'`:
 
-| Export | Kind | Description |
-|---|---|---|
+| Export              | Kind     | Description                                                                  |
+| ------------------- | -------- | ---------------------------------------------------------------------------- |
 | `setupLaunchDarkly` | function | Test helper — sets up context, provides `withVariation` and `withInitStatus` |
+| `LDTestContext`     | type     | Type for test context with `withVariation` and `withInitStatus` methods      |
+
+From `'ember-launch-darkly/helpers'`:
+
+| Export               | Kind     | Description                                           |
+| -------------------- | -------- | ----------------------------------------------------- |
+| `variation`          | function | Template helper for strict mode templates (.gts/.gjs) |
+| `VariationSignature` | type     | Glint signature for the variation helper              |
