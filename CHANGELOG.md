@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-12)
+
+* ember-launch-darkly 6.0.1 (patch)
+
+#### :house: Internal
+* `ember-launch-darkly`
+  * [#715](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/715) fix: linting ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2026-03-11)
 
 * ember-launch-darkly 6.0.0 (major)
