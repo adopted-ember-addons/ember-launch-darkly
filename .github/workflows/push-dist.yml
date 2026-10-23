@@ -22,10 +22,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
+        with:
+          cache: true
       - uses: actions/setup-node@v7
         with:
           node-version-file: package.json
-          cache: pnpm
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - uses: kategengler/put-built-npm-package-contents-on-branch@v2.1.0
