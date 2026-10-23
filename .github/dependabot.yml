@@ -21,6 +21,12 @@ updates:
       - dependencies
       - javascript
       - internal
+    ignore:
+      # Glint's ember-tsc imports typescript/lib/tsc, which TypeScript 7 no
+      # longer exports. Take majors by hand once Glint supports them.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
     # One PR for each kind of update instead of one per package. Majors
     # stay apart, as they're the ones that need code changes.
     groups:
