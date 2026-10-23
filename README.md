@@ -6,7 +6,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
 
 **What it gives you:**
 
-- **Reactive flags** — powered by Glimmer's `TrackedMap`, flag changes automatically re-render templates and recompute getters.
+- **Reactive flags** — powered by `TrackedMap` from `tracked-built-ins`, flag changes automatically re-render templates and recompute getters.
 - **`{{variation}}` helper** — read flags directly in templates.
 - **Test helpers** — `setupLaunchDarkly`, `withVariation`, and `withInitStatus` for deterministic tests.
 - **Structured results** — `initialize()` and `identify()` return result objects instead of throwing.
