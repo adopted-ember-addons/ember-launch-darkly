@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-10-23)
+
+* ember-launch-darkly 6.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-launch-darkly`
+  * [#744](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/744) Drop the ember-source peer and depend on tracked-built-ins directly ([@aklkv](https://github.com/aklkv))
+
+#### :house: Internal
+* `ember-launch-darkly`
+  * [#748](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/748) Move to pnpm 12 and let pnpm/action-setup cache the store ([@aklkv](https://github.com/aklkv))
+  * [#746](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/746) Group Dependabot updates, add GitHub Actions, label PRs for release-plan ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2026-03-12)
 
 * ember-launch-darkly 6.0.1 (patch)
