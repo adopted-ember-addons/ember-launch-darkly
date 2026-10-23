@@ -171,7 +171,7 @@ importers:
         specifier: ^1.10.2
         version: 1.10.3(supports-color@10.2.2)
       decorator-transforms:
-        specifier: ^2.3.1
+        specifier: ^2.4.0
         version: 2.4.0(@babel/core@8.0.7)
       tracked-built-ins:
         specifier: ^4.1.0
@@ -224,7 +224,7 @@ importers:
         version: 2.2.0(supports-color@10.2.2)
       '@glint/ember-tsc':
         specifier: ^1.2.2
-        version: 1.14.1(081e4645717242ee5387699004e4282f)
+        version: 1.14.1(6748f059759aaa5ab5aa2d0197045a0a)
       '@glint/template':
         specifier: ^1.7.6
         version: 1.11.0
@@ -269,13 +269,13 @@ importers:
         version: 10.1.8(6fa3c59c52cf2090d6150c914d7960ee)
       eslint-plugin-ember:
         specifier: ^13.7.0
-        version: 13.7.0(a28b36c923a3e0a6f7b63d56014da186)
+        version: 13.7.0(1b6a5b61742c6d31ff7c9263259402e4)
       eslint-plugin-import:
         specifier: ^2.32.0
-        version: 2.32.0(ecb74456a6c8e0ec0a8e4f94d000d093)
+        version: 2.32.0(5159b4d673ddc9ef7dff70302ef45a3f)
       eslint-plugin-n:
         specifier: ^18.5.0
-        version: 18.5.0(03395ceab3c430a64e151a2de209ac50)
+        version: 18.5.0(7a394ebdb8e3058deb8adb31036bde7b)
       globals:
         specifier: ^17.4.0
         version: 17.13.0
@@ -310,11 +310,11 @@ importers:
         specifier: ^3.18.0
         version: 3.21.3(f864a10ccffb1e96caf672e7df540143)
       typescript:
-        specifier: ~7.0.2
-        version: 7.0.2
+        specifier: ~6.0.3
+        version: 6.0.3
       typescript-eslint:
         specifier: ^8.57.0
-        version: 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
+        version: 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       vite:
         specifier: ^8.3.5
         version: 8.3.5(e20d8b1eb192357b210707eb543b8865)
@@ -2061,126 +2061,6 @@ packages:
   '@typescript-eslint/visitor-keys@8.72.0':
     resolution: {integrity: sha512-E2mroviasaWecDzTGiGMtuEguuLVOeRggnrIn93CJuxYJzQBHbyymlT08aVQydbBal5538o+JkBKXh2sRuCyIA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript/typescript-aix-ppc64@7.0.2':
-    resolution: {integrity: sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [ppc64]
-    os: [aix]
-
-  '@typescript/typescript-darwin-arm64@7.0.2':
-    resolution: {integrity: sha512-gowzar9MwS/aRWp6f3a4KUqzRjAZjOsmGNCM6LcTgXum+dBfgsBVMN+AgvOCCbguXyick6LJhpBszxMebJ8syA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@typescript/typescript-darwin-x64@7.0.2':
-    resolution: {integrity: sha512-SZ9xZInqApNlNGc9s0W1VSsktYSOe9cFqNOIqmN1Gs8SmkjKZYFt017G4VwPxASInODuAdbTW7sXiFUf893RgA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [darwin]
-
-  '@typescript/typescript-freebsd-arm64@7.0.2':
-    resolution: {integrity: sha512-W5NH4y/J0plIIS5b2xvTEkU7JFxyqdMAOgf+Ilhl0vHQXKO5dZoxd+C/jEtq56c4F3wk71RB4BMRQ2XdI+bwYQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [freebsd]
-
-  '@typescript/typescript-freebsd-x64@7.0.2':
-    resolution: {integrity: sha512-UMGDx5sTpzNw3WiPebH7l90IWfJggEd+egHt/q6p7/Cm3zqoV7VxkGXt+3DxPIw8CcmvAB0j3sVVfbhX+M4Tpw==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [freebsd]
-
-  '@typescript/typescript-linux-arm64@7.0.2':
-    resolution: {integrity: sha512-Qh4eU4/y3yDjnfjjyPYihMj5/ODIlmt+Bzu17OI+fiSRDW57QmU5SiN63exPRNJPKUzcc1INa1NXdrJ+MqHjUQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@typescript/typescript-linux-arm@7.0.2':
-    resolution: {integrity: sha512-gffT3xPz9sR7j/YJExkyPntrI0P2EP9XbOyWzth2/Gs0RstK+90RBcO0ncXoXy/beYll1SXw846Nf2zdnEz0QQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm]
-    os: [linux]
-
-  '@typescript/typescript-linux-loong64@7.0.2':
-    resolution: {integrity: sha512-uEHck9i8hoAzXPiYRib1O7miOnz23SxIeVl6F4LXox+qov1K35jHcEW6VHKvZI+pyvl7fZEP4MCU5LYvIq1GuQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [loong64]
-    os: [linux]
-
-  '@typescript/typescript-linux-mips64el@7.0.2':
-    resolution: {integrity: sha512-R4KvAMnE43W5Qeqb0Ly56O3mWMWIAgsMyz36DCaycd5nbg/9kzm0liw3JocfRqyJY0KPmzFjbswozXyW0DnIYA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [mips64el]
-    os: [linux]
-
-  '@typescript/typescript-linux-ppc64@7.0.2':
-    resolution: {integrity: sha512-DORx5b3sd/4S7eayxm4FQv+A7CrkUIGRaHiwI8oiHTAI1fAPWhF4J0vAlkC8biAlHSVVwxMQ3tjZ2/DVbnQiiA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [ppc64]
-    os: [linux]
-
-  '@typescript/typescript-linux-riscv64@7.0.2':
-    resolution: {integrity: sha512-wf0jqEDOjrPRnKwYRyyJDRo11KMbvMFrU+q4zqKyChODBzvlkbhNQfKvLxQCcwTpdDaXSHZTVuh0JoCrKCUMHQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [riscv64]
-    os: [linux]
-
-  '@typescript/typescript-linux-s390x@7.0.2':
-    resolution: {integrity: sha512-IkwJc3L7yhytWd/ewjyxNDfOmswCm9GWMJT/ue/dU4aZNbwZeYAetq42VyLmsmSjvoX7z74X6ZaYCtzAr0EuGw==}
-    engines: {node: '>=16.20.0'}
-    cpu: [s390x]
-    os: [linux]
-
-  '@typescript/typescript-linux-x64@7.0.2':
-    resolution: {integrity: sha512-EYdf2cNg7rgCWJnxCdJ+F3V39O8ihb37eHAu1LK8oAFizgTQbPOK7zHHXbPt8rX24COqODXeI3sIf0fCXG7H/A==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [linux]
-
-  '@typescript/typescript-netbsd-arm64@7.0.2':
-    resolution: {integrity: sha512-+polYF4MF04aPpO5FTkHran9yUQDSXqy5GiSDKpsll5jy3l3+g9QLhpf39T+ePtefhXLOGrLl0QIjkQP6VnelA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [netbsd]
-
-  '@typescript/typescript-netbsd-x64@7.0.2':
-    resolution: {integrity: sha512-8YIT0EHM/3dq10ZOVF/A7pc/YSMtbcecct4rWtexrnSCHOPcpC2KTLXfTCR6vDpnSiY12heNb1GiN/wu+T/FyA==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [netbsd]
-
-  '@typescript/typescript-openbsd-arm64@7.0.2':
-    resolution: {integrity: sha512-APT8+ClYnuYm1u9+kgGXoMj2VzWzcymwh2gNSQVySHfkRDGOTVkoWLjCmOQSaO+PoqQ57B0flRp9SA+7GnnkzQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [openbsd]
-
-  '@typescript/typescript-openbsd-x64@7.0.2':
-    resolution: {integrity: sha512-yX7s+Q0Dln0Dt9tEzZsAjXXR/+ytBM7AlglaqyeMPxQszJ1JhlJdZ6jLA+IzldHtflX81em7lDao1xXu+aRRkg==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [openbsd]
-
-  '@typescript/typescript-sunos-x64@7.0.2':
-    resolution: {integrity: sha512-dLJDGaLZ1D4HPQn62u1n8mBDkJREwMsAkCdkwd4Ieqw+x3TUyTsqY0YiBCtE6H6OzzgGk3iuZ3vFWRS+E8/d1g==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [sunos]
-
-  '@typescript/typescript-win32-arm64@7.0.2':
-    resolution: {integrity: sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ==}
-    engines: {node: '>=16.20.0'}
-    cpu: [arm64]
-    os: [win32]
-
-  '@typescript/typescript-win32-x64@7.0.2':
-    resolution: {integrity: sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g==}
-    engines: {node: '>=16.20.0'}
-    cpu: [x64]
-    os: [win32]
 
   '@volar/kit@2.4.28':
     resolution: {integrity: sha512-cKX4vK9dtZvDRaAzeoUdaAJEew6IdxHNCRrdp5Kvcl6zZOqb6jTOfk3kXkIkG3T7oTFXguEMt5+9ptyqYR84Pg==}
@@ -5524,9 +5404,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@7.0.2:
-    resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
-    engines: {node: '>=16.20.0'}
+  typescript@6.0.3:
+    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
+    engines: {node: '>=14.17'}
     hasBin: true
 
   uglify-js@3.19.3:
@@ -7740,31 +7620,6 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
-  '@glint/ember-tsc@1.14.1(081e4645717242ee5387699004e4282f)':
-    dependencies:
-      '@glimmer/syntax': 0.95.0
-      '@glint/template': 1.11.0
-      '@volar/kit': 2.4.28(typescript@7.0.2)
-      '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.0.2)
-      '@volar/language-service': 2.4.28(typescript@7.0.2)
-      '@volar/source-map': 2.4.28
-      '@volar/test-utils': 2.4.28(typescript@7.0.2)
-      '@volar/typescript': 2.4.28(typescript@7.0.2)
-      content-tag: 4.2.1
-      ember-estree: 0.9.0
-      silent-error: 1.1.1(supports-color@10.2.2)
-      typescript: 7.0.2
-      volar-service-html: 0.0.71(6cee110ba1c57c73da157ff7d497cc98)
-      volar-service-typescript: 0.0.71(f7a408aa795e84ea1f3f984e41720fc2)
-      vscode-languageserver-protocol: 3.17.5
-      vscode-languageserver-textdocument: 1.0.12
-      vscode-uri: 3.1.0
-    optionalDependencies:
-      ember-source: 7.3.1(af99951ed2d0e2562f36034e201f004d)
-    transitivePeerDependencies:
-      - supports-color
-
   '@glint/ember-tsc@1.14.1(622dfbc1d7f2fa4e05a95a7717474158)':
     dependencies:
       '@glimmer/syntax': 0.95.0
@@ -7782,6 +7637,31 @@ snapshots:
       typescript: 5.9.3
       volar-service-html: 0.0.71(05e425a638634b3bca2dc7a158087e3a)
       volar-service-typescript: 0.0.71(ccd5034d57e13de011ce8c26f70f049a)
+      vscode-languageserver-protocol: 3.17.5
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-uri: 3.1.0
+    optionalDependencies:
+      ember-source: 7.3.1(af99951ed2d0e2562f36034e201f004d)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@glint/ember-tsc@1.14.1(6748f059759aaa5ab5aa2d0197045a0a)':
+    dependencies:
+      '@glimmer/syntax': 0.95.0
+      '@glint/template': 1.11.0
+      '@volar/kit': 2.4.28(typescript@6.0.3)
+      '@volar/language-core': 2.4.28
+      '@volar/language-server': 2.4.28(typescript@6.0.3)
+      '@volar/language-service': 2.4.28(typescript@6.0.3)
+      '@volar/source-map': 2.4.28
+      '@volar/test-utils': 2.4.28(typescript@6.0.3)
+      '@volar/typescript': 2.4.28(typescript@6.0.3)
+      content-tag: 4.2.1
+      ember-estree: 0.9.0
+      silent-error: 1.1.1(supports-color@10.2.2)
+      typescript: 6.0.3
+      volar-service-html: 0.0.71(05b67e3e8979ceb07ccd970bd12c0157)
+      volar-service-typescript: 0.0.71(0f561008a89a59d88d0a5d5371141855)
       vscode-languageserver-protocol: 3.17.5
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
@@ -8336,40 +8216,40 @@ snapshots:
     dependencies:
       '@types/node': 25.4.0
 
-  '@typescript-eslint/eslint-plugin@8.72.0(1398f4302cc85243044a775d54d7f729)':
+  '@typescript-eslint/eslint-plugin@8.72.0(2ee11fc6ec7f30fb7facdbe7b480fd9d)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       '@typescript-eslint/scope-manager': 8.72.0
-      '@typescript-eslint/type-utils': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
-      '@typescript-eslint/utils': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
+      '@typescript-eslint/type-utils': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
+      '@typescript-eslint/utils': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       '@typescript-eslint/visitor-keys': 8.72.0
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       ignore: 7.0.5
       natural-compare: 1.4.0
-      ts-api-utils: 2.5.0(typescript@7.0.2)
-      typescript: 7.0.2
+      ts-api-utils: 2.5.0(typescript@6.0.3)
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)':
+  '@typescript-eslint/parser@8.72.0(d4534c5f236b554d2b1d7b720eeab59c)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.72.0
       '@typescript-eslint/types': 8.72.0
-      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@7.0.2)
+      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.72.0
       debug: 4.4.3(supports-color@10.2.2)
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
-      typescript: 7.0.2
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.72.0(supports-color@10.2.2)(typescript@7.0.2)':
+  '@typescript-eslint/project-service@8.72.0(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@7.0.2)
+      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@6.0.3)
       '@typescript-eslint/types': 8.72.0
       debug: 4.4.3(supports-color@10.2.2)
-      typescript: 7.0.2
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
@@ -8378,47 +8258,47 @@ snapshots:
       '@typescript-eslint/types': 8.72.0
       '@typescript-eslint/visitor-keys': 8.72.0
 
-  '@typescript-eslint/tsconfig-utils@8.72.0(typescript@7.0.2)':
+  '@typescript-eslint/tsconfig-utils@8.72.0(typescript@6.0.3)':
     dependencies:
-      typescript: 7.0.2
+      typescript: 6.0.3
 
-  '@typescript-eslint/type-utils@8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)':
+  '@typescript-eslint/type-utils@8.72.0(d4534c5f236b554d2b1d7b720eeab59c)':
     dependencies:
       '@typescript-eslint/types': 8.72.0
-      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@7.0.2)
-      '@typescript-eslint/utils': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
+      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       debug: 4.4.3(supports-color@10.2.2)
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
-      ts-api-utils: 2.5.0(typescript@7.0.2)
-      typescript: 7.0.2
+      ts-api-utils: 2.5.0(typescript@6.0.3)
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@8.72.0': {}
 
-  '@typescript-eslint/typescript-estree@8.72.0(supports-color@10.2.2)(typescript@7.0.2)':
+  '@typescript-eslint/typescript-estree@8.72.0(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.72.0(supports-color@10.2.2)(typescript@7.0.2)
-      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@7.0.2)
+      '@typescript-eslint/project-service': 8.72.0(supports-color@10.2.2)(typescript@6.0.3)
+      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@6.0.3)
       '@typescript-eslint/types': 8.72.0
       '@typescript-eslint/visitor-keys': 8.72.0
       debug: 4.4.3(supports-color@10.2.2)
       minimatch: 10.2.6
       semver: 7.7.4
       tinyglobby: 0.2.17
-      ts-api-utils: 2.5.0(typescript@7.0.2)
-      typescript: 7.0.2
+      ts-api-utils: 2.5.0(typescript@6.0.3)
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)':
+  '@typescript-eslint/utils@8.72.0(d4534c5f236b554d2b1d7b720eeab59c)':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(6fa3c59c52cf2090d6150c914d7960ee)
       '@typescript-eslint/scope-manager': 8.72.0
       '@typescript-eslint/types': 8.72.0
-      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@7.0.2)
+      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@6.0.3)
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
-      typescript: 7.0.2
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
@@ -8426,66 +8306,6 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.72.0
       eslint-visitor-keys: 5.0.1
-
-  '@typescript/typescript-aix-ppc64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-darwin-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-darwin-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-freebsd-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-freebsd-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-arm@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-loong64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-mips64el@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-ppc64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-riscv64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-s390x@7.0.2':
-    optional: true
-
-  '@typescript/typescript-linux-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-netbsd-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-netbsd-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-openbsd-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-openbsd-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-sunos-x64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-win32-arm64@7.0.2':
-    optional: true
-
-  '@typescript/typescript-win32-x64@7.0.2':
-    optional: true
 
   '@volar/kit@2.4.28(typescript@5.9.3)':
     dependencies:
@@ -8496,12 +8316,12 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
-  '@volar/kit@2.4.28(typescript@7.0.2)':
+  '@volar/kit@2.4.28(typescript@6.0.3)':
     dependencies:
-      '@volar/language-service': 2.4.28(typescript@7.0.2)
-      '@volar/typescript': 2.4.28(typescript@7.0.2)
+      '@volar/language-service': 2.4.28(typescript@6.0.3)
+      '@volar/typescript': 2.4.28(typescript@6.0.3)
       typesafe-path: 0.2.2
-      typescript: 7.0.2
+      typescript: 6.0.3
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
@@ -8523,11 +8343,11 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@volar/language-server@2.4.28(typescript@7.0.2)':
+  '@volar/language-server@2.4.28(typescript@6.0.3)':
     dependencies:
       '@volar/language-core': 2.4.28
-      '@volar/language-service': 2.4.28(typescript@7.0.2)
-      '@volar/typescript': 2.4.28(typescript@7.0.2)
+      '@volar/language-service': 2.4.28(typescript@6.0.3)
+      '@volar/typescript': 2.4.28(typescript@6.0.3)
       path-browserify: 1.0.1
       request-light: 0.7.0
       vscode-languageserver: 9.0.1
@@ -8535,7 +8355,7 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
     optionalDependencies:
-      typescript: 7.0.2
+      typescript: 6.0.3
 
   '@volar/language-service@2.4.28(typescript@5.9.3)':
     dependencies:
@@ -8546,14 +8366,14 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@volar/language-service@2.4.28(typescript@7.0.2)':
+  '@volar/language-service@2.4.28(typescript@6.0.3)':
     dependencies:
       '@volar/language-core': 2.4.28
       vscode-languageserver-protocol: 3.17.5
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
     optionalDependencies:
-      typescript: 7.0.2
+      typescript: 6.0.3
 
   '@volar/source-map@2.4.28': {}
 
@@ -8566,10 +8386,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@volar/test-utils@2.4.28(typescript@7.0.2)':
+  '@volar/test-utils@2.4.28(typescript@6.0.3)':
     dependencies:
       '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.0.2)
+      '@volar/language-server': 2.4.28(typescript@6.0.3)
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
     transitivePeerDependencies:
@@ -8583,13 +8403,13 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@volar/typescript@2.4.28(typescript@7.0.2)':
+  '@volar/typescript@2.4.28(typescript@6.0.3)':
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
     optionalDependencies:
-      typescript: 7.0.2
+      typescript: 6.0.3
 
   '@vscode/l10n@0.0.18': {}
 
@@ -9567,10 +9387,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-eslint-parser@0.15.0(c76fb90233ac1683434e536947e3af61):
+  ember-eslint-parser@0.15.0(1747daa9ebc6260c922ed9bf96c55e4e):
     dependencies:
       '@glimmer/syntax': 0.95.0
-      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@7.0.2)
+      '@typescript-eslint/tsconfig-utils': 8.72.0(typescript@6.0.3)
       content-tag: 4.2.1
       ember-estree: 0.9.0
       eslint-scope: 9.1.2
@@ -9579,6 +9399,7 @@ snapshots:
       svg-tags: 1.0.0
     optionalDependencies:
       '@babel/eslint-parser': 8.0.7(dacb90063d32375be55ec6b23b3d77fa)
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
     transitivePeerDependencies:
       - typescript
 
@@ -9834,23 +9655,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(6ad33609edc6cfa98e565a066b633935):
+  eslint-module-utils@2.12.1(da9a7bb57d3431f99575f7f122a32403):
     dependencies:
       debug: 3.2.7(supports-color@10.2.2)
     optionalDependencies:
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-import-resolver-node: 0.3.9(supports-color@10.2.2)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-ember@13.7.0(a28b36c923a3e0a6f7b63d56014da186):
+  eslint-plugin-ember@13.7.0(1b6a5b61742c6d31ff7c9263259402e4):
     dependencies:
       '@ember-data/rfc395-data': 0.0.4
       aria-query: 5.3.2
       axobject-query: 4.1.0
       css-tree: 3.2.1
       editorconfig: 3.0.2
-      ember-eslint-parser: 0.15.0(c76fb90233ac1683434e536947e3af61)
+      ember-eslint-parser: 0.15.0(1747daa9ebc6260c922ed9bf96c55e4e)
       ember-rfc176-data: 0.3.18
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-utils: 3.0.0(6fa3c59c52cf2090d6150c914d7960ee)
@@ -9863,6 +9685,8 @@ snapshots:
       requireindex: 1.2.0
       snake-case: 3.0.4
       svg-tags: 1.0.0
+    optionalDependencies:
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
     transitivePeerDependencies:
       - '@babel/eslint-parser'
       - typescript
@@ -9874,7 +9698,7 @@ snapshots:
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-compat-utils: 0.5.1(6fa3c59c52cf2090d6150c914d7960ee)
 
-  eslint-plugin-import@2.32.0(ecb74456a6c8e0ec0a8e4f94d000d093):
+  eslint-plugin-import@2.32.0(5159b4d673ddc9ef7dff70302ef45a3f):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -9885,7 +9709,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-import-resolver-node: 0.3.9(supports-color@10.2.2)
-      eslint-module-utils: 2.12.1(6ad33609edc6cfa98e565a066b633935)
+      eslint-module-utils: 2.12.1(da9a7bb57d3431f99575f7f122a32403)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -9896,12 +9720,14 @@ snapshots:
       semver: 6.3.1
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
+    optionalDependencies:
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-n@18.5.0(03395ceab3c430a64e151a2de209ac50):
+  eslint-plugin-n@18.5.0(7a394ebdb8e3058deb8adb31036bde7b):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(6fa3c59c52cf2090d6150c914d7960ee)
       enhanced-resolve: 5.20.0
@@ -9914,8 +9740,8 @@ snapshots:
       js-yaml: 5.5.0
       semver: 7.7.4
     optionalDependencies:
-      ts-declaration-location: 1.0.7(typescript@7.0.2)
-      typescript: 7.0.2
+      ts-declaration-location: 1.0.7(typescript@6.0.3)
+      typescript: 6.0.3
 
   eslint-scope@9.1.2:
     dependencies:
@@ -12400,14 +12226,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ts-api-utils@2.5.0(typescript@7.0.2):
+  ts-api-utils@2.5.0(typescript@6.0.3):
     dependencies:
-      typescript: 7.0.2
+      typescript: 6.0.3
 
-  ts-declaration-location@1.0.7(typescript@7.0.2):
+  ts-declaration-location@1.0.7(typescript@6.0.3):
     dependencies:
       picomatch: 4.0.7
-      typescript: 7.0.2
+      typescript: 6.0.3
     optional: true
 
   tsconfig-paths@3.15.0:
@@ -12472,14 +12298,14 @@ snapshots:
     dependencies:
       semver: 7.7.4
 
-  typescript-eslint@8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4):
+  typescript-eslint@8.72.0(d4534c5f236b554d2b1d7b720eeab59c):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.72.0(1398f4302cc85243044a775d54d7f729)
-      '@typescript-eslint/parser': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
-      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@7.0.2)
-      '@typescript-eslint/utils': 8.72.0(d4259eabf4b1bda9ace9e70cdfe924b4)
+      '@typescript-eslint/eslint-plugin': 8.72.0(2ee11fc6ec7f30fb7facdbe7b480fd9d)
+      '@typescript-eslint/parser': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
+      '@typescript-eslint/typescript-estree': 8.72.0(supports-color@10.2.2)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.72.0(d4534c5f236b554d2b1d7b720eeab59c)
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
-      typescript: 7.0.2
+      typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
@@ -12487,28 +12313,7 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  typescript@7.0.2:
-    optionalDependencies:
-      '@typescript/typescript-aix-ppc64': 7.0.2
-      '@typescript/typescript-darwin-arm64': 7.0.2
-      '@typescript/typescript-darwin-x64': 7.0.2
-      '@typescript/typescript-freebsd-arm64': 7.0.2
-      '@typescript/typescript-freebsd-x64': 7.0.2
-      '@typescript/typescript-linux-arm': 7.0.2
-      '@typescript/typescript-linux-arm64': 7.0.2
-      '@typescript/typescript-linux-loong64': 7.0.2
-      '@typescript/typescript-linux-mips64el': 7.0.2
-      '@typescript/typescript-linux-ppc64': 7.0.2
-      '@typescript/typescript-linux-riscv64': 7.0.2
-      '@typescript/typescript-linux-s390x': 7.0.2
-      '@typescript/typescript-linux-x64': 7.0.2
-      '@typescript/typescript-netbsd-arm64': 7.0.2
-      '@typescript/typescript-netbsd-x64': 7.0.2
-      '@typescript/typescript-openbsd-arm64': 7.0.2
-      '@typescript/typescript-openbsd-x64': 7.0.2
-      '@typescript/typescript-sunos-x64': 7.0.2
-      '@typescript/typescript-win32-arm64': 7.0.2
-      '@typescript/typescript-win32-x64': 7.0.2
+  typescript@6.0.3: {}
 
   uglify-js@3.19.3:
     optional: true
@@ -12589,6 +12394,14 @@ snapshots:
       terser: 5.46.0
       yaml: 2.9.1
 
+  volar-service-html@0.0.71(05b67e3e8979ceb07ccd970bd12c0157):
+    dependencies:
+      vscode-html-languageservice: 5.6.2
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-uri: 3.1.0
+    optionalDependencies:
+      '@volar/language-service': 2.4.28(typescript@6.0.3)
+
   volar-service-html@0.0.71(05e425a638634b3bca2dc7a158087e3a):
     dependencies:
       vscode-html-languageservice: 5.6.2
@@ -12597,13 +12410,17 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.28(typescript@5.9.3)
 
-  volar-service-html@0.0.71(6cee110ba1c57c73da157ff7d497cc98):
+  volar-service-typescript@0.0.71(0f561008a89a59d88d0a5d5371141855):
     dependencies:
-      vscode-html-languageservice: 5.6.2
+      path-browserify: 1.0.1
+      semver: 7.7.4
+      typescript-auto-import-cache: 0.3.6
       vscode-languageserver-textdocument: 1.0.12
+      vscode-nls: 5.2.0
       vscode-uri: 3.1.0
     optionalDependencies:
-      '@volar/language-service': 2.4.28(typescript@7.0.2)
+      '@volar/language-service': 2.4.28(typescript@6.0.3)
+      typescript: 6.0.3
 
   volar-service-typescript@0.0.71(ccd5034d57e13de011ce8c26f70f049a):
     dependencies:
@@ -12616,18 +12433,6 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.28(typescript@5.9.3)
       typescript: 5.9.3
-
-  volar-service-typescript@0.0.71(f7a408aa795e84ea1f3f984e41720fc2):
-    dependencies:
-      path-browserify: 1.0.1
-      semver: 7.7.4
-      typescript-auto-import-cache: 0.3.6
-      vscode-languageserver-textdocument: 1.0.12
-      vscode-nls: 5.2.0
-      vscode-uri: 3.1.0
-    optionalDependencies:
-      '@volar/language-service': 2.4.28(typescript@7.0.2)
-      typescript: 7.0.2
 
   vscode-html-languageservice@5.6.2:
     dependencies:
