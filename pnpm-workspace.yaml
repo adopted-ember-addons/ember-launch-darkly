@@ -20,5 +20,16 @@ publicHoistPattern:
 # not ensuring folks are actually compatible with declared ranges.
 resolutionMode: highest
 
+# pnpm won't install while a dependency's build script is neither allowed nor
+# denied. esbuild's script checks its platform binary; core-js's only prints a
+# notice.
+allowBuilds:
+  core-js: false
+  esbuild: true
+
+# Dedupe whenever pnpm writes the lockfile, so it doesn't drift. Frozen
+# installs (CI) don't write it.
+autoDedupe: true
+
 packages:
   - .
