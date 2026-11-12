@@ -133,6 +133,38 @@ module('Unit | SDK | Initialize', function () {
       assert.ok(context.initError, 'context.initError contains the error');
     });
 
+    test('local mode falls back to defaultFlags', async function (assert) {
+      await initialize(
+        'test-client-id',
+        {},
+        {
+          mode: 'local',
+          localFlags: { 'my-flag': false },
+          defaultFlags: { 'my-flag': true, 'other-flag': 'b' },
+        },
+      );
+
+      const context = getCurrentContext();
+
+      assert.false(context.get('my-flag'), 'local flag wins');
+      assert.strictEqual(context.get('other-flag'), 'b', 'falls back');
+    });
+
+    test('remote mode failure falls back to defaultFlags', async function (assert) {
+      const { isOk, context } = await initialize(
+        'invalid-client-id',
+        {},
+        {
+          mode: 'remote',
+          timeout: 1,
+          defaultFlags: { 'my-flag': true },
+        },
+      );
+
+      assert.false(isOk);
+      assert.true(context.get('my-flag'));
+    });
+
     test('re-initialization returns result from existing context', async function (assert) {
       await initialize(
         'test-client-id',

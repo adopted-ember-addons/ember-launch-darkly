@@ -66,4 +66,24 @@ module('Unit | SDK | Variation', function (hooks) {
 
     assert.strictEqual(result, 'cheese');
   });
+
+  test('falls back to defaultFlags', async function (assert) {
+    let defaults = [];
+    let client = {
+      variation(key, defaultValue) {
+        defaults.push(defaultValue);
+      },
+    };
+    let context = new Context({ client, defaultFlags: { foo: 'bacon' } });
+
+    setCurrentContext(context);
+
+    assert.strictEqual(variation('foo'), 'bacon');
+    assert.strictEqual(variation('foo', 'cheese'), 'cheese');
+    assert.deepEqual(
+      defaults,
+      ['bacon', 'cheese'],
+      'LaunchDarkly records the default that was served',
+    );
+  });
 });

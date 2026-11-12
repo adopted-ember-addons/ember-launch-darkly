@@ -29,19 +29,17 @@ export default function setupLaunchDarkly(hooks: NestedHooks) {
     const config = owner.resolveRegistration('config:environment') as {
       launchDarkly: EmberLaunchDarklyOptions;
     };
-    let { localFlags } = {
-      localFlags: {},
-      ...(config?.launchDarkly || {}),
-    } as { localFlags: Record<string, unknown> };
+    const { localFlags, defaultFlags } = config?.launchDarkly ?? {};
 
-    localFlags = Object.keys(localFlags).reduce((acc, key) => {
-      // @ts-expect-error TODO: fix this type error
-      acc[key] = false;
+    // Every flag the app names starts off; tests turn them on with `withVariation`.
+    const flags = Object.fromEntries(
+      Object.keys({ ...defaultFlags, ...localFlags }).map((key) => [
+        key,
+        false,
+      ]),
+    );
 
-      return acc;
-    }, {});
-
-    const context = new Context({ flags: localFlags });
+    const context = new Context({ flags });
 
     setCurrentContext(context);
 
