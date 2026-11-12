@@ -184,6 +184,12 @@ export async function initialize(
     options.bootstrap = localFlags;
   }
 
+  const loader = bootstrapLoader(rest.bootstrap);
+
+  if (loader) {
+    options.inspectors = [...(options.inspectors ?? []), loader.inspector];
+  }
+
   const client = LDClient.initialize(
     clientSideId,
     user,
@@ -225,12 +231,90 @@ export async function initialize(
 
   subscribeToClient(client, context, streamingFlags);
 
+  if (initStatus === 'initialized') {
+    loader?.loadInto(context, flags);
+  }
+
   return {
     isOk: initStatus === 'initialized',
     status: initStatus,
     error: initError,
     context,
   };
+}
+
+/**
+ * With `bootstrap: 'localFlags'` or `'localStorage'`, the SDK reports success
+ * straight away from those values and only sends LaunchDarkly's as changes,
+ * which `streamingFlags` may filter out. The returned inspector loads the
+ * first full set of flags LaunchDarkly sends into the context, then stops. A
+ * bootstrap object passed in directly is taken as LaunchDarkly's values.
+ *
+ * LaunchDarkly intends inspectors for monitoring, but 'flag-details-changed'
+ * is the only signal that a full payload arrived, even when nothing changed.
+ *
+ * @internal
+ */
+export function bootstrapLoader(
+  bootstrap: EmberLaunchDarklyOptions['bootstrap'],
+) {
+  const provisional =
+    bootstrap === 'localFlags' ||
+    (typeof bootstrap === 'string' &&
+      bootstrap.toUpperCase() === 'LOCALSTORAGE');
+
+  if (!provisional) {
+    return undefined;
+  }
+
+  let target: Context<LDClient.LDFlagSet> | undefined;
+  let startedFrom: LDClient.LDFlagSet = {};
+
+  const inspector: LDClient.LDInspectionFlagDetailsChangedHandler = {
+    type: 'flag-details-changed',
+    name: 'ember-launch-darkly',
+    // Only a signal: this runs a tick after the payload, so read the client's
+    // flags now in case a streamed patch landed in between.
+    method() {
+      const context = target;
+
+      if (!context || getCurrentContext() !== context) {
+        return;
+      }
+
+      target = undefined;
+
+      const flags = context.client?.allFlags() ?? {};
+
+      // A cold cache already started from LaunchDarkly's values, and a warm
+      // one usually matches them. Don't re-render every flag for nothing.
+      if (!sameFlags(flags, startedFrom)) {
+        context.replaceFlags(flags);
+        setPersistedFlags(context);
+      }
+    },
+  };
+
+  return {
+    inspector,
+    loadInto(context: Context<LDClient.LDFlagSet>, flags: LDClient.LDFlagSet) {
+      target = context;
+      startedFrom = flags;
+    },
+  };
+}
+
+function sameFlags(a: LDClient.LDFlagSet, b: LDClient.LDFlagSet) {
+  const keys = Object.keys(a);
+
+  return (
+    keys.length === Object.keys(b).length &&
+    keys.every(
+      (key) =>
+        Object.prototype.hasOwnProperty.call(b, key) &&
+        JSON.stringify(a[key]) === JSON.stringify(b[key]),
+    )
+  );
 }
 
 /**
