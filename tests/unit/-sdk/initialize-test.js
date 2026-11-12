@@ -7,6 +7,7 @@ import {
   shouldUpdateFlag,
   subscribeToClient,
 } from 'ember-launch-darkly/-sdk/initialize';
+import { identify } from 'ember-launch-darkly';
 import Context, {
   getCurrentContext,
   removeCurrentContext,
@@ -46,8 +47,8 @@ function fakeXHR(payload) {
   };
 }
 
-// Opens straight away and sends `payload` as the stream's first put.
-function fakeEventSource(payload) {
+// Opens straight away and sends each payload as a put, 50ms apart.
+function fakeEventSource(...payloads) {
   return class {
     static CONNECTING = 0;
     static OPEN = 1;
@@ -60,7 +61,11 @@ function fakeEventSource(payload) {
       setTimeout(() => {
         this.readyState = 1;
         this.onopen?.();
-        this.#listeners.put?.({ data: JSON.stringify(payload) });
+      });
+      payloads.forEach((payload, i) => {
+        setTimeout(() => {
+          this.#listeners.put?.({ data: JSON.stringify(payload) });
+        }, i * 50);
       });
     }
 
@@ -277,6 +282,43 @@ module('Unit | SDK | Initialize', function () {
         await waitUntil(() => context.get('my-flag') === 'live');
 
         assert.strictEqual(context.get('my-flag'), 'live', 'then LaunchDarkly');
+
+        await context.destroy({ force: true });
+      } finally {
+        window.EventSource = realEventSource;
+      }
+    });
+
+    test('remote mode leaves later payloads to streamingFlags after a matching first one', async function (assert) {
+      const realEventSource = window.EventSource;
+
+      window.EventSource = fakeEventSource(
+        { 'my-flag': { value: 'local', variation: 0, version: 1 } },
+        { 'my-flag': { value: 'changed', variation: 1, version: 2 } },
+      );
+
+      try {
+        const { context } = await initialize(
+          'test-client-id',
+          { key: 'user' },
+          {
+            mode: 'remote',
+            bootstrap: 'localFlags',
+            localFlags: { 'my-flag': 'local' },
+            sendEvents: false,
+            diagnosticOptOut: true,
+            fetchGoals: false,
+          },
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 150));
+
+        assert.strictEqual(
+          context.client.variation('my-flag'),
+          'changed',
+          'the SDK got the second put',
+        );
+        assert.strictEqual(context.get('my-flag'), 'local', 'filtered');
 
         await context.destroy({ force: true });
       } finally {
@@ -549,8 +591,14 @@ module('Unit | SDK | Initialize', function () {
       window.localStorage.removeItem('ember-launch-darkly');
     });
 
-    function setup(bootstrap, startFlags, clientFlags) {
-      const loader = bootstrapLoader(bootstrap);
+    function payload(flags) {
+      return Object.fromEntries(
+        Object.entries(flags).map(([key, value]) => [key, { value }]),
+      );
+    }
+
+    function setup(bootstrap, startFlags, clientFlags, streamingFlags) {
+      const loader = bootstrapLoader(bootstrap, streamingFlags);
       const client = fakeClient(clientFlags);
       const context = new Context({ client, flags: startFlags });
 
@@ -569,18 +617,16 @@ module('Unit | SDK | Initialize', function () {
     });
 
     test('loads the first full payload, then stops', function (assert) {
-      const { loader, client, context } = setup(
-        'localFlags',
-        { 'my-flag': 'local', 'local-only': true },
-        { 'my-flag': 'live', 'new-flag': 1 },
-      );
+      const { loader, context } = setup('localFlags', {
+        'my-flag': 'local',
+        'local-only': true,
+      });
 
-      loader.inspector.method();
+      loader.inspector.method(payload({ 'my-flag': 'live', 'new-flag': 1 }));
 
       assert.deepEqual(context.allFlags, { 'my-flag': 'live', 'new-flag': 1 });
 
-      client.flags = { 'my-flag': 'later' };
-      loader.inspector.method();
+      loader.inspector.method(payload({ 'my-flag': 'later' }));
 
       assert.strictEqual(
         context.get('my-flag'),
@@ -589,62 +635,97 @@ module('Unit | SDK | Initialize', function () {
       );
     });
 
-    test("reads the client's flags when it runs, not the payload's", function (assert) {
-      const { loader, client, context } = setup(
+    test('takes streamed flags from the client and the rest from the payload', function (assert) {
+      const { loader, context } = setup(
         'localFlags',
-        { 'my-flag': 'local' },
-        { 'my-flag': 'live' },
+        { streamed: 'local', other: 'local' },
+        { streamed: 'patched', other: 'patched' },
+        { streamed: true },
       );
 
-      client.flags = { 'my-flag': 'patched' };
-      loader.inspector.method({ 'my-flag': { value: 'live' } });
+      loader.inspector.method(payload({ streamed: 'live', other: 'live' }));
 
-      assert.strictEqual(context.get('my-flag'), 'patched');
+      assert.deepEqual(context.allFlags, {
+        streamed: 'patched',
+        other: 'live',
+      });
+    });
+
+    test('skips flags the payload marks deleted', function (assert) {
+      const { loader, context } = setup('localFlags', { 'my-flag': 'local' });
+
+      loader.inspector.method({
+        'my-flag': { value: 'live' },
+        deleted: { value: undefined },
+      });
+
+      assert.deepEqual(context.allFlags, { 'my-flag': 'live' });
     });
 
     test('leaves the context alone when LaunchDarkly agrees', function (assert) {
-      const { loader, client, context } = setup(
-        'localStorage',
-        { 'my-flag': 'cached' },
-        { 'my-flag': 'cached' },
-      );
+      const { loader, context } = setup('localStorage', {
+        'my-flag': 'cached',
+        json: { a: 1, list: [1, 2] },
+      });
 
       context.set('my-flag', 'tweaked');
-      loader.inspector.method();
+      loader.inspector.method(
+        payload({ json: { list: [1, 2], a: 1 }, 'my-flag': 'cached' }),
+      );
 
-      assert.strictEqual(context.get('my-flag'), 'tweaked', 'not replaced');
+      assert.strictEqual(
+        context.get('my-flag'),
+        'tweaked',
+        'not replaced, whatever the key order',
+      );
 
-      client.flags = { 'my-flag': 'later' };
-      loader.inspector.method();
+      loader.inspector.method(payload({ 'my-flag': 'later' }));
 
       assert.strictEqual(context.get('my-flag'), 'tweaked', 'and stopped');
     });
 
+    test('compares arrays in order', function (assert) {
+      const { loader, context } = setup('localStorage', { list: [1, 2] });
+
+      loader.inspector.method(payload({ list: [2, 1] }));
+
+      assert.deepEqual(context.get('list'), [2, 1]);
+    });
+
     test('keeps persisted flags, like a successful init', function (assert) {
-      const { loader, context } = setup(
-        'localFlags',
-        {},
-        { 'my-flag': 'live', 'new-flag': 1 },
-      );
+      const { loader, context } = setup('localFlags', {});
 
       window.localStorage.setItem(
         'ember-launch-darkly',
         JSON.stringify({ 'my-flag': 'persisted' }),
       );
-      loader.inspector.method();
+      loader.inspector.method(payload({ 'my-flag': 'live', 'new-flag': 1 }));
 
       assert.deepEqual(context.allFlags, { 'my-flag': 'persisted' });
     });
 
-    test('leaves a destroyed or replaced context alone', function (assert) {
-      const { loader, context } = setup(
-        'localFlags',
-        { 'my-flag': 'local' },
-        { 'my-flag': 'live' },
+    test('identify() takes over from it', async function (assert) {
+      const { loader, client, context } = setup('localFlags', {
+        'my-flag': 'local',
+      });
+
+      client.identify = () => Promise.resolve({ 'my-flag': 'identified' });
+      window.localStorage.setItem(
+        'ember-launch-darkly',
+        JSON.stringify({ 'my-flag': 'persisted' }),
       );
 
+      await identify({ key: 'other' });
+      loader.inspector.method(payload({ 'my-flag': 'identified' }));
+
+      assert.deepEqual(context.allFlags, { 'my-flag': 'identified' });
+    });
+
+    test('leaves a destroyed or replaced context alone', function (assert) {
+      const { loader, context } = setup('localFlags', { 'my-flag': 'local' });
+
       setCurrentContext(new Context());
-      loader.inspector.method();
+      loader.inspector.method(payload({ 'my-flag': 'live' }));
 
       assert.strictEqual(context.get('my-flag'), 'local');
     });
