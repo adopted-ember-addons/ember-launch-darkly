@@ -4,6 +4,7 @@ import { render } from '@ember/test-helpers';
 
 import { setupLaunchDarkly } from 'ember-launch-darkly/test-support';
 import { variation } from 'ember-launch-darkly/helpers';
+import Context, { setCurrentContext } from 'ember-launch-darkly/-sdk/context';
 
 import type { LDTestContext } from 'ember-launch-darkly/test-support';
 
@@ -41,6 +42,24 @@ module('Integration | Helper | variation', function (hooks) {
     );
 
     assert.dom('h1').hasText('bacon', 'Feature flag default value returned');
+
+    await this.withVariation?.('cheese', 'tomato');
+
+    assert.dom('h1').hasText('tomato', 'Feature flag value returned');
+  });
+
+  test('it falls back to defaultFlags', async function (this: LDTestContext, assert) {
+    setCurrentContext(new Context({ defaultFlags: { cheese: 'bacon' } }));
+
+    await render(
+      <template>
+        <h1>{{variation 'cheese'}}</h1>
+        <h2>{{variation 'cheese' defaultValue='brie'}}</h2>
+      </template>,
+    );
+
+    assert.dom('h1').hasText('bacon', 'defaultFlags value returned');
+    assert.dom('h2').hasText('brie', 'per-call default wins');
 
     await this.withVariation?.('cheese', 'tomato');
 

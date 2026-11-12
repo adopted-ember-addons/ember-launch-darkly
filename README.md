@@ -42,6 +42,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
     - [Identify](#identify)
     - [variation (template helper)](#variation-template-helper)
     - [variation (javascript helper)](#variation-javascript-helper)
+    - [Default values](#default-values)
     - [Strict mode templates (.gts/.gjs)](#strict-mode-templates-gtsgjs)
     - [Reactive initialization status](#reactive-initialization-status)
     - [Error handling](#error-handling)
@@ -98,6 +99,7 @@ module.exports = function (environment) {
 | `clientSideId`               | —         | Your [LaunchDarkly client-side ID](https://app.launchdarkly.com/settings#/projects). Required for `remote` mode.                                                  |
 | `mode`                       | `'local'` | `'local'` or `'remote'`. Local mode uses `localFlags` instead of the LD service.                                                                                  |
 | `localFlags`                 | `{}`      | Initial flag values for local mode (also used as `bootstrap` values when `bootstrap: 'localFlags'`).                                                              |
+| `defaultFlags`               | `{}`      | Values `variation()` falls back to when a flag has no value, e.g. while LaunchDarkly is unreachable. [See default values.](#default-values)                       |
 | `timeout`                    | `5`       | Seconds to wait for `waitForInitialization()` before treating init as failed.                                                                                     |
 | `streamingFlags`             | `false`   | Subscribe to real-time flag updates. [See streaming section.](#streaming-feature-flags)                                                                           |
 | `bootstrap`                  | —         | [Bootstrap configuration](https://docs.launchdarkly.com/sdk/client-side/javascript#bootstrapping). Set to `'localFlags'` to use `localFlags` as bootstrap values. |
@@ -137,7 +139,8 @@ export default class ApplicationRoute extends Route {
     if (!isOk) {
       console.warn("LaunchDarkly failed to initialize:", error);
 
-      // Option A: Continue with default/bootstrap flag values.
+      // Option A: Continue with default values (`defaultFlags`, per-call
+      // defaults or bootstrap).
       // context is still usable — flags will update if the SDK recovers.
 
       // Option B: Tear down and fall back to local mode.
@@ -217,6 +220,27 @@ export default class PriceDisplay extends Component {
   }
 }
 ```
+
+### Default values
+
+When a flag has no value (LaunchDarkly hasn't provided it, or it's `null`),
+`variation(key, defaultValue)` and `{{variation key defaultValue=...}}` return
+`defaultValue`, falling back to the flag's entry in `defaultFlags`:
+
+```js
+await initialize(clientSideId, user, {
+  mode: "remote",
+  defaultFlags: { "new-pricing-plan": false, "max-items": 20 },
+});
+
+variation("max-items"); // 20 until LaunchDarkly provides a value
+variation("max-items", 10); // 10: a per-call default wins
+```
+
+Defaults never count as flag values: they aren't in `context.allFlags`, aren't
+persisted, and give way as soon as LaunchDarkly's values arrive, including
+after a failed initialization recovers. `bootstrap` values, by contrast, are
+treated as LaunchDarkly's own.
 
 ### Strict mode templates (.gts/.gjs)
 
@@ -386,7 +410,8 @@ contentSecurityPolicy: {
 
 ### Acceptance tests
 
-`setupLaunchDarkly` resets all flags to `false` and provides `withVariation`:
+`setupLaunchDarkly` sets every flag in `localFlags` and `defaultFlags` to
+`false` and provides `withVariation`:
 
 ```js
 import { module, test } from "qunit";

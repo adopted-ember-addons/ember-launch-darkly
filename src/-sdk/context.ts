@@ -50,6 +50,13 @@ export interface ContextOptions<ELDFlagSet extends LDFlagSet = LDFlagSet> {
   /** Initial flag values. */
   flags?: ELDFlagSet;
 
+  /**
+   * Values `get()` falls back to when a flag has no value (missing or
+   * `null`). A `defaultValue` passed to `get()` takes precedence. Defaults
+   * aren't flag values, so `allFlags` and `persist()` leave them out.
+   */
+  defaultFlags?: Partial<ELDFlagSet>;
+
   /** The underlying LD client (omit for local mode). */
   client?: LDClient;
 
@@ -106,17 +113,26 @@ class Context<ELDFlagSet extends LDFlagSet> {
   @tracked lastError?: Error;
 
   #flags = new TrackedMap<keyof ELDFlagSet, ELDFlagSet[keyof ELDFlagSet]>();
+  #defaultFlags: Map<keyof ELDFlagSet, LDFlagValue>;
   #client?: LDClient | null = null;
   #onStatusChange?: OnStatusChange;
   #onError?: OnError;
 
   constructor(options: ContextOptions<ELDFlagSet> = {}) {
-    const { flags, client, initStatus, initError, onStatusChange, onError } =
-      options;
+    const {
+      flags,
+      defaultFlags,
+      client,
+      initStatus,
+      initError,
+      onStatusChange,
+      onError,
+    } = options;
 
     this.initStatus = initStatus ?? (client ? 'initialized' : 'local');
     this.initError = initError;
 
+    this.#defaultFlags = new Map(Object.entries(defaultFlags ?? {}));
     this.#client = client;
     this.#onStatusChange = onStatusChange;
     this.#onError = onError;
@@ -151,11 +167,23 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get<T>(key: keyof ELDFlagSet, defaultValue?: T | null): T {
-    if (!this.#flags.has(key) && defaultValue != null) {
-      return defaultValue;
+    const value = this.#flags.get(key);
+
+    if (value != null) {
+      return value;
     }
 
-    return this.#flags.get(key) as T;
+    return (this.defaultFor(key, defaultValue) ?? value) as T;
+  }
+
+  /**
+   * What to serve when `key` has no value: `defaultValue` if given, otherwise
+   * its `defaultFlags` entry.
+   *
+   * @internal
+   */
+  defaultFor(key: keyof ELDFlagSet, defaultValue?: LDFlagValue): LDFlagValue {
+    return defaultValue ?? this.#defaultFlags.get(key);
   }
 
   persist() {
@@ -245,7 +273,10 @@ class Context<ELDFlagSet extends LDFlagSet> {
       /* eslint-enable @typescript-eslint/no-unsafe-assignment */
     }
 
-    return this.#client.variationDetail(key, defaultValue);
+    return this.#client.variationDetail(
+      key,
+      this.defaultFor(key, defaultValue),
+    );
   }
 
   /**

@@ -19,6 +19,16 @@ export interface EmberLaunchDarklyOptions extends Omit<
 > {
   bootstrap?: 'localFlags' | LDClient.LDOptions['bootstrap'];
   localFlags?: Record<string, unknown>;
+
+  /**
+   * Values `variation()` falls back to when a flag has no value (missing or
+   * `null`): while LaunchDarkly is unreachable or hasn't recovered from a
+   * failed initialization, or for flags it doesn't know. A `defaultValue`
+   * passed to `variation()` takes precedence. Applies in local mode too.
+   * Unlike `bootstrap`, these never count as flag values.
+   */
+  defaultFlags?: Record<string, unknown>;
+
   mode?: string;
   sendEventsOnlyForVariation?: boolean;
   streamingFlags?: boolean | StreamingConfig;
@@ -142,6 +152,7 @@ export async function initialize(
   const {
     streamingFlags = false,
     localFlags = {},
+    defaultFlags,
     timeout = 5,
     mode: initialMode = 'local',
     onStatusChange,
@@ -163,6 +174,7 @@ export async function initialize(
   if (mode === 'local') {
     const context = new Context({
       flags: localFlags,
+      defaultFlags,
       initStatus: 'local',
       onStatusChange,
       onError,
@@ -210,6 +222,7 @@ export async function initialize(
 
   const context = new Context({
     flags,
+    defaultFlags,
     client,
     initStatus,
     initError,
