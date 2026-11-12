@@ -1,22 +1,18 @@
 {
   "solution": {
     "ember-launch-darkly": {
-      "impact": "minor",
-      "oldVersion": "6.0.1",
-      "newVersion": "6.1.0",
+      "impact": "patch",
+      "oldVersion": "6.1.0",
+      "newVersion": "6.1.1",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
-        {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2026-10-23)\n\n* ember-launch-darkly 6.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-launch-darkly`\n  * [#744](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/744) Drop the ember-source peer and depend on tracked-built-ins directly ([@aklkv](https://github.com/aklkv))\n\n#### :house: Internal\n* `ember-launch-darkly`\n  * [#748](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/748) Move to pnpm 12 and let pnpm/action-setup cache the store ([@aklkv](https://github.com/aklkv))\n  * [#746](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/746) Group Dependabot updates, add GitHub Actions, label PRs for release-plan ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
+  "description": "## Release (2026-11-12)\n\n* ember-launch-darkly 6.1.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-launch-darkly`\n  * [#756](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/756) Require launchdarkly-js-client-sdk 3.3.0 or later ([@aklkv](https://github.com/aklkv))\n  * [#755](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/755) Recover flags after a timed-out initialization ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
 }

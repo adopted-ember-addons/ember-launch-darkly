@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2026-11-12)
+
+* ember-launch-darkly 6.1.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#756](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/756) Require launchdarkly-js-client-sdk 3.3.0 or later ([@aklkv](https://github.com/aklkv))
+  * [#755](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/755) Recover flags after a timed-out initialization ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2026-10-23)
 
 * ember-launch-darkly 6.1.0 (minor)
