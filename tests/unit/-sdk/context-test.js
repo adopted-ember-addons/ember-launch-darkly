@@ -131,6 +131,54 @@ module('Unit | SDK | Context', function () {
     );
   });
 
+  test('#get falls back to defaultFlags', function (assert) {
+    let context = new Context({
+      flags: { off: false, empty: null },
+      defaultFlags: {
+        off: true,
+        empty: 'default',
+        missing: 'default',
+        'null-default': null,
+      },
+    });
+
+    assert.false(context.get('off'), 'flag value wins, even when false');
+    assert.strictEqual(context.get('empty'), 'default', 'null is no value');
+    assert.strictEqual(context.get('missing'), 'default', 'missing flag');
+    assert.strictEqual(context.get('missing', 'per-call'), 'per-call');
+    assert.false(context.get('missing', false), 'falsy per-call default wins');
+    assert.strictEqual(
+      context.get('missing', null),
+      'default',
+      'null per-call default falls through',
+    );
+    assert.strictEqual(context.get('null-default'), undefined);
+    assert.strictEqual(context.get('moo'), undefined, 'no default');
+    assert.strictEqual(
+      context.get('constructor'),
+      undefined,
+      'ignores prototype keys',
+    );
+    assert.deepEqual(
+      context.allFlags,
+      { off: false, empty: null },
+      'defaults are not flag values',
+    );
+  });
+
+  test('flag values replace defaults when they arrive', function (assert) {
+    let context = new Context({
+      initStatus: 'failed',
+      defaultFlags: { flag: 'default' },
+    });
+
+    assert.strictEqual(context.get('flag'), 'default');
+
+    context.updateFlags({ flag: 'live' });
+
+    assert.strictEqual(context.get('flag'), 'live');
+  });
+
   test('allFlags', function (assert) {
     let context = new Context({ flags: { foo: true, bar: false } });
 
@@ -341,6 +389,23 @@ module('Unit | SDK | Context', function () {
       assert.strictEqual(detail.value, 'hello');
       assert.strictEqual(detail.variationIndex, undefined);
       assert.strictEqual(detail.reason, undefined);
+    });
+
+    test('variationDetail passes defaultFlags to the client', function (assert) {
+      let defaults = [];
+      let client = {
+        variationDetail(key, defaultValue) {
+          defaults.push(defaultValue);
+          return { value: defaultValue };
+        },
+      };
+
+      let context = new Context({ client, defaultFlags: { flag: 'default' } });
+
+      context.variationDetail('flag');
+      context.variationDetail('flag', 'per-call');
+
+      assert.deepEqual(defaults, ['default', 'per-call']);
     });
 
     test('close delegates to client', async function (assert) {

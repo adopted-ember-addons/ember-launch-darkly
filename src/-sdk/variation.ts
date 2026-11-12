@@ -19,7 +19,7 @@ export function variation<ELDFlagDefaultValue>(
   }
 
   if (!context.isLocal) {
-    context.client?.variation(key);
+    context.client?.variation(key, context.defaultFor(key, defaultValue));
   }
 
   return context.get(key, defaultValue);
