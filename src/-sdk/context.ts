@@ -23,9 +23,9 @@ export type InitStatus = 'initialized' | 'failed' | 'local';
 /**
  * Callback invoked whenever the {@link InitStatus} of the context changes.
  *
- * This is most useful for reacting to post-init recovery: when the LD SDK
- * reconnects after a failed initialization, the status transitions from
- * `'failed'` to `'initialized'`.
+ * This is most useful for reacting to post-init recovery: when the flag
+ * request finishes after `timeout`, or a later `identify()` succeeds, the
+ * status transitions from `'failed'` to `'initialized'`.
  */
 export type OnStatusChange = (
   newStatus: InitStatus,

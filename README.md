@@ -257,8 +257,9 @@ context.initError; // the error from waitForInitialization(), if any
 ```
 
 These are `@tracked`, so templates that read them auto-update. When the SDK
-recovers after a failed initialization (e.g. reconnects), `initStatus`
-automatically transitions to `'initialized'`.
+recovers after a failed initialization (the flag request finishes after
+`timeout`, or a later `identify()` succeeds), the context loads all flags and
+`initStatus` transitions to `'initialized'`.
 
 You can listen for transitions:
 

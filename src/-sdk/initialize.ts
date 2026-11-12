@@ -2,7 +2,11 @@ import { warn } from '@ember/debug';
 
 import * as LDClient from 'launchdarkly-js-client-sdk';
 
-import Context, { getCurrentContext, setCurrentContext } from './context.ts';
+import Context, {
+  getCurrentContext,
+  setCurrentContext,
+  setPersistedFlags,
+} from './context.ts';
 import type { InitStatus, OnStatusChange, OnError } from './context.ts';
 
 declare const __ADDON_VERSION__: string;
@@ -31,9 +35,9 @@ export interface EmberLaunchDarklyOptions extends Omit<
   /**
    * Callback invoked when the initialization status changes.
    *
-   * Most useful for reacting to post-init **recovery**: when the LD SDK
-   * reconnects after a failed initialization, the callback fires with
-   * `('initialized', 'failed')`.
+   * Most useful for reacting to post-init **recovery**: when the flag request
+   * finishes after `timeout`, or a later `identify()` succeeds, the callback
+   * fires with `('initialized', 'failed')`.
    *
    * @example
    * ```ts
@@ -219,15 +223,53 @@ export async function initialize(
   // duplicate client and ensures post-init recovery works automatically.
   setCurrentContext(context);
 
+  subscribeToClient(client, context, streamingFlags);
+
+  return {
+    isOk: initStatus === 'initialized',
+    status: initStatus,
+    error: initError,
+    context,
+  };
+}
+
+/**
+ * Keep a context in sync with its LD client: forward SDK errors, apply
+ * streamed flag changes, and recover after a failed initialization.
+ *
+ * @internal
+ */
+export function subscribeToClient(
+  client: LDClient.LDClient,
+  context: Context<LDClient.LDFlagSet>,
+  streamingFlags?: boolean | StreamingConfig,
+) {
+  // Load flags the way a successful init does: everything the client has, not
+  // just what `streamingFlags` lets through, then any persisted overrides.
+  // A context that was destroyed or replaced in the meantime is left alone.
+  const recover = () => {
+    if (context.initStatus !== 'failed' || getCurrentContext() !== context) {
+      return;
+    }
+
+    context.updateFlags(client.allFlags());
+    setPersistedFlags(context);
+    context.transitionStatus('initialized');
+  };
+
   client.on('error', (error: Error) => {
     context.handleError(error);
   });
 
+  // A flag request that outlives `timeout` still completes. The SDK then
+  // stores the flags and fires 'initialized', but no 'change'.
+  client.on('initialized', recover);
+
   client.on('change', (updates: Record<string, unknown>) => {
-    // If we receive flag changes after a failed init, the SDK has recovered.
-    // Transition to 'initialized' so the app can react.
+    // Flags arriving after a failed init, e.g. from `identify()`.
     if (context.initStatus === 'failed') {
-      context.transitionStatus('initialized');
+      recover();
+      return;
     }
 
     const flagsToUpdate: Record<string, unknown> = {};
@@ -240,11 +282,4 @@ export async function initialize(
 
     context.updateFlags(flagsToUpdate);
   });
-
-  return {
-    isOk: initStatus === 'initialized',
-    status: initStatus,
-    error: initError,
-    context,
-  };
 }

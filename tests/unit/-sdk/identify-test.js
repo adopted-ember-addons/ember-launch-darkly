@@ -73,6 +73,23 @@ module('Unit | SDK | Identify', function (hooks) {
     );
   });
 
+  test('identify after a failed init marks the context initialized', async function (assert) {
+    let client = {
+      identify() {
+        return {};
+      },
+    };
+
+    let context = new Context({ client, initStatus: 'failed' });
+
+    setCurrentContext(context);
+
+    let result = await identify({ key: 'cheese' });
+
+    assert.true(result.isOk, 'identify succeeded');
+    assert.strictEqual(context.initStatus, 'initialized');
+  });
+
   test('identify without initialization returns error result', async function (assert) {
     let result = await identify({ key: 'cheese' });
 
