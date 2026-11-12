@@ -21,7 +21,8 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
 
 | Addon version | Ember version     |                                                                                             |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------- |
-| v6.0          | >= v4.12          | [README](README.md)                                                                         |
+| v7.0          | >= v4.12          | [README](README.md)                                                                         |
+| v6.0          | >= v4.12          | [UPGRADING](UPGRADING_TO_v7.x.md)                                                           |
 | v5.0          | >= v4.12          | [UPGRADING](UPGRADING_TO_v6.x.md)                                                           |
 | v4.0          | >= v4.12          | [README](README.md)                                                                         |
 | v3.0          | >= v3.28 and v4.4 | [README](README.md)                                                                         |
@@ -181,6 +182,14 @@ if (!isOk) {
 ```
 
 ### variation (template helper)
+
+The addon doesn't add the helper to your app. To use it in loose mode
+(`.hbs`) templates, re-export it:
+
+```js
+// app/helpers/variation.js
+export { default } from "ember-launch-darkly/helpers/variation";
+```
 
 ```hbs
 {{#if (variation "new-login-screen")}}
@@ -558,6 +567,7 @@ helpers, streaming subscriptions, and the `{{variation}}` template helper.
 
 ## Upgrading
 
+- **From v6.x to v7.x** — See [UPGRADING_TO_v7.x.md](UPGRADING_TO_v7.x.md)
 - **From v5.x to v6.x** — See [UPGRADING_TO_v6.x.md](UPGRADING_TO_v6.x.md)
 - **From v1.x to v2.x** — See [UPGRADING_TO_v2.x.md](UPGRADING_TO_v2.x.md)
 

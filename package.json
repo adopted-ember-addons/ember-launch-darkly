@@ -125,9 +125,6 @@
   "ember-addon": {
     "version": 2,
     "type": "addon",
-    "main": "addon-main.cjs",
-    "app-js": {
-      "./helpers/variation.js": "./dist/_app_/helpers/variation.js"
-    }
+    "main": "addon-main.cjs"
   }
 }
