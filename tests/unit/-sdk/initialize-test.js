@@ -3,11 +3,30 @@ import { module, test } from 'qunit';
 import {
   initialize,
   shouldUpdateFlag,
+  subscribeToClient,
 } from 'ember-launch-darkly/-sdk/initialize';
-import {
+import Context, {
   getCurrentContext,
   removeCurrentContext,
+  setCurrentContext,
 } from 'ember-launch-darkly/-sdk/context';
+
+function fakeClient(flags = {}) {
+  const handlers = {};
+
+  return {
+    flags,
+    on(event, handler) {
+      (handlers[event] ??= []).push(handler);
+    },
+    emit(event, ...args) {
+      (handlers[event] ?? []).forEach((handler) => handler(...args));
+    },
+    allFlags() {
+      return { ...this.flags };
+    },
+  };
+}
 
 module('Unit | SDK | Initialize', function () {
   module('#shouldUpdateFlag', function () {
@@ -220,6 +239,124 @@ module('Unit | SDK | Initialize', function () {
       assert.strictEqual(errors.length, 1, 'onError callback fired');
       assert.strictEqual(errors[0], err, 'received the error');
       assert.strictEqual(context.lastError, err, 'lastError is set on context');
+    });
+  });
+
+  module('#subscribeToClient', function (hooks) {
+    hooks.afterEach(function () {
+      removeCurrentContext();
+      window.localStorage.removeItem('ember-launch-darkly');
+    });
+
+    test('recovers when initialization completes after the timeout', async function (assert) {
+      const statusChanges = [];
+      const client = fakeClient();
+      const context = new Context({
+        client,
+        initStatus: 'failed',
+        initError: new Error('timeout'),
+        onStatusChange(newStatus, previousStatus) {
+          statusChanges.push([newStatus, previousStatus]);
+        },
+      });
+
+      setCurrentContext(context);
+      subscribeToClient(client, context, false);
+
+      client.flags = { 'my-flag': true, 'other-flag': 'b' };
+      client.emit('initialized');
+
+      assert.strictEqual(context.initStatus, 'initialized');
+      assert.true(context.get('my-flag'));
+      assert.strictEqual(context.get('other-flag'), 'b');
+      assert.deepEqual(statusChanges, [['initialized', 'failed']]);
+    });
+
+    test('leaves a destroyed or replaced context alone', async function (assert) {
+      const statusChanges = [];
+      const client = fakeClient();
+      const context = new Context({
+        client,
+        initStatus: 'failed',
+        onStatusChange(newStatus, previousStatus) {
+          statusChanges.push([newStatus, previousStatus]);
+        },
+      });
+
+      setCurrentContext(context);
+      subscribeToClient(client, context, false);
+      setCurrentContext(new Context({ flags: { 'my-flag': false } }));
+
+      client.flags = { 'my-flag': true };
+      client.emit('initialized');
+
+      assert.strictEqual(context.initStatus, 'failed');
+      assert.strictEqual(context.get('my-flag'), undefined);
+      assert.deepEqual(statusChanges, []);
+    });
+
+    test('keeps persisted flags on recovery, like a successful init', async function (assert) {
+      window.localStorage.setItem(
+        'ember-launch-darkly',
+        JSON.stringify({ 'my-flag': false }),
+      );
+
+      const client = fakeClient();
+      const context = new Context({ client, initStatus: 'failed' });
+
+      setCurrentContext(context);
+      subscribeToClient(client, context, false);
+
+      client.flags = { 'my-flag': true, 'other-flag': 'b' };
+      client.emit('initialized');
+
+      assert.strictEqual(context.initStatus, 'initialized');
+      assert.deepEqual(context.allFlags, { 'my-flag': false });
+    });
+
+    test('ignores initialized once the context is initialized', async function (assert) {
+      const client = fakeClient({ 'my-flag': 1 });
+      const context = new Context({ client, flags: client.allFlags() });
+
+      setCurrentContext(context);
+      subscribeToClient(client, context, false);
+
+      client.flags = { 'my-flag': 2 };
+      client.emit('initialized');
+
+      assert.strictEqual(context.get('my-flag'), 1);
+    });
+
+    test('loads every flag when changes arrive after a failed init, even without streaming', async function (assert) {
+      const client = fakeClient();
+      const context = new Context({ client, initStatus: 'failed' });
+
+      setCurrentContext(context);
+      subscribeToClient(client, context, false);
+
+      client.flags = { 'my-flag': true, 'other-flag': 'b' };
+      client.emit('change', { 'my-flag': { current: true } });
+
+      assert.strictEqual(context.initStatus, 'initialized');
+      assert.true(context.get('my-flag'));
+      assert.strictEqual(context.get('other-flag'), 'b');
+    });
+
+    test('applies only streamed flags once initialized', async function (assert) {
+      const client = fakeClient({ streamed: 1, 'not-streamed': 1 });
+      const context = new Context({ client, flags: client.allFlags() });
+
+      subscribeToClient(client, context, { streamed: true });
+
+      client.flags = { streamed: 2, 'not-streamed': 2 };
+      client.emit('change', {
+        streamed: { current: 2, previous: 1 },
+        'not-streamed': { current: 2, previous: 1 },
+      });
+
+      assert.strictEqual(context.initStatus, 'initialized');
+      assert.strictEqual(context.get('streamed'), 2);
+      assert.strictEqual(context.get('not-streamed'), 1);
     });
   });
 });

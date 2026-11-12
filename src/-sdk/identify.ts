@@ -36,6 +36,12 @@ export async function identify(
 
     context.replaceFlags(flags as Record<string, unknown>);
 
+    // The SDK only emits 'change' when flags differ, so don't rely on it to
+    // leave a failed init behind.
+    if (context.initStatus === 'failed') {
+      context.transitionStatus('initialized');
+    }
+
     return { isOk: true };
   } catch (error) {
     return { isOk: false, error };
