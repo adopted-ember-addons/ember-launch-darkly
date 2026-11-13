@@ -37,6 +37,7 @@ A thin reactive layer over the [LaunchDarkly JS Client SDK](https://github.com/l
   - [Configuration](#configuration)
     - [Configuration options](#configuration-options)
       - [A note on `sendEventsOnlyForVariation`](#a-note-on-sendeventsonlyforvariation)
+      - [A note on `bootstrap`](#a-note-on-bootstrap)
   - [Usage](#usage)
     - [Initialize](#initialize)
     - [Identify](#identify)
@@ -111,6 +112,17 @@ module.exports = function (environment) {
 #### A note on `sendEventsOnlyForVariation`
 
 When `false`, events are sent for every feature flag when `client.allFlags()` is called. This can be misleading — a flag may appear as "requested" in the LD dashboard even though your code doesn't use it. We default this to `true` to avoid that. You can set it to `false` if you want those events.
+
+#### A note on `bootstrap`
+
+With `bootstrap: 'localFlags'` or `'localStorage'`, the SDK starts from those
+values and only sends LaunchDarkly's as changes, which `streamingFlags`
+filters. So the addon loads the first full set of flags LaunchDarkly sends
+(over the stream, or from the SDK's background fetch for `'localStorage'`),
+and `streamingFlags` applies after that. With `streaming: false`, LaunchDarkly
+never sends one for `'localFlags'`, so those values stay. A bootstrap object
+you pass yourself, such as flags evaluated by a server-side SDK, is taken as
+LaunchDarkly's values.
 
 ## Usage
 

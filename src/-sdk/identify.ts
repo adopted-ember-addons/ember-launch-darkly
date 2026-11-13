@@ -1,4 +1,5 @@
 import { getCurrentContext } from './context.ts';
+import { stopAwaitingFirstPayload } from './initialize.ts';
 import type { LDUser } from 'launchdarkly-js-client-sdk';
 
 /**
@@ -30,6 +31,8 @@ export async function identify(
   if (context.isLocal) {
     return { isOk: true };
   }
+
+  stopAwaitingFirstPayload(context);
 
   try {
     const flags = await context.client?.identify(user, hash);

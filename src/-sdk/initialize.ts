@@ -196,6 +196,12 @@ export async function initialize(
     options.bootstrap = localFlags;
   }
 
+  const loader = bootstrapLoader(rest.bootstrap, streamingFlags);
+
+  if (loader) {
+    options.inspectors = [...(options.inspectors ?? []), loader.inspector];
+  }
+
   const client = LDClient.initialize(
     clientSideId,
     user,
@@ -238,12 +244,144 @@ export async function initialize(
 
   subscribeToClient(client, context, streamingFlags);
 
+  if (initStatus === 'initialized') {
+    loader?.loadInto(context, flags);
+  }
+
   return {
     isOk: initStatus === 'initialized',
     status: initStatus,
     error: initError,
     context,
   };
+}
+
+/**
+ * With `bootstrap: 'localFlags'` or `'localStorage'`, the SDK reports success
+ * straight away from those values and only sends LaunchDarkly's as changes,
+ * which `streamingFlags` may filter out. The returned inspector loads the
+ * first full set of flags LaunchDarkly sends into the context, then stops. A
+ * bootstrap object passed in directly is taken as LaunchDarkly's values.
+ *
+ * LaunchDarkly intends inspectors for monitoring, but 'flag-details-changed'
+ * is the only signal that a full payload arrived, even when nothing changed.
+ *
+ * @internal
+ */
+export function bootstrapLoader(
+  bootstrap: EmberLaunchDarklyOptions['bootstrap'],
+  streamingFlags?: boolean | StreamingConfig,
+) {
+  const provisional =
+    bootstrap === 'localFlags' ||
+    (typeof bootstrap === 'string' &&
+      bootstrap.toUpperCase() === 'LOCALSTORAGE');
+
+  if (!provisional) {
+    return undefined;
+  }
+
+  let target: Context<LDClient.LDFlagSet> | undefined;
+  let startedFrom: LDClient.LDFlagSet = {};
+
+  const inspector: LDClient.LDInspectionFlagDetailsChangedHandler = {
+    type: 'flag-details-changed',
+    name: 'ember-launch-darkly',
+    method(details) {
+      const context = target;
+
+      if (!context || !awaitingFirstPayload.has(context)) {
+        return;
+      }
+
+      target = undefined;
+      awaitingFirstPayload.delete(context);
+
+      if (getCurrentContext() !== context) {
+        return;
+      }
+
+      // This runs a tick after the payload. A flag that streams may have been
+      // patched since, so it gets the client's value; the rest keep the
+      // payload's, as the 'change' handler would have filtered the patch.
+      const current = context.client?.allFlags() ?? {};
+      const flags = Object.fromEntries([
+        ...Object.entries(details)
+          .filter(
+            ([key, { value }]) =>
+              value !== undefined && !shouldUpdateFlag(key, streamingFlags),
+          )
+          .map(([key, { value }]) => [key, value] as const),
+        ...Object.entries(current).filter(([key]) =>
+          shouldUpdateFlag(key, streamingFlags),
+        ),
+      ]);
+
+      // A cold cache already started from LaunchDarkly's values, and a warm
+      // one usually matches them. Don't re-render every flag for nothing.
+      if (!isEqual(flags, startedFrom)) {
+        context.replaceFlags(flags);
+        setPersistedFlags(context);
+      }
+    },
+  };
+
+  return {
+    inspector,
+    loadInto(context: Context<LDClient.LDFlagSet>, flags: LDClient.LDFlagSet) {
+      target = context;
+      startedFrom = flags;
+      awaitingFirstPayload.add(context);
+    },
+  };
+}
+
+// Contexts still waiting for LaunchDarkly's first full payload after a
+// bootstrapped start.
+const awaitingFirstPayload = new WeakSet<object>();
+
+/**
+ * `identify()` loads the new user's flags itself, so a payload that arrives
+ * afterwards isn't the startup one.
+ *
+ * @internal
+ */
+export function stopAwaitingFirstPayload(context: object) {
+  awaitingFirstPayload.delete(context);
+}
+
+// Flag values are JSON: key order doesn't matter, array order does.
+function isEqual(a: unknown, b: unknown): boolean {
+  if (a === b) {
+    return true;
+  }
+
+  if (
+    typeof a !== 'object' ||
+    typeof b !== 'object' ||
+    a === null ||
+    b === null ||
+    Array.isArray(a) !== Array.isArray(b)
+  ) {
+    return false;
+  }
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((value, i) => isEqual(value, b[i]));
+  }
+
+  const aRecord = a as Record<string, unknown>;
+  const bRecord = b as Record<string, unknown>;
+  const keys = Object.keys(aRecord);
+
+  return (
+    keys.length === Object.keys(bRecord).length &&
+    keys.every(
+      (key) =>
+        Object.prototype.hasOwnProperty.call(bRecord, key) &&
+        isEqual(aRecord[key], bRecord[key]),
+    )
+  );
 }
 
 /**
