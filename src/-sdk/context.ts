@@ -82,8 +82,7 @@ declare global {
 
 // Persisted flags are a development aid, so an entry that can't be read, or
 // storage that's blocked, is skipped rather than stopping initialization.
-function readPersistedFlags<ELDFlagSet extends LDFlagSet>():
-  ELDFlagSet | undefined {
+function readPersistedFlags(): LDFlagSet | undefined {
   let persisted: unknown;
 
   try {
@@ -111,16 +110,16 @@ function readPersistedFlags<ELDFlagSet extends LDFlagSet>():
     return undefined;
   }
 
-  return persisted as ELDFlagSet;
+  return persisted;
 }
 
 function setPersistedFlags<ELDFlagSet extends LDFlagSet>(
   context: Context<ELDFlagSet>,
 ) {
-  const persistedFlags = readPersistedFlags<ELDFlagSet>();
+  const persistedFlags = readPersistedFlags();
 
   if (persistedFlags) {
-    context.replaceFlags(persistedFlags);
+    context.replaceFlags(persistedFlags as ELDFlagSet);
   }
 }
 
@@ -389,7 +388,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get persisted(): ELDFlagSet | undefined {
-    return readPersistedFlags<ELDFlagSet>();
+    return readPersistedFlags() as ELDFlagSet | undefined;
   }
 
   get client(): LDClient | null | undefined {
