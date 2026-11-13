@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2026-11-13)
+
+* ember-launch-darkly 6.2.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-launch-darkly`
+  * [#761](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/761) Add a defaultFlags option for flags with no value ([@aklkv](https://github.com/aklkv))
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#763](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/763) Load LaunchDarkly's values after a bootstrapped start ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2026-11-12)
 
 * ember-launch-darkly 6.1.1 (patch)
