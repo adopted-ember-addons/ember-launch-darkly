@@ -3,6 +3,7 @@ import { module, test } from 'qunit';
 import Context, {
   setCurrentContext,
   getCurrentContext,
+  removeCurrentContext,
   setPersistedFlags,
 } from 'ember-launch-darkly/-sdk/context';
 
@@ -215,6 +216,7 @@ module('Unit | SDK | Context', function () {
   module('#persistence', function (innerHooks) {
     innerHooks.afterEach(function () {
       localStorage.removeItem('ember-launch-darkly');
+      removeCurrentContext();
     });
 
     test('#persist / persisted', function (assert) {
@@ -241,6 +243,43 @@ module('Unit | SDK | Context', function () {
         { foo: true, bar: false },
         'Persisted flags were set to context',
       );
+    });
+
+    for (let [description, item] of [
+      ['not JSON', '{"foo": tr'],
+      ['not an object', '42'],
+      ['an array', '["foo"]'],
+      ['null', 'null'],
+    ]) {
+      test(`#setCurrentContext ignores persisted flags that are ${description}`, function (assert) {
+        localStorage.setItem('ember-launch-darkly', item);
+        let context = new Context({ flags: { foo: false } });
+
+        setCurrentContext(context);
+
+        assert.strictEqual(getCurrentContext(), context);
+        assert.deepEqual(context.allFlags, { foo: false });
+        assert.strictEqual(context.persisted, undefined);
+      });
+    }
+
+    test('#setCurrentContext ignores storage it is not allowed to read', function (assert) {
+      let { getItem } = Storage.prototype;
+      Storage.prototype.getItem = () => {
+        throw new DOMException('The operation is insecure.', 'SecurityError');
+      };
+
+      try {
+        let context = new Context({ flags: { foo: false } });
+
+        setCurrentContext(context);
+
+        assert.strictEqual(getCurrentContext(), context);
+        assert.deepEqual(context.allFlags, { foo: false });
+        assert.strictEqual(context.persisted, undefined);
+      } finally {
+        Storage.prototype.getItem = getItem;
+      }
     });
   });
 
