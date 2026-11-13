@@ -2,6 +2,17 @@
 
 ## Release (2026-11-13)
 
+* ember-launch-darkly 6.2.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-launch-darkly`
+  * [#764](https://github.com/adopted-ember-addons/ember-launch-darkly/pull/764) Ignore persisted flags that can't be read ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
+## Release (2026-11-13)
+
 * ember-launch-darkly 6.2.0 (minor)
 
 #### :rocket: Enhancement
