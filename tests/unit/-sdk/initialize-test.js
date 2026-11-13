@@ -137,6 +137,24 @@ module('Unit | SDK | Initialize', function () {
       removeCurrentContext();
     });
 
+    test('starts despite unreadable persisted flags', async function (assert) {
+      localStorage.setItem('ember-launch-darkly', '{"my-flag": fa');
+
+      try {
+        const result = await initialize(
+          'test-client-id',
+          {},
+          { mode: 'local', localFlags: { 'my-flag': true } },
+        );
+
+        assert.true(result.isOk);
+        assert.strictEqual(getCurrentContext(), result.context);
+        assert.true(result.context.get('my-flag'));
+      } finally {
+        localStorage.removeItem('ember-launch-darkly');
+      }
+    });
+
     test('local mode returns isOk with status "local"', async function (assert) {
       const result = await initialize(
         'test-client-id',

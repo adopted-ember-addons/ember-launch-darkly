@@ -80,13 +80,47 @@ declare global {
   }
 }
 
+// Persisted flags are a development aid, so an entry that can't be read, or
+// storage that's blocked, is skipped rather than stopping initialization.
+function readPersistedFlags<ELDFlagSet extends LDFlagSet>():
+  ELDFlagSet | undefined {
+  let persisted: unknown;
+
+  try {
+    const item = window.localStorage.getItem(STORAGE_KEY);
+    persisted = item ? JSON.parse(item) : undefined;
+  } catch (error) {
+    warn(`Ignoring persisted flags: ${String(error)}`, false, {
+      id: 'ember-launch-darkly.unreadable-persisted-flags',
+    });
+    return undefined;
+  }
+
+  if (persisted === undefined) {
+    return undefined;
+  }
+
+  if (
+    typeof persisted !== 'object' ||
+    persisted === null ||
+    Array.isArray(persisted)
+  ) {
+    warn('Ignoring persisted flags: not an object.', false, {
+      id: 'ember-launch-darkly.unreadable-persisted-flags',
+    });
+    return undefined;
+  }
+
+  return persisted as ELDFlagSet;
+}
+
 function setPersistedFlags<ELDFlagSet extends LDFlagSet>(
   context: Context<ELDFlagSet>,
 ) {
-  const persistedFlags = window.localStorage.getItem(STORAGE_KEY);
+  const persistedFlags = readPersistedFlags<ELDFlagSet>();
 
   if (persistedFlags) {
-    context.replaceFlags(JSON.parse(persistedFlags) as ELDFlagSet);
+    context.replaceFlags(persistedFlags);
   }
 }
 
@@ -355,8 +389,7 @@ class Context<ELDFlagSet extends LDFlagSet> {
   }
 
   get persisted(): ELDFlagSet | undefined {
-    const persisted = window.localStorage.getItem(STORAGE_KEY);
-    return persisted ? (JSON.parse(persisted) as ELDFlagSet) : undefined;
+    return readPersistedFlags<ELDFlagSet>();
   }
 
   get client(): LDClient | null | undefined {
