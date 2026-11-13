@@ -248,6 +248,7 @@ module('Unit | SDK | Context', function () {
     for (let [description, item] of [
       ['not JSON', '{"foo": tr'],
       ['not an object', '42'],
+      ['an array', '["foo"]'],
       ['null', 'null'],
     ]) {
       test(`#setCurrentContext ignores persisted flags that are ${description}`, function (assert) {
